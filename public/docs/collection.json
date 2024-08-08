@@ -10,7 +10,7 @@
     ],
     "info": {
         "name": "Laravel",
-        "_postman_id": "a299e252-471d-4376-8e2e-8defa778a6c3",
+        "_postman_id": "0c247b48-37ab-4eeb-9eb4-5333bf694506",
         "description": "",
         "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.1.0\/collection.json"
     },
@@ -185,7 +185,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"name\":\"jkuedxcx\",\"email\":\"cberge@example.com\",\"password\":\"kFwo#&4.\\\/aa5wKquHf2n\"}"
+                            "raw": "{\"name\":\"ttpuu\",\"email\":\"reynolds.elyssa@example.com\",\"password\":\"67=)7>7Y.fSW\"}"
                         },
                         "description": "",
                         "auth": {
@@ -216,7 +216,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"email\":\"fklein@example.net\",\"password\":\"o>zj:I#`HH0DSr%QD\"}"
+                            "raw": "{\"email\":\"morgan93@example.com\",\"password\":\"h?J`)v~^j\"}"
                         },
                         "description": "",
                         "auth": {

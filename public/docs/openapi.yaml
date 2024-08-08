@@ -82,15 +82,15 @@ paths:
                 name:
                   type: string
                   description: 'Must not be greater than 255 characters.'
-                  example: jkuedxcx
+                  example: ttpuu
                 email:
                   type: string
                   description: 'Must be a valid email address. Must not be greater than 255 characters.'
-                  example: cberge@example.com
+                  example: reynolds.elyssa@example.com
                 password:
                   type: string
                   description: 'Must be at least 8 characters.'
-                  example: 'kFwo#&4./aa5wKquHf2n'
+                  example: 67=)7>7Y.fSW
               required:
                 - name
                 - email
@@ -115,11 +115,11 @@ paths:
                 email:
                   type: string
                   description: 'Must be a valid email address.'
-                  example: fklein@example.net
+                  example: morgan93@example.com
                 password:
                   type: string
                   description: ''
-                  example: 'o>zj:I#`HH0DSr%QD'
+                  example: 'h?J`)v~^j'
               required:
                 - email
                 - password

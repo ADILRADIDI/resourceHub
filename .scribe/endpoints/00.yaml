@@ -295,7 +295,7 @@ endpoints:
         name: name
         description: 'Must not be greater than 255 characters.'
         required: true
-        example: jkuedxcx
+        example: ttpuu
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -304,7 +304,7 @@ endpoints:
         name: email
         description: 'Must be a valid email address. Must not be greater than 255 characters.'
         required: true
-        example: cberge@example.com
+        example: reynolds.elyssa@example.com
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -313,15 +313,15 @@ endpoints:
         name: password
         description: 'Must be at least 8 characters.'
         required: true
-        example: 'kFwo#&4./aa5wKquHf2n'
+        example: 67=)7>7Y.fSW
         type: string
         enumValues: []
         exampleWasSpecified: false
         custom: []
     cleanBodyParameters:
-      name: jkuedxcx
-      email: cberge@example.com
-      password: 'kFwo#&4./aa5wKquHf2n'
+      name: ttpuu
+      email: reynolds.elyssa@example.com
+      password: 67=)7>7Y.fSW
     fileParameters: []
     responses: []
     responseFields: []
@@ -355,7 +355,7 @@ endpoints:
         name: email
         description: 'Must be a valid email address.'
         required: true
-        example: fklein@example.net
+        example: morgan93@example.com
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -364,14 +364,14 @@ endpoints:
         name: password
         description: ''
         required: true
-        example: 'o>zj:I#`HH0DSr%QD'
+        example: 'h?J`)v~^j'
         type: string
         enumValues: []
         exampleWasSpecified: false
         custom: []
     cleanBodyParameters:
-      email: fklein@example.net
-      password: 'o>zj:I#`HH0DSr%QD'
+      email: morgan93@example.com
+      password: 'h?J`)v~^j'
     fileParameters: []
     responses: []
     responseFields: []
