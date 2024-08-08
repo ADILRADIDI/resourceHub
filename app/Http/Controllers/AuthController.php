@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\LoginNotification;
 
 class AuthController extends Controller
 {
@@ -33,8 +35,7 @@ class AuthController extends Controller
 
         // Generate API token for the user
         $token = $user->createToken('auth_token')->plainTextToken;
-
-        // Get the user's roles and permissions
+        // Get the users roles and permissions
         $roles = $user->getRoleNames();
         $permissions = $user->getAllPermissions()->pluck('name');
 
@@ -70,7 +71,8 @@ class AuthController extends Controller
         // Get the user's roles and permissions
         $roles = $user->getRoleNames();
         $permissions = $user->getAllPermissions()->pluck('name');
-
+        // send notification email in login
+        Mail::to($user->email)->send(new LoginNotification($user));      
         return response()->json([
             'token' => $token,
             'roles' => $roles,
