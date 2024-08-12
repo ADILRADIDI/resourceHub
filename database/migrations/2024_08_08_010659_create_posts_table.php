@@ -12,8 +12,9 @@ class CreatePostsTable extends Migration
             $table->id();
             $table->string('title');
             $table->text('body');
+            $table->string('image')->nullable();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-            $table->string('status');
+            $table->enum('status', ['active', 'non-active', 'non-accept'])->default('non-active');
             $table->timestamps();
         });
     }
@@ -23,3 +24,4 @@ class CreatePostsTable extends Migration
         Schema::dropIfExists('posts');
     }
 }
+

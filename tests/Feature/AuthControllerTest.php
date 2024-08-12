@@ -2,81 +2,166 @@
 
 namespace Tests\Feature;
 
-use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
+use App\Models\User;
+use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\LoginNotification;
 use Spatie\Permission\Models\Role;
+use Illuminate\Validation\ValidationException;
 
 class AuthControllerTest extends TestCase
 {
-    use RefreshDatabase;
+    use WithFaker;
 
-    /** @test */
-    public function it_registers_a_user_successfully()
+    public function test_register()
     {
-        $response = $this->postJson('/api/register', [
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-            'password' => 'password',
-            'password_confirmation' => 'password',
+        Mail::fake();
+
+        // Generate fake data
+        $password = $this->faker->password(8);
+        $data = [
+            'name' => $this->faker->name,
+            'email' => $this->faker->unique()->safeEmail,
+            'password' => $password,
+            'password_confirmation' => $password,
+        ];
+
+        // Send POST request to register endpoint
+        $response = $this->postJson('/api/register', $data);
+
+        // Assert that the response status is 200 (success)
+        $response->assertStatus(200);
+
+        // Assert that the user was created in the database
+        $this->assertDatabaseHas('users', ['email' => $data['email']]);
+
+        // Assert that the response contains the expected data
+        $response->assertJsonStructure([
+            'message',
+            'token',
+            'roles',
+            'permissions',
         ]);
 
-        $response->assertStatus(200)
-                 ->assertJsonStructure([
-                     'message',
-                     'token',
-                     'roles',
-                     'permissions',
-                 ]);
-
-        $this->assertDatabaseHas('users', [
-            'email' => 'test@example.com',
-        ]);
+        // Assert that the user has the 'user' role
+        $user = User::where('email', $data['email'])->first();
+        $this->assertTrue($user->hasRole('user'));
     }
 
-    /** @test */
-    public function it_logs_in_a_user_successfully()
+    public function test_login()
     {
-        // Create a user
+        Mail::fake();
+
+        // Create a user manually
+        $password = $this->faker->password(8);
         $user = User::create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-            'password' => Hash::make('password'),
+            'name' => $this->faker->name,
+            'email' => $this->faker->unique()->safeEmail,
+            'password' => Hash::make($password),
         ]);
 
-        // Assign the 'user' role to the user
+        // Assign a role to the user
         $role = Role::firstOrCreate(['name' => 'user']);
         $user->assignRole($role);
 
+        // Send POST request to login endpoint
         $response = $this->postJson('/api/login', [
-            'email' => 'test@example.com',
-            'password' => 'password',
+            'email' => $user->email,
+            'password' => $password,
         ]);
 
-        $response->assertStatus(200)
-                 ->assertJsonStructure([
-                     'token',
-                     'roles',
-                     'permissions',
-                 ]);
+        // Assert that the response status is 200 (success)
+        $response->assertStatus(200);
+
+        // Assert that the response contains the expected data
+        $response->assertJsonStructure([
+            'token',
+            'roles',
+            'permissions',
+        ]);
+
+        // Assert that the email was sent
+        Mail::assertSent(LoginNotification::class, function ($mail) use ($user) {
+            return $mail->hasTo($user->email);
+        });
     }
 
-    /** @test */
-    public function it_logs_out_a_user_successfully()
+    public function test_login_fails_with_invalid_credentials()
     {
-        $user = User::factory()->create();
+        // Create a user manually
+        $user = User::create([
+            'name' => $this->faker->name,
+            'email' => $this->faker->unique()->safeEmail,
+            'password' => Hash::make('valid_password'),
+        ]);
 
-        // Acting as the created user to generate a token
+        // Send POST request to login endpoint with invalid password
+        $response = $this->postJson('/api/login', [
+            'email' => $user->email,
+            'password' => 'invalid_password',
+        ]);
+
+        // Assert that the response status is 422 (validation error)
+        $response->assertStatus(422);
+
+        // Assert that the response contains the expected error message
+        $response->assertJsonValidationErrors(['email']);
+    }
+
+    public function test_logout()
+    {
+        // Create a user manually
+        $password = $this->faker->password(8);
+        $user = User::create([
+            'name' => $this->faker->name,
+            'email' => $this->faker->unique()->safeEmail,
+            'password' => Hash::make($password),
+        ]);
+
+        // Generate a token for the user
         $token = $user->createToken('auth_token')->plainTextToken;
 
-        // Attaching the token to the request
-        $response = $this->withHeader('Authorization', 'Bearer ' . $token)
+        // Set the token in the Authorization header
+        $response = $this->withHeader('Authorization', "Bearer $token")
                          ->postJson('/api/logout');
 
-        $response->assertStatus(200)
-                 ->assertJson([
-                     'message' => 'Logged out successfully',
-                 ]);
+        // Assert that the response status is 200 (success)
+        $response->assertStatus(200);
+
+        // Assert that the token was revoked
+        $this->assertDatabaseMissing('personal_access_tokens', [
+            'tokenable_id' => $user->id,
+            'token' => hash('sha256', explode('|', $token)[1]),
+        ]);
+    }
+
+    public function test_user_info()
+    {
+        // Create a user manually
+        $password = $this->faker->password(8);
+        $user = User::create([
+            'name' => $this->faker->name,
+            'email' => $this->faker->unique()->safeEmail,
+            'password' => Hash::make($password),
+        ]);
+
+        // Generate a token for the user
+        $token = $user->createToken('auth_token')->plainTextToken;
+
+        // Set the token in the Authorization header and send GET request to user endpoint
+        $response = $this->withHeader('Authorization', "Bearer $token")
+                         ->getJson('/api/user');
+
+        // Assert that the response status is 200 (success)
+        $response->assertStatus(200);
+
+        // Assert that the response contains the user's data
+        $response->assertJson([
+            'id' => $user->id,
+            'name' => $user->name,
+            'email' => $user->email,
+        ]);
     }
 }

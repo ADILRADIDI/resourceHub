@@ -2,8 +2,13 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-// AuthController
+// Authentification
 use App\Http\Controllers\AuthController;
+// managment posts
+use App\Http\Controllers\PostController;
+// managment podcast
+use App\Http\Controllers\PodcastController;
+
 
 
 /*
@@ -22,6 +27,13 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::post('/register', [AuthController::class, 'register']);
-Route::post('/login', [AuthController::class, 'login']);
+Route::post('/login', [AuthController::class, 'login'])->name('login');
 // logout
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
+
+
+// posts
+Route::apiResource('posts', PostController::class)->middleware('auth:sanctum');
+
+// managment podcast
+Route::apiResource('podcasts', PodcastController::class)->middleware('auth:sanctum');
