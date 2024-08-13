@@ -12,15 +12,8 @@ class YouTubeChannelController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        $channels = YouTubeChannel::all();
+        return response()->json($channels);
     }
 
     /**
@@ -28,7 +21,8 @@ class YouTubeChannelController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $channel = YouTubeChannel::create($request->all());
+        return response()->json($channel, 201);
     }
 
     /**
@@ -36,15 +30,7 @@ class YouTubeChannelController extends Controller
      */
     public function show(YouTubeChannel $youTubeChannel)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(YouTubeChannel $youTubeChannel)
-    {
-        //
+        return response()->json($youTubeChannel);
     }
 
     /**
@@ -52,7 +38,8 @@ class YouTubeChannelController extends Controller
      */
     public function update(Request $request, YouTubeChannel $youTubeChannel)
     {
-        //
+        $youTubeChannel->update($request->all());
+        return response()->json($youTubeChannel);
     }
 
     /**
@@ -60,6 +47,7 @@ class YouTubeChannelController extends Controller
      */
     public function destroy(YouTubeChannel $youTubeChannel)
     {
-        //
+        $youTubeChannel->delete();
+        return response()->json(['message' => 'Channel deleted']);
     }
 }

@@ -8,6 +8,23 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PostController;
 // managment podcast
 use App\Http\Controllers\PodcastController;
+// managment Tag
+use App\Http\Controllers\TagController;
+// managment postTag
+use App\Http\Controllers\PostTagController;
+// managment bookmarks
+use App\Http\Controllers\BookmarkController;
+// managment comments 
+use App\Http\Controllers\CommentController;
+// managment YT-channelss
+use App\Http\Controllers\YouTubeChannelController;
+// managment events
+use App\Http\Controllers\EventController;
+// managment registriation in events s
+use App\Http\Controllers\EventRegistrationController;
+
+
+
 
 
 
@@ -37,3 +54,25 @@ Route::apiResource('posts', PostController::class)->middleware('auth:sanctum');
 
 // managment podcast
 Route::apiResource('podcasts', PodcastController::class)->middleware('auth:sanctum');
+
+// managment tags  
+Route::apiResource('tags', TagController::class)->middleware('auth:sanctum');
+
+// managment postTag
+Route::apiResource('postTags', PostTagController::class)->middleware('auth:sanctum');
+
+// managment bookmarks
+Route::apiResource('bookmarks', BookmarkController::class)->middleware('auth:sanctum');
+
+// managment comments 
+Route::apiResource('comments', CommentController::class)->middleware('auth:sanctum');
+
+// managment YT-channelss (not working 100%).
+Route::apiResource('youtubeChannels', YouTubeChannelController::class)->middleware('auth:sanctum');
+
+// managment events
+Route::apiResource('events', EventController::class)->middleware('auth:sanctum');
+
+Route::post('events/{event}/register', [EventRegistrationController::class,
+ 'register'])->middleware('auth:sanctum');
+

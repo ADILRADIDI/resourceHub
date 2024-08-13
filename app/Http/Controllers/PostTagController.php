@@ -12,15 +12,8 @@ class PostTagController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        $postTags = PostTag::all();
+        return response()->json($postTags);
     }
 
     /**
@@ -28,38 +21,61 @@ class PostTagController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'post_id' => 'required|exists:posts,id',
+            'tag_id' => 'required|exists:tags,id',
+        ]);
+
+        $postTag = PostTag::create($request->all());
+        return response()->json($postTag, 201);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(PostTag $postTag)
+    public function show($id)
     {
-        //
-    }
+        $postTag = PostTag::find($id);
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(PostTag $postTag)
-    {
-        //
+        if (!$postTag) {
+            return response()->json(['message' => 'PostTag not found'], 404);
+        }
+
+        return response()->json($postTag);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, PostTag $postTag)
+    public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'post_id' => 'nullable|exists:posts,id',
+            'tag_id' => 'nullable|exists:tags,id',
+        ]);
+
+        $postTag = PostTag::find($id);
+
+        if (!$postTag) {
+            return response()->json(['message' => 'PostTag not found'], 404);
+        }
+
+        $postTag->update($request->all());
+        return response()->json($postTag);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(PostTag $postTag)
+    public function destroy($id)
     {
-        //
+        $postTag = PostTag::find($id);
+
+        if (!$postTag) {
+            return response()->json(['message' => 'PostTag not found'], 404);
+        }
+
+        $postTag->delete();
+        return response()->json(['message' => 'PostTag deleted']);
     }
 }

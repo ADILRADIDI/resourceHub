@@ -22,6 +22,9 @@ class DatabaseSeeder extends Seeder
             RolesTableSeeder::class,
             PermissionsTableSeeder::class,
             UsersTableSeeder::class,
+            EventsSeeder::class,
+            EventRegistrationsSeeder::class,
+            EventTicketsSeeder::class,
         ]);
     }
 }

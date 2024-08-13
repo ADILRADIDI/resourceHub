@@ -8,4 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class YouTubeChannel extends Model
 {
     use HasFactory;
+    // name of my table in my databse
+    protected $table = 'youtube_channels';
+
+    protected $fillable = [
+        'channel_name',
+        'channel_url',
+    ];
 }
+
