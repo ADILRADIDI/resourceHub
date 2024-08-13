@@ -73,6 +73,11 @@ Route::apiResource('youtubeChannels', YouTubeChannelController::class)->middlewa
 // managment events
 Route::apiResource('events', EventController::class)->middleware('auth:sanctum');
 
-Route::post('events/{event}/register', [EventRegistrationController::class,
- 'register'])->middleware('auth:sanctum');
+// register user in event
+Route::post('events/{event}/register', [EventRegistrationController::class,'register'])->middleware('auth:sanctum');
 
+
+use App\Http\Controllers\Api\StackExchangeController;
+
+Route::get('/stackexchange/questions', [StackExchangeController::class, 'getQuestions']);
+Route::get('/stackexchange/questions/{id}/answers', [StackExchangeController::class, 'getAnswers']);
