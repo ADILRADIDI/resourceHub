@@ -22,7 +22,7 @@ class EventsSeeder extends Seeder
                 'status' => 'planifié',
             ],
             [
-                'user_id' => 3,
+                'user_id' => 1,
                 'title' => 'Art Exhibition',
                 'description' => 'An exhibition of contemporary art.',
                 'city' => 'Rabat',

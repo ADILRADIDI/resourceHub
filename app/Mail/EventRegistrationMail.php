@@ -10,18 +10,22 @@ class EventRegistrationMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    protected $pdf;
+    public $pdf;
+    public $data;
 
-    public function __construct($pdf)
+    public function __construct($pdf, $data)
     {
         $this->pdf = $pdf;
+        $this->data = $data;
     }
 
     public function build()
     {
         return $this->view('emails.event_registration')
-                    ->attachData($this->pdf, 'ticket.pdf', [
-                        'mime' => 'application/pdf',
-                    ]);
+            ->subject('Your Event Registration')
+            ->attachData($this->pdf, 'ticket.pdf', [
+                'mime' => 'application/pdf',
+            ])
+            ->with($this->data);
     }
 }

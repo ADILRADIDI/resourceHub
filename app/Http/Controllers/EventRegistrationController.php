@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\EventRegistrationMail;
+use Carbon\Carbon;
 
 class EventRegistrationController extends Controller
 {
@@ -31,12 +32,25 @@ class EventRegistrationController extends Controller
             'status' => 'registered',
         ]);
 
-        // Generate PDF
-        $pdf = Pdf::loadView('pdf.event_ticket', ['event' => $event, 'user' => $user]);
+        // Format event date and time
+        $formattedDateTime = $this->formatDateTime($event->start_date, $event->end_date);
+
+        // Generate PDF with formatted date and time
+        $pdf = Pdf::loadView('pdf.event_ticket', [
+            'event' => $event, 
+            'user' => $user,
+            'formattedDateTime' => $formattedDateTime
+        ]);
+
+        // Prepare data for the email template
+        $data = [
+            'user' => $user,
+            'event' => $event,
+        ];
 
         // Send Email with PDF Attachment
         try {
-            Mail::to($user->email)->send(new EventRegistrationMail($pdf->output()));
+            Mail::to($user->email)->send(new EventRegistrationMail($pdf->output(), $data));
             return response()->json([
                 'message' => 'Registered successfully and ticket sent to your email.',
                 'data' => $registration
@@ -49,33 +63,24 @@ class EventRegistrationController extends Controller
         }
     }
 
-    // // Cancel an event registration.
-    // public function cancel(Request $request, Event $event)
-    // {
-    //     // Ensure the user is authenticated
-    //     $user = $request->user();
+    // Method to format event start and end date and time in English
+    public function formatDateTime($start, $end)
+    {
+        // Set the locale to English
+        Carbon::setLocale('en');
 
-    //     if (!$user) {
-    //         return response()->json([
-    //             'message' => 'Unauthenticated.'
-    //         ], 401);
-    //     }
+        // Parse dates
+        $start = Carbon::parse($start);
+        $end = Carbon::parse($end);
 
-    //     // Find the registration
-    //     $registration = EventRegistration::where('event_id', $event->id)
-    //         ->where('user_id', $user->id)
-    //         ->first();
+        // Format dates in English
+        $startDate = $start->format('l, F jS');
+        $endDate = $end->format('l, F jS');
 
-    //     if ($registration) {
-    //         $registration->update(['status' => 'canceled']);
-    //         return response()->json([
-    //             'message' => 'Registration canceled.',
-    //             'data' => $registration
-    //         ], 200);
-    //     }
+        // Format times
+        $startTime = $start->format('g:i A');
+        $endTime = $end->format('g:i A');
 
-    //     return response()->json([
-    //         'message' => 'No registration found to cancel.'
-    //     ], 404);
-    // }
+        return "{$startDate} to {$endDate} <br> {$startTime} to {$endTime}";
+    }
 }

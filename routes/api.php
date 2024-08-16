@@ -23,7 +23,11 @@ use App\Http\Controllers\EventController;
 // managment registriation in events s
 use App\Http\Controllers\EventRegistrationController;
 
+// api stackexchange questions and answers. 
+use App\Http\Controllers\Api\StackExchangeController;
 
+// ApI linked-in jobs
+use App\Http\Controllers\LinkedInJobController;
 
 
 
@@ -76,8 +80,23 @@ Route::apiResource('events', EventController::class)->middleware('auth:sanctum')
 // register user in event
 Route::post('events/{event}/register', [EventRegistrationController::class,'register'])->middleware('auth:sanctum');
 
-
-use App\Http\Controllers\Api\StackExchangeController;
-
+// stackExchange for Questions
 Route::get('/stackexchange/questions', [StackExchangeController::class, 'getQuestions']);
 Route::get('/stackexchange/questions/{id}/answers', [StackExchangeController::class, 'getAnswers']);
+
+
+// crash course a youtube you can search pro
+use App\Http\Controllers\YouTubeController;
+Route::get('/youtube', [YouTubeController::class, 'search'])->middleware('auth:sanctum');
+
+// authentifiaction with google button (login/register)
+// use App\Http\Controllers\GoogleController;
+
+// Route::middleware(['web'])->group(function () {
+//     Route::get('auth/google', [GoogleController::class, 'redirectToGoogle'])->name('auth.google');
+//     Route::get('auth/google/callback', [GoogleController::class, 'handleGoogleCallback']);
+// });
+
+// LINKEDIN JOBS
+// Route::get('/linkedin/token', [LinkedInJobController::class, 'getAccessToken']);
+// Route::get('/linkedin/jobs', [LinkedInJobController::class, 'getJobs']);
