@@ -25,7 +25,7 @@ class PostTagController extends Controller
             'post_id' => 'required|exists:posts,id',
             'tag_id' => 'required|exists:tags,id',
         ]);
-
+ 
         $postTag = PostTag::create($request->all());
         return response()->json($postTag, 201);
     }

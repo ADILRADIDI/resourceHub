@@ -20,8 +20,14 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
-         'google_id',
         'password',
+        'bio',
+        'profile_picture',
+        'website',
+        'location',
+        'position',
+        'brand_color',
+        'birthday',
     ];
 
     /**
@@ -42,4 +48,38 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+
+    // i addedd this 
+    
+    // Methods to follow/unfollow a user
+    public function follow(User $user)
+    {
+        return $this->following()->attach($user);
+    }
+
+    public function unfollow(User $user)
+    {
+        return $this->following()->detach($user);
+    }
+
+    public function followers()
+    {
+        return $this->belongsToMany(User::class, 'follows', 'user_id', 'follower_id');
+    }
+
+    public function following()
+    {
+        return $this->belongsToMany(User::class, 'follows', 'follower_id', 'user_id');
+    }
+
+    public function isFollowing(User $user)
+    {
+        return $this->following()->where('user_id', $user->id)->exists();
+    }
+
+    public function isFollowedBy(User $user)
+    {
+        return $this->followers()->where('follower_id', $user->id)->exists();
+    }
 }

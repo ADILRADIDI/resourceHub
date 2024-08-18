@@ -12,7 +12,8 @@ class CreateReactionsTable extends Migration
             $table->id();
             $table->foreignId('post_id')->constrained('posts')->onDelete('cascade');
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-            $table->string('reaction_type');
+            $table->enum('reaction_type', ['true', 'false']);
+            // $table->boolean('reaction_type')->default(false);
             $table->timestamps();
         });
     }

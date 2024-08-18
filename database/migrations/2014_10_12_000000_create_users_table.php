@@ -29,7 +29,16 @@ return new class extends Migration
             $table->string('password');
             $table->text('bio')->nullable();
             $table->string('profile_picture')->nullable();
+            // website location position
+            $table->string('website')->nullable();
+            $table->string('location')->nullable();
+            $table->string('position')->nullable();
+            // add brand color and set default #ffffff
+            $table->string('brand_color')->default('#ffffff');
+            // add premium status true or false default false
+            $table->boolean('is_premium')->default(false);
             $table->timestamp('email_verified_at')->nullable();
+            $table->date('birthday')->nullable();
             $table->timestamps();
         });
     }

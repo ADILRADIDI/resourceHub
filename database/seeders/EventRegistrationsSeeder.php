@@ -11,12 +11,12 @@ class EventRegistrationsSeeder extends Seeder
     {
         DB::table('event_registrations')->insert([
             [
-                'event_id' => 3,
+                'event_id' => 1,
                 'user_id' => 2,
                 'status' => 'registered',
             ],
             [
-                'event_id' => 5,
+                'event_id' => 2,
                 'user_id' => 1,
                 'status' => 'registered',
             ],

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Tag;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
 
 class TagController extends Controller
 {
@@ -13,6 +15,13 @@ class TagController extends Controller
     // get  all tags from data base
     public function index()
     {
+        $user = Auth::user();
+
+        // Check if the user has the 'manage tags' permission
+        if (!$user->can('manage tags')) {
+            return response()->json(['error' => 'Unauthorized to view Tags'], 403);
+        }
+        // get al tags
         $tags = Tag::all();
         return response()->json($tags);
     }
@@ -23,6 +32,12 @@ class TagController extends Controller
     // store new tag in database
     public function store(Request $request)
     {
+        $user = Auth::user();
+
+        // Check if the user has the 'manage tags' permission
+        if (!$user->can('manage tags')) {
+            return response()->json(['error' => 'Unauthorized to Add Tags'], 403);
+        }
         $request->validate([
             'name' => 'required|string|max:255',
         ]);
@@ -30,7 +45,7 @@ class TagController extends Controller
         $tag = Tag::create($request->all());
         return response()->json($tag, 201);
     }
-
+ 
     /**
      * Display the specified resource.
      */
@@ -45,11 +60,19 @@ class TagController extends Controller
     // edit tag in my database
     public function update(Request $request, Tag $tag)
     {
+        $user = Auth::user();
+
+        // Check if the user has the 'manage tags' permission
+        if (!$user->can('manage tags')) {
+            return response()->json(['error' => 'Unauthorized to update Tags'], 403);
+        }
+        // validation
         $request->validate([
             'name' => 'nullable|string|max:255',
         ]);
-
+        // update tags in db
         $tag->update($request->all());
+        // return format json tags is updated
         return response()->json($tag);
     }
 
@@ -59,7 +82,15 @@ class TagController extends Controller
         // Remove tag in my database
     public function destroy(Tag $tag)
     {
+        $user = Auth::user();
+
+        // Check if the user has the 'manage tags' permission
+        if (!$user->can('manage tags')) {
+            return response()->json(['error' => 'Unauthorized to update Tags'], 403);
+        }
+        // delete tag in db
         $tag->delete();
-        return response()->json(['message' => 'Tag deleted']);
+        // return message is deleted
+        return response()->json(['message' => 'Tag deleted succcessfully']);
     }
 }

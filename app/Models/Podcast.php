@@ -14,5 +14,6 @@ class Podcast extends Model
         'description',
         'logo',
         'audio_url',
+        // i should add background 
     ];
 }

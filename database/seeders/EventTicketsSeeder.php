@@ -12,11 +12,11 @@ class EventTicketsSeeder extends Seeder
     {
         DB::table('event_tickets')->insert([
             [
-                'event_registration_id' => 5,
+                'event_registration_id' => 2,
                 'token' => Str::random(32),
             ],
             [
-                'event_registration_id' => 6,
+                'event_registration_id' => 1,
                 'token' => Str::random(32),
             ],
         ]);
