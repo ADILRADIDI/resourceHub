@@ -1,0 +1,67 @@
+-----------------------------------------
+|-----------------------------------------"Back-end just bro work hard"------------------------------------"
+|- in deployment : add cron job status Events
+|- 
+|- function search in posts like title and body 
+|- authentification with google & github & gitlab
+|- Notification Firebase
+|- forget my password function
+|- copier le lien de post or click share modal socialmedia..
+|- tafkir fi api dyl podcast development ........
+|-
+|-
+|-
+|-
+|-
+|- Forem-shop upload sticker and ddemand t-shirt
+|- integrate stripe for forem shop
+|- seo <meta>
+|- MultiLanguages in setting
+|- linkedin api get all jobs 
+|-
+|-
+|-
+|-
+|-
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+
+
+#_Admin_#
+--> manage roles and permissions
+---> manage users 
+--> manage posts + accept posts fr publishing
+---> manage podcasts
+--> manage Events
+---> Mnagae keyword youtube api search ('CrashCourse')
+--> manage forem shop ('tshirts + books tech')
+---> manage 
+-->
+--->
+-->
+--->
+-->
+--->
+-->
+--->
+-->
+--->
+-->
+--->
+-->
+--->
+-->
+--->
