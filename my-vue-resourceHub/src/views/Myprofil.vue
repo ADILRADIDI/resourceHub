@@ -1,10 +1,12 @@
 <script setup>
-import Login from '@/components/Login.vue';
+import HeaderA from '../components/HeaderA.vue';
+import MyprofilC from '../components/MyprofilC.vue';
 </script>
 
 <template>
   <main class="main-container">
-    <Login />
+      <HeaderA />
+      <MyprofilC  />    
   </main>
 </template>
 

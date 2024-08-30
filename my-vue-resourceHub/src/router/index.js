@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import Login from '../views/Login.vue'
-import Readinglist from '../views/readinglist.vue'
+import Readinglist from '../views/Readinglist.vue'
 import Register from '../views/Register.vue'
 import Podcast from '../views/Podcast.vue'
 import Tags from '../views/Tags.vue'
@@ -9,6 +9,8 @@ import CrashCourse from '../views/CrashCourse.vue'
 import Ytchannels from '../views/YtChannels.vue'
 import StachExchangeView from '../views/StachExchangeView.vue'
 import SettingV from '../views/SettingV.vue'
+import EventView from '../views/EventView.vue'
+import Myprofil from '../views/Myprofil.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -66,6 +68,18 @@ const router = createRouter({
       path: '/SettingV',
       name: 'SettingV',
       component: SettingV
+    }
+    ,
+    {
+      path: '/EventView',
+      name: 'EventView',
+      component: EventView
+    }
+    ,
+    {
+      path: '/me',
+      name: 'me',
+      component: Myprofil
     }
   ]
 })

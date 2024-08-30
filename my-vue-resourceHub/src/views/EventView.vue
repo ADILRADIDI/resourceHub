@@ -1,10 +1,13 @@
 <script setup>
-import Login from '@/components/Login.vue';
+import EventC from '../components/EventC.vue';
+import HeaderA from '../components/HeaderA.vue';
 </script>
 
 <template>
   <main class="main-container">
-    <Login />
+
+    <HeaderA />
+    <EventC />
   </main>
 </template>
 

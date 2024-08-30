@@ -24,11 +24,11 @@
           <li class="flex items-center space-x-4">
             <router-link to="/Podcast" class="text-gray-700 hover:text-blue-600 flex items-center">
               <img src="../../public/img/podcastIcon.png" alt="Podcasts" class="w-8 h-8">
-              <span class="ml-4">Podcasts</span>
+              <span class="ml-4">Podcast</span>
             </router-link>
           </li>
           <li class="flex items-center space-x-4">
-            <router-link to="/Events" class="text-gray-700 hover:text-blue-600 flex items-center">
+            <router-link to="/EventView" class="text-gray-700 hover:text-blue-600 flex items-center">
               <img src="../../public/img/EventsIcon.png" alt="Podcasts" class="w-8 h-8">
               <span class="ml-4">Events</span>
             </router-link>
@@ -54,7 +54,7 @@
           <li class="flex items-center space-x-4">
             <router-link to="/Podcasts" class="text-gray-700 hover:text-blue-600 flex items-center">
               <img src="../../public/img/booksIcon.jfif" alt="Podcasts" class="w-8 h-8">
-              <span class="ml-4">Books</span>
+              <span class="ml-4">Books &copy;</span>
             </router-link>
           </li>
           <li class="flex items-center space-x-4">

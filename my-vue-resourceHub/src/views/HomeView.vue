@@ -3,7 +3,7 @@ import Header from '../components/Header.vue';
 import Post from '../components/Post.vue';
 import Aside from '../components/Aside.vue';
 import HeaderA from '../components/HeaderA.vue';
-import ReadingList from '../components/ReadingList.vue';
+import AdsRight from '../components/AdsRight.vue';
 </script>
 
 <template>
@@ -12,10 +12,11 @@ import ReadingList from '../components/ReadingList.vue';
     <!-- <HeaderA /> -->
     <div class="flex ">
       <Aside />
-       <Post />
+      <Post />
+      <AdsRight />
     </div>
     <!-- <ReadingList /> -->
-   
+    
   </main>
 </template>
 

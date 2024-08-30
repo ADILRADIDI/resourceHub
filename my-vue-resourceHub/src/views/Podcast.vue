@@ -1,9 +1,12 @@
 <script setup>
 import Podcast from '../components/Podcast.vue';
+import HeaderA from '../components/HeaderA.vue';
 </script>
 
 <template>
   <main class="main-container">
+
+    <HeaderA />
     <Podcast />
   </main>
 </template>
