@@ -1,12 +1,10 @@
 <script setup>
-import SettingV from '../components/SettingV.vue';
-import HeaderA from '../components/HeaderA.vue';
+    import UserProfile from '@/components/UserProfile.vue';
 </script>
 
 <template>
   <main class="main-container">
-    <HeaderA />
-    <SettingV />
+    <UserProfile />
   </main>
 </template>
 

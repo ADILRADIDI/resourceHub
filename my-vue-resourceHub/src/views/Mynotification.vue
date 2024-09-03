@@ -1,12 +1,12 @@
 <script setup>
-import SettingV from '../components/SettingV.vue';
-import HeaderA from '../components/HeaderA.vue';
+import Notification from '@/components/Notification.vue';
+import HeaderA from '@/components/HeaderA.vue';
 </script>
 
 <template>
   <main class="main-container">
-    <HeaderA />
-    <SettingV />
+        <HeaderA />
+        <Notification />
   </main>
 </template>
 

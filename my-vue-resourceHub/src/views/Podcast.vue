@@ -5,7 +5,6 @@ import HeaderA from '../components/HeaderA.vue';
 
 <template>
   <main class="main-container">
-
     <HeaderA />
     <Podcast />
   </main>

@@ -1,153 +1,234 @@
 <script setup>
 import { ref } from 'vue';
 
-// Reactive variables for profile data
-const name = ref('');
-const email = ref('');
-const password = ref('');
-const newPassword = ref('');
-const confirmPassword = ref('');
-const profilePhoto = ref(null);
-const brandColor = ref('#ffffff'); // Default color
-const bio = ref('');
-const theme = ref('light'); // Default theme
+const user = ref({
+  name: 'ADIL RADIDI',
+  email: 'adilradidi212@gmail.com',
+  website: 'https://adilradidi.netlify.app/',
+  location: 'Casablanca, Morocco',
+  bio: 'Développeur Full Stack Junior spécialisé dans la pile Vue.js / Laravel',
+  coding: '',
+  availableFor: '',
+  skills: 'laravel, vuejs, Nextjs, Uml, javascript, PHP, Html5 & css, tailwind css, bootstrap, sql, mysql',
+  currentlyHackingOn: '',
+  pronouns: '',
+  work: '',
+  education: '',
+  brandColor: '#ffffff',
+  currentPassword: '',
+  newPassword: '',
+  confirmPassword: '',
+  profileImage: ''
+});
 
-// Handle form submission for profile updates
-const updateProfile = () => {
-  console.log('Profile updated with:', {
-    name: name.value,
-    email: email.value,
-    bio: bio.value,
-    brandColor: brandColor.value,
-  });
+const showDeleteModal = ref(false);
+const handleDeleteAccount = () => {
+  showDeleteModal.value = true;
 };
-
-// Handle password change
-const changePassword = () => {
-  if (newPassword.value !== confirmPassword.value) {
-    console.error('Passwords do not match');
-    return;
-  }
-  console.log('Password changed');
+const confirmDelete = () => {
+  // Handle account deletion logic here
+  showDeleteModal.value = false;
 };
-
-// Handle theme change
-const changeTheme = (newTheme) => {
-  theme.value = newTheme;
-  console.log('Theme changed to:', theme.value);
-};
-
-// Handle account deletion
-const deleteAccount = () => {
-  console.log('Account deleted');
+const cancelDelete = () => {
+  showDeleteModal.value = false;
 };
 </script>
 
 <template>
-  <div class="profile-settings">
-    <h1>Profile Settings</h1>
-    
-    <!-- Update Profile Information -->
-    <section class="update-profile">
-      <h2>Update Profile</h2>
-      <form @submit.prevent="updateProfile">
-        <div>
-          <label for="name">Name:</label>
-          <input id="name" v-model="name" type="text" />
+  <div class="container mx-auto px-4 py-8">
+    <div class="profile-settings bg-white p-6 border rounded-lg shadow-lg mb-8">
+      <h1 class="font-bold text-3xl text-gray-800 mb-6">Profile Settings</h1>
+
+
+      <!-- Profile Image -->
+      <div class="mb-6">
+        <h2 class="text-xl font-semibold mb-2">Profile Image</h2>
+        <div class="flex items-center">
+          <img :src="user.profileImage" alt="Profile Image" class="w-24 h-24 rounded-full mr-4" />
+          <input type="file" class="p-2 border rounded-lg" />
         </div>
-        <div>
-          <label for="email">Email:</label>
-          <input id="email" v-model="email" type="email" />
+      </div>
+
+      
+      <!-- User Info -->
+      <div class="mb-6">
+        <h2 class="text-xl font-semibold mb-2">User Information</h2>
+        <div class="mb-4">
+          <label class="block text-gray-700 font-medium mb-1">Name</label>
+          <input type="text" v-model="user.name" class="p-2 border rounded-lg w-full" />
         </div>
-        <div>
-          <label for="bio">Bio:</label>
-          <textarea id="bio" v-model="bio"></textarea>
+        <div class="mb-4">
+          <label class="block text-gray-700 font-medium mb-1">Email</label>
+          <input type="email" v-model="user.email" class="p-2 border rounded-lg w-full" />
         </div>
-        <div>
-          <label for="brandColor">Brand Color:</label>
-          <input id="brandColor" v-model="brandColor" type="color" />
+        <div class="mb-4">
+          <button class="px-4 py-2 bg-blue-600 text-white font-semibold rounded-lg">Save Profile Information</button>
         </div>
-        <div>
-          <label for="profilePhoto">Profile Photo:</label>
-          <input id="profilePhoto" type="file" @change="e => profilePhoto.value = e.target.files[0]" />
+      </div>
+
+
+
+      <!-- Account -->
+      <div class="mb-6">
+        <h2 class="text-xl font-semibold mb-2">Account</h2>
+        <p>Email verification. You have requested a change to <strong>{{ user.email }}</strong>. Check your inbox for the verification link to finalize the change.</p>
+        <!-- Social Authentication Buttons -->
+        <div class="flex justify-center space-x-4 mt-6 mb-10">
+          <button class="w-32 py-2 px-4 bg-white border border-gray-300 rounded-lg hover:bg-gray-100">
+            <img src="../../public/img/githubIcon.png" alt="GitHub" class="mx-auto h-6">
+          </button>
+          <button class="w-32 py-2 px-4 bg-white border border-gray-300 rounded-lg hover:bg-gray-100">
+            <img src="../../public/img/gitlabIcon.png" alt="GitLab" class="mx-auto h-8">
+          </button>
+          <button class="w-32 py-2 px-4 bg-white border border-gray-300 rounded-lg hover:bg-gray-100">
+            <img src="../../public/img/googleIcon.png" alt="Google" class="mx-auto h-8">
+          </button>
         </div>
-        <button type="submit">Update Profile</button>
-      </form>
-    </section>
-    
-    <!-- Change Password -->
-    <section class="change-password">
-      <h2>Change Password</h2>
-      <form @submit.prevent="changePassword">
-        <div>
-          <label for="currentPassword">Current Password:</label>
-          <input id="currentPassword" v-model="password" type="password" />
+      </div>
+
+      <!-- Password Change -->
+      <div class="mb-6">
+        <h2 class="text-xl font-semibold mb-2">Change Password</h2>
+        <div class="mb-4">
+          <label class="block text-gray-700 font-medium mb-1">Current Password</label>
+          <input type="password" v-model="user.currentPassword" class="p-2 border rounded-lg w-full" />
         </div>
-        <div>
-          <label for="newPassword">New Password:</label>
-          <input id="newPassword" v-model="newPassword" type="password" />
+        <div class="mb-4">
+          <label class="block text-gray-700 font-medium mb-1">New Password</label>
+          <input type="password" v-model="user.newPassword" class="p-2 border rounded-lg w-full" />
         </div>
-        <div>
-          <label for="confirmPassword">Confirm New Password:</label>
-          <input id="confirmPassword" v-model="confirmPassword" type="password" />
+        <div class="mb-4">
+          <label class="block text-gray-700 font-medium mb-1">Confirm New Password</label>
+          <input type="password" v-model="user.confirmPassword" class="p-2 border rounded-lg w-full" />
         </div>
-        <button type="submit">Change Password</button>
-      </form>
-    </section>
-    
-    <!-- Theme Customization -->
-    <section class="theme-customization">
-      <h2>Theme Customization</h2>
-      <button @click="changeTheme('light')">Light Theme</button>
-      <button @click="changeTheme('dark')">Dark Theme</button>
-    </section>
-    
-    <!-- Delete Account -->
-    <section class="delete-account">
-      <h2>Delete Account</h2>
-      <button @click="deleteAccount">Delete Account</button>
-    </section>
+        <div class="mb-4">
+          <button class="px-4 py-2 bg-green-600 text-white font-semibold rounded-lg">Change Password</button>
+        </div>
+      </div>
+
+      
+
+      
+
+      <!-- Customization -->
+      <div class="mb-6">
+        <h2 class="text-xl font-semibold mb-2">Customization</h2>
+        <div class="mb-4">
+          <label class="block text-gray-700 font-medium mb-1">Website URL</label>
+          <input type="url" v-model="user.website" class="p-2 border rounded-lg w-full" />
+        </div>
+        <div class="mb-4">
+          <label class="block text-gray-700 font-medium mb-1">Location</label>
+          <input type="text" v-model="user.location" class="p-2 border rounded-lg w-full" />
+        </div>
+        <div class="mb-4">
+          <label class="block text-gray-700 font-medium mb-1">Bio</label>
+          <textarea v-model="user.bio" class="p-2 border rounded-lg w-full" rows="3"></textarea>
+        </div>
+        <div class="mb-4">
+          <label class="block text-gray-700 font-medium mb-1">Coding</label>
+          <textarea v-model="user.coding" class="p-2 border rounded-lg w-full" rows="3"></textarea>
+        </div>
+        <div class="mb-4">
+          <label class="block text-gray-700 font-medium mb-1">Available For</label>
+          <textarea v-model="user.availableFor" class="p-2 border rounded-lg w-full" rows="3"></textarea>
+        </div>
+        <div class="mb-4">
+          <label class="block text-gray-700 font-medium mb-1">Skills/Languages</label>
+          <textarea v-model="user.skills" class="p-2 border rounded-lg w-full" rows="3"></textarea>
+        </div>
+        <div class="mb-4">
+          <label class="block text-gray-700 font-medium mb-1">Currently Hacking On</label>
+          <textarea v-model="user.currentlyHackingOn" class="p-2 border rounded-lg w-full" rows="3"></textarea>
+        </div>
+        <div class="mb-4">
+          <label class="block text-gray-700 font-medium mb-1">Pronouns</label>
+          <input type="text" v-model="user.pronouns" class="p-2 border rounded-lg w-full" />
+        </div>
+        <div class="mb-4">
+          <label class="block text-gray-700 font-medium mb-1">Work</label>
+          <input type="text" v-model="user.work" class="p-2 border rounded-lg w-full" />
+        </div>
+        <div class="mb-4">
+          <label class="block text-gray-700 font-medium mb-1">Education</label>
+          <input type="text" v-model="user.education" class="p-2 border rounded-lg w-full" />
+        </div>
+        <div class="mb-4">
+          <label for="hs-color-input" class="block text-sm font-medium mb-2">Brand Color for your background-Cover</label>
+          <input type="color" class="p-1 h-10 w-14 block bg-gray-300 border border-gray-200 cursor-pointer rounded-lg disabled:opacity-50 disabled:pointer-events-none" id="hs-color-input" v-model="user.brandColor" title="Choose your color" />
+        </div>
+
+        <!--  -->
+        <!-- Delete Account -->
+      <div class="mb-6">
+        <button @click="handleDeleteAccount" class="px-4 py-2 bg-red-600 text-white font-semibold rounded-lg">Delete My Account</button>
+      </div>
+
+      <!-- Modal -->
+      <div v-if="showDeleteModal" class="fixed inset-0 flex items-center justify-center z-50">
+        <div class="bg-white p-6 border rounded-lg shadow-lg w-96">
+          <h2 class="text-xl font-semibold mb-4">Confirm Deletion</h2>
+          <p class="mb-4">Please type "I want delete" to confirm account deletion.</p>
+          <input type="text" v-model="confirmDeleteInput" class="p-2 border rounded-lg w-full mb-4" placeholder="Type here..." />
+          <div class="flex justify-end space-x-4">
+            <button @click="confirmDelete" class="px-4 py-2 bg-red-600 text-white font-semibold rounded-lg">Delete</button>
+            <button @click="cancelDelete" class="px-4 py-2 bg-gray-600 text-white font-semibold rounded-lg">Cancel</button>
+          </div>
+        </div>
+      </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <style scoped>
+.container {
+  max-width: 1200px;
+}
+
 .profile-settings {
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 20px;
+  background-color: #ffffff;
 }
 
-section {
-  margin-bottom: 20px;
+input[type="text"], input[type="email"], input[type="url"], textarea {
+  border: 1px solid #d1d5db;
 }
 
-form div {
-  margin-bottom: 10px;
-}
-
-label {
-  display: block;
-  margin-bottom: 5px;
-}
-
-input[type="text"],
-input[type="email"],
-textarea,
-input[type="color"],
-input[type="file"] {
-  width: 100%;
+input[type="color"] {
+  border: none;
 }
 
 button {
-  padding: 10px 20px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 5px;
   cursor: pointer;
 }
 
 button:hover {
-  background-color: #0056b3;
+  opacity: 0.9;
+}
+
+.bg-blue-600 {
+  background-color: #1d4ed8;
+}
+
+.bg-green-600 {
+  background-color: #16a34a;
+}
+
+.bg-red-600 {
+  background-color: #dc2626;
+}
+
+.bg-gray-600 {
+  background-color: #4b5563;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 2rem;
+  }
+
+  .profile-settings {
+    padding: 2rem;
+  }
 }
 </style>

@@ -11,6 +11,14 @@ import StachExchangeView from '../views/StachExchangeView.vue'
 import SettingV from '../views/SettingV.vue'
 import EventView from '../views/EventView.vue'
 import Myprofil from '../views/Myprofil.vue'
+import Mynotification from '../views/Mynotification.vue'
+import PostDetail from '../views/PostDetail.vue'
+import Resources from '../views/Resources.vue'
+import NewPost from '../views/NewPost.vue'
+import UserProfile from '../views/UserProfile.vue'
+import DashboardAdmin from '../views/Admin/DashboardAdmin.vue'
+import statistics from '../views/Admin/statistics.vue'
+import dashboard from '../views/Admin/dashboard.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -80,6 +88,54 @@ const router = createRouter({
       path: '/me',
       name: 'me',
       component: Myprofil
+    }
+    ,
+    {
+      path: '/Mynotification',
+      name: 'Mynotification',
+      component: Mynotification
+    }
+    ,
+    {
+      path: '/Pd/:id',
+      name: 'Pd',
+      component: PostDetail
+    }
+    ,
+    {
+      path: '/R/:idCategorie',
+      name: 'R',
+      component: Resources
+    }
+    ,
+    {
+      path: '/new',
+      name: 'new',
+      component: NewPost
+    }
+    ,
+    {
+      path: '/u/:userId',
+      name: 'UserProfile',
+      component: UserProfile
+    }
+    ,
+    {
+      path: '/DashboardAdmin',
+      name: 'DashboardAdmin',
+      component: DashboardAdmin
+    }
+    ,
+    {
+      path: '/statistics',
+      name: 'statistics',
+      component: statistics
+    }
+    ,
+    {
+      path: '/dashboard',
+      name: 'dashboard',
+      component: dashboard
     }
   ]
 })

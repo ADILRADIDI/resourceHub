@@ -8,7 +8,7 @@
         <!-- Logo -->
         <div class="logo text-white p-2 rounded-lg flex items-center justify-center bg-black font-bold text-lg">
           <router-link to="/">
-            <h1>resourceHub</h1>
+            <h1>RDEV</h1>
           </router-link>
         </div>
         <!-- Search Bar -->

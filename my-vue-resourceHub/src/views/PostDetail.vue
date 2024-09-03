@@ -1,12 +1,12 @@
 <script setup>
-import SettingV from '../components/SettingV.vue';
 import HeaderA from '../components/HeaderA.vue';
+import DetailPost from '@/components/DetailPost.vue';
 </script>
 
 <template>
-  <main class="main-container">
     <HeaderA />
-    <SettingV />
+  <main class="main-container">
+    <DetailPost />
   </main>
 </template>
 

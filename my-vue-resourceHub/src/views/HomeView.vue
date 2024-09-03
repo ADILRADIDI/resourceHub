@@ -10,7 +10,7 @@ import AdsRight from '../components/AdsRight.vue';
   <main class="main-container">
     <Header />
     <!-- <HeaderA /> -->
-    <div class="flex ">
+    <div class="flex">
       <Aside />
       <Post />
       <AdsRight />
@@ -19,7 +19,7 @@ import AdsRight from '../components/AdsRight.vue';
     
   </main>
 </template>
-
+ 
 <style>
 .main-container {
   background-color: #F5F5F5;

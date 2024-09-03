@@ -6,7 +6,7 @@
         <!-- Logo -->
         <div class="logo text-white p-2 rounded-lg flex items-center justify-center bg-black font-bold text-lg">
           <router-link to="/">
-            <h1>resourceHub</h1>
+            <h1>RDEV</h1>
           </router-link>
         </div>
         <!-- Search Bar -->
@@ -23,21 +23,26 @@
           </div>
         </div>
       </div>
-      <router-link to="/" class="text-white text-indigo-600 border-solid border-indigo-600 border-2 
-      hover:bg-indigo-700 hover:text-white py-2 px-4 rounded-lg w-36">
+      <router-link to="/new" class="text-blue-700 border-solid border-indigo-600 border-2 
+      hover:text-white hover:bg-indigo-700  py-2 px-4 rounded-lg w-36">
         <span class="flex items-center justify-center">
           Create Post
         </span>
       </router-link>
-      <!-- Notifications Icon -->
-       <router-link to="mynotification">
-          <button class="p-2 rounded-full hover:bg-gray-100 mx-2">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" role="img" aria-labelledby="notifications-icon" class="crayons-icon">
-              <title id="notifications-icon">Notifications</title>
-              <path d="M20 17h2v2H2v-2h2v-7a8 8 0 1116 0v7zm-2 0v-7a6 6 0 10-12 0v7h12zm-9 4h6v2H9v-2z"></path>
-            </svg>
-          </button>
-       </router-link>
+       <!-- Notifications Icon -->
+    <router-link to="/Mynotification">
+      <button class="p-2 rounded-full hover:bg-gray-100 mx-2 relative">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0" />
+        </svg>
+
+        <!-- Notification Counter (only show if unreadNotifications > 0) -->
+        <span v-if="unreadNotifications > 0"
+          class="absolute top-1 right-1 inline-block w-4 h-4 text-xs font-bold text-white bg-red-500 rounded-full">
+          {{ unreadNotifications }}
+        </span>
+      </button>
+    </router-link>
       
       <div class="relative" @click="toggleDropdown" tabindex="0">
         <div>
@@ -49,7 +54,7 @@
               <router-link to="/me" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">My Profile</router-link>
             </li>
             <li>
-              <router-link to="/CreatePost" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">Create Post</router-link>
+              <router-link to="/new" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">Create Post</router-link>
             </li>
             <li>
               <router-link to="/readinglist" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">Reading list</router-link>
@@ -71,6 +76,7 @@
     data() {
       return {
         isDropdownOpen: false,
+        unreadNotifications: 10,
       };
     },
     methods: {
@@ -100,8 +106,15 @@
     transition: color 0.3s ease;
   }
   
-  a.bg-indigo-600 {
+  a .bg-indigo-600 {
     transition: background-color 0.3s ease;
   }
-  </style>
-  
+
+  .material-symbols-outlined {
+    font-variation-settings:
+    'FILL' 0,
+    'wght' 400,
+    'GRAD' 0,
+    'opsz' 48
+  }
+</style>
