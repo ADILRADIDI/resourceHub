@@ -132,10 +132,16 @@ const router = createRouter({
       component: statistics
     }
     ,
-    {
+    { 
       path: '/dashboard',
       name: 'dashboard',
       component: dashboard
+    }
+    ,
+    { 
+      path: '/managementUsers',
+      name: 'managementUsers',
+      component: managementUsers
     }
   ]
 })

@@ -1,5 +1,5 @@
 <template>
-    <div class="container mx-36 p-6 flex flex-wrap">
+    <div class="container mx-36 w-full p-6 flex flex-wrap">
       <!-- Welcome Section -->
       <div class="mb-6">
         <h1 class="text-4xl font-bold flex items-center justify-center my-10 text-blue-600 animate-pulse">Welcome to RDEV Admin Panel</h1>

@@ -37,7 +37,7 @@
               </svg>
             </button>
             <ul v-show="isUserMenuOpen" class="pl-8 mt-2 space-y-2">
-              <li><router-link to="/users/management" class="block py-2 px-4 hover:bg-gray-700 rounded-lg transition-colors">Management User</router-link></li>
+              <li><router-link to="/managementUsers" class="block py-2 px-4 hover:bg-gray-700 rounded-lg transition-colors">Management User</router-link></li>
               <li><router-link to="/users/roles" class="block py-2 px-4 hover:bg-gray-700 rounded-lg transition-colors">Management Roles</router-link></li>
               <li><router-link to="/users/permissions" class="block py-2 px-4 hover:bg-gray-700 rounded-lg transition-colors">Management Permissions</router-link></li>
             </ul>
