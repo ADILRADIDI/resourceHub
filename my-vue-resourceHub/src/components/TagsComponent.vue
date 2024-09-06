@@ -1,7 +1,12 @@
 <template>
   <div class="tags-component mx-8">
     <div class="flex items-center justify-between mx-5">
-      <h1 class="font-bold text-3xl text-gray-800 mb-6">Tags</h1>
+      <div class="mb-6">
+        <h1 class="text-4xl font-bold flex items-center justify-center my-10 text-blue-700 animate-pulse">
+          YouTube Channels
+        </h1>
+      </div>
+      <!-- <h1 class="font-bold text-3xl text-gray-800 mb-6">Tags</h1> -->
       <button 
       @click="showSuggestForm = !showSuggestForm" 
       class="mb-4 px-4 py-2 bg-green-600 text-white font-semibold rounded-lg shadow-lg"

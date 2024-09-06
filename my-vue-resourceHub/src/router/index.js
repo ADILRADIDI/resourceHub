@@ -19,6 +19,7 @@ import UserProfile from '../views/UserProfile.vue'
 import DashboardAdmin from '../views/Admin/DashboardAdmin.vue'
 import statistics from '../views/Admin/statistics.vue'
 import dashboard from '../views/Admin/dashboard.vue'
+// import managementUsers from '../views/Admin/'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -137,12 +138,12 @@ const router = createRouter({
       name: 'dashboard',
       component: dashboard
     }
-    ,
-    { 
-      path: '/managementUsers',
-      name: 'managementUsers',
-      component: managementUsers
-    }
+    // ,
+    // { 
+    //   path: '/managementUsers',
+    //   name: 'managementUsers',
+    //   component: managementUsers
+    // }
   ]
 })
 

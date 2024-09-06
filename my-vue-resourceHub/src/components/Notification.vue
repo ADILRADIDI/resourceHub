@@ -1,33 +1,25 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue';
+import axios from 'axios';
+import { useStore } from 'vuex';
 
-// Sample data - replace with actual API call
+const store = useStore();
 const notifications = ref([]);
 const selectedFilter = ref('all');
 
-// Simulate fetching notifications data
+// Fetch notifications from the Laravel API
+const fetchNotifications = async () => {
+  try {
+    const response = await axios.get('/api/notifications');
+    notifications.value = response.data;
+    store.commit('SET_NOTIFICATIONS', response.data); // Commit data to Vuex store
+  } catch (error) {
+    console.error('Error fetching notifications:', error);
+  }
+};
+
 onMounted(() => {
-  notifications.value = [
-    {
-      id: 1,
-      type: 'follow',
-      username: 'JaneDoe',
-      action: 'followed you',
-      time: '10 minutes ago',
-      userLink: '/janeDoe',
-      read: false,  // Mark as unread
-    },
-    {
-      id: 2,
-      type: 'like',
-      username: 'AlexSmith',
-      action: 'liked your post',
-      time: '15 minutes ago',
-      postLink: '/p/1',
-      userLink: '/alexSmith',
-      read: true,  // Mark as read
-    },
-  ];
+  fetchNotifications();
 });
 
 // Computed property to filter notifications based on the selected filter
@@ -38,29 +30,24 @@ const filteredNotifications = computed(() => {
   return notifications.value.filter(notification => notification.type === selectedFilter.value);
 });
 
-// Function to mark all notifications as read
-const markAllAsRead = () => {
-  notifications.value = notifications.value.map(notification => ({
-    ...notification,
-    read: true
-  }));
+const markAsRead = (id) => {
+  store.dispatch('markAsRead', id);
 };
 
-// Function to clear all notifications
+const markAllAsRead = () => {
+  store.dispatch('markAllAsRead');
+};
+
 const clearAllNotifications = () => {
-  notifications.value = [];
+  store.dispatch('clearNotifications');
 };
 </script>
-
-
 
 <template>
   <main class="main-container flex justify-center">
     <div class="w-full max-w-3xl">
       <div class="flex items-center justify-between mx-12 mt-8">
         <h1 class="text-3xl font-bold">Notifications</h1>
-        <!-- Clear button -->
-        
       </div>
 
       <!-- Filter Options -->
@@ -88,6 +75,7 @@ const clearAllNotifications = () => {
             Liked Posts
           </button>
         </div>
+
         <!-- Mark all as read button -->
         <button @click="markAllAsRead" class="text-lg hover:bg-gray-300 px-5 py-2 rounded-lg">
           Mark All as Read
@@ -103,6 +91,7 @@ const clearAllNotifications = () => {
         <div
           v-for="notification in filteredNotifications"
           :key="notification.id"
+          @click="markAsRead(notification.id)"
           class="notification-container p-6 rounded-lg shadow-md mb-6 h-32"
           :class="notification.read ? 'bg-gray-200 border-gray-500' : 'bg-white border-blue-500'"
         >
@@ -139,7 +128,6 @@ const clearAllNotifications = () => {
     </div>
   </main>
 </template>
-
 
 <style>
 .main-container {

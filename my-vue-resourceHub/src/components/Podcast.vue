@@ -13,7 +13,6 @@
       </div>
     </header>
 
-
     <!-- Suggest a Tag Form -->
     <div v-if="showSuggestForm" class="suggest-tag-form mb-8 p-4 border rounded-lg shadow-lg bg-white mx-5 w-full max-w-3xl">
       <h2 class="text-xl font-semibold mb-4">Suggest a Tag</h2>
@@ -90,46 +89,21 @@
           </svg>
         </button>
       </div>
-      <!-- Progress Bar -->
-      <div class="w-full bg-gray-200 rounded-full h-2 relative mt-2">
+
+      <!-- Time and Progress Bar -->
+      <div class="w-full flex justify-between text-gray-600 text-sm">
+        <span>{{ formatTime(audio ? audio.currentTime : 0) }}</span>
+        <span>{{ formatTime(audio ? audio.duration : 0) }}</span>
+      </div>
+      <div class="w-full bg-gray-200 rounded-full h-2 relative mt-2" @click="seek($event)">
         <div
-          class="absolute top-0 left-0 h-full bg-green-200 rounded-full"
+          class="absolute top-0 left-0 h-full bg-blue-300 rounded-full"
           :style="{ width: progress + '%' }"
         ></div>
       </div>
     </div>
-
-    <!-- Suggest Modal -->
-    <div v-if="showModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-      <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg">
-        <h2 class="text-xl font-semibold mb-4">Suggest a Tag</h2>
-        <div class="mb-4">
-          <input
-            v-model="newTagName"
-            type="text"
-            placeholder="Tag Name"
-            class="w-full p-2 border rounded-lg"
-          />
-        </div>
-        <div class="flex justify-end">
-          <button
-            @click="suggestTag"
-            class="px-4 py-2 bg-blue-600 text-white font-semibold rounded-lg shadow-lg mr-2"
-          >
-            Add Tag
-          </button>
-          <button
-            @click="showModal = false"
-            class="px-4 py-2 bg-gray-300 text-black font-semibold rounded-lg shadow-lg"
-          >
-            Close
-          </button>
-        </div>
-      </div>
-    </div>
   </div>
 </template>
-
 <script>
 export default {
   data() {
@@ -150,37 +124,35 @@ export default {
         {
           title: 'Learning AI 1',
           creator: 'Matt Eland',
-          image: 'https://media.dev.to/cdn-cgi/image/width=240,height=240,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Fpodcast%2Fimage%2F2%2F2e7a90b5-76bd-4b0f-ae36-11d0f7f4b054.jpg',
-          audioSrc: 'https://dts.podtrac.com/redirect.mp3/traffic.megaphone.fm/FOR8835558149.mp3?updated=1716333932',
-        },
-        {
-          title: 'Learning AI 1a',
-          creator: 'Matt Eland',
           image: 'https://media.dev.to/cdn-cgi/image/width=240,height=240,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Fpodcast%2Fimage%2F578%2Fc0bcc435-8bbf-4246-a1ab-c20cefb76492.png',
-          audioSrc: 'https://dts.podtrac.com/redirect.mp3/traffic.megaphone.fm/FOR6494492862.mp3?updated=1656502985',
+          audioSrc: 'https://dts.podtrac.com/redirect.mp3/traffic.megaphone.fm/FOR8835558149.mp3?updated=1716333932',
         },
         {
           title: 'Learning AI 1',
           creator: 'Matt Eland',
-          image: 'https://media.dev.to/cdn-cgi/image/width=500,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Fpodcast%2Fimage%2F235%2F08786d8b-7ef4-4c00-bc40-f4b3cbca5834.jpg',
+          image: 'https://media.dev.to/cdn-cgi/image/width=240,height=240,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Fpodcast%2Fimage%2F578%2Fc0bcc435-8bbf-4246-a1ab-c20cefb76492.png',
           audioSrc: 'https://dts.podtrac.com/redirect.mp3/traffic.megaphone.fm/FOR8835558149.mp3?updated=1716333932',
         },
         {
-          title: 'Learning AI 1a',
+          title: 'Learning AI 1',
           creator: 'Matt Eland',
-          image: 'https://media.dev.to/cdn-cgi/image/width=500,height=500,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Fpodcast%2Fimage%2F578%2Fc0bcc435-8bbf-4246-a1ab-c20cefb76492.png',
+          image: 'https://media.dev.to/cdn-cgi/image/width=240,height=240,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Fpodcast%2Fimage%2F578%2Fc0bcc435-8bbf-4246-a1ab-c20cefb76492.png',
           audioSrc: 'https://dts.podtrac.com/redirect.mp3/traffic.megaphone.fm/FOR8835558149.mp3?updated=1716333932',
         },
         {
-          title: 'Learning AI 1a',
+          title: 'Learning AI 1',
+          creator: 'Matt Eland',
+          image: 'https://media.dev.to/cdn-cgi/image/width=240,height=240,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Fpodcast%2Fimage%2F578%2Fc0bcc435-8bbf-4246-a1ab-c20cefb76492.png',
+          audioSrc: 'https://dts.podtrac.com/redirect.mp3/traffic.megaphone.fm/FOR8835558149.mp3?updated=1716333932',
+        },
+        {
+          title: 'Learning AI 1',
           creator: 'Matt Eland',
           image: 'https://media.dev.to/cdn-cgi/image/width=240,height=240,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Fpodcast%2Fimage%2F578%2Fc0bcc435-8bbf-4246-a1ab-c20cefb76492.png',
           audioSrc: 'https://dts.podtrac.com/redirect.mp3/traffic.megaphone.fm/FOR8835558149.mp3?updated=1716333932',
         },
       ],
       showSuggestForm: false,
-      showModal: false,
-      newTagName: '',
       isPlaying: false,
       currentPodcast: null,
       progress: 0,
@@ -192,12 +164,9 @@ export default {
     suggestTag() {
       if (this.newTagName.trim() === '') return;
 
-      // Implement the tag suggestion logic here
       console.log(`Suggested Tag: ${this.newTagName}`);
-
       this.newTagName = '';
       this.showSuggestForm = false;
-      this.showModal = false;
     },
     playPodcast(podcast) {
       if (this.currentPodcast === podcast) {
@@ -210,11 +179,9 @@ export default {
       this.audio = new Audio(podcast.audioSrc);
       this.audio.play();
 
-      this.intervalId = setInterval(() => {
-        if (this.audio) {
-          this.progress = (this.audio.currentTime / this.audio.duration) * 100;
-        }
-      }, 1000);
+      this.audio.ontimeupdate = () => {
+        this.progress = (this.audio.currentTime / this.audio.duration) * 100;
+      };
 
       this.audio.onended = () => {
         this.isPlaying = false;
@@ -231,10 +198,17 @@ export default {
         this.isPlaying = true;
       }
     },
+    seek(event) {
+      const progressBar = event.currentTarget;
+      const clickX = event.offsetX;
+      const newTime = (clickX / progressBar.offsetWidth) * this.audio.duration;
+      this.audio.currentTime = newTime;
+    },
+    formatTime(seconds) {
+      const minutes = Math.floor(seconds / 60);
+      const remainingSeconds = Math.floor(seconds % 60);
+      return `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
+    },
   },
 };
 </script>
-
-<style scoped>
-/* Add any additional styling here */
-</style>

@@ -65,8 +65,12 @@ const suggestChannel = () => {
 <template>
   <div class="ytchannels-page container mx-auto py-8">
     <!-- Title -->
-    <h1 class="text-3xl font-bold mb-6 text-center">YouTube Channels</h1>
-
+    <!-- <h1 class="text-3xl font-bold mb-6 text-center">YouTube Channels</h1> -->
+    <div class="mb-6">
+        <h1 class="text-4xl font-bold flex items-center justify-center my-10 text-blue-300 animate-pulse">
+          YouTube Channels
+        </h1>
+      </div>
     <!-- Button to show/hide Suggest a Channel Form -->
     <button 
       @click="showSuggestForm = !showSuggestForm" 

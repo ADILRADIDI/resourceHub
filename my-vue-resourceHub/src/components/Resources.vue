@@ -1,6 +1,11 @@
 <template>
     <div class="app-container">
       <!-- Search Bar -->
+      <div class="mb-6">
+        <h1 class="text-4xl font-bold flex items-center justify-center my-10 text-blue-600 animate-pulse">
+          DEV Resources
+        </h1>
+      </div>
       <div class="flex items-center mb-8">
         <router-link to="/">
             <button class="mr-4 text-black ml-10">

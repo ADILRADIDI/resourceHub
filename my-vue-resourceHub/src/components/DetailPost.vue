@@ -72,7 +72,7 @@
     </div>
 
     <!-- User Detail Section -->
-    <div class="user-detail-section w-80 h-96 bg-white p-6 rounded-lg shadow-md">
+    <div class="user-detail-section w-80 h-96 bg-white p-6 rounded-lg shadow-md mt-5">
       <div class="user-profile flex flex-col items-center">
         <img :src="post.userProfileImage" alt="Profile Picture" class="w-20 h-20 rounded-full mb-4">
         <h2 class="text-xl font-semibold">{{ post.username }}</h2>

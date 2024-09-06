@@ -5,7 +5,7 @@ import HeaderA from '../components/HeaderA.vue';
 </script>
 
 <template>
-        <HeaderA />
+        <!-- <HeaderA /> -->
     
     <Ytchannels />
 </template>
