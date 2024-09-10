@@ -1,4 +1,5 @@
 <script setup>
+// Update Vue.js Component
 import { ref, onMounted, computed } from 'vue';
 import axios from 'axios';
 import { useStore } from 'vuex';
@@ -10,9 +11,10 @@ const selectedFilter = ref('all');
 // Fetch notifications from the Laravel API
 const fetchNotifications = async () => {
   try {
-    const response = await axios.get('/api/notifications');
+    const response = await axios.get('http://127.0.0.1:8000/api/notifications');
     notifications.value = response.data;
-    store.commit('SET_NOTIFICATIONS', response.data); // Commit data to Vuex store
+    store.commit('SET_NOTIFICATIONS', response.data);
+    console.log(response.data);
   } catch (error) {
     console.error('Error fetching notifications:', error);
   }
@@ -30,17 +32,42 @@ const filteredNotifications = computed(() => {
   return notifications.value.filter(notification => notification.type === selectedFilter.value);
 });
 
-const markAsRead = (id) => {
-  store.dispatch('markAsRead', id);
+// Function to mark a single notification as read
+const markAsRead = async (id) => {
+  try {
+    await axios.post(`http://127.0.0.1:8000/api/notifications/${id}/mark-as-read`);
+    store.dispatch('markAsRead', id);
+    // Optionally update the local notifications state
+    notifications.value = notifications.value.map(notification =>
+      notification.id === id ? { ...notification, read: true } : notification
+    );
+  } catch (error) {
+    console.error('Error marking notification as read:', error);
+  }
 };
 
-const markAllAsRead = () => {
-  store.dispatch('markAllAsRead');
+// Function to mark all notifications as read
+const markAllAsRead = async () => {
+  try {
+    await axios.post('http://127.0.0.1:8000/api/notifications/mark-all-as-read');
+    store.dispatch('markAllAsRead');
+    notifications.value = notifications.value.map(notification => ({ ...notification, read: true }));
+  } catch (error) {
+    console.error('Error marking all notifications as read:', error);
+  }
 };
 
-const clearAllNotifications = () => {
-  store.dispatch('clearNotifications');
+// Function to clear all notifications
+const clearAllNotifications = async () => {
+  try {
+    await axios.delete('http://127.0.0.1:8000/api/notifications');
+    store.dispatch('clearNotifications');
+    notifications.value = [];
+  } catch (error) {
+    console.error('Error clearing notifications:', error);
+  }
 };
+
 </script>
 
 <template>

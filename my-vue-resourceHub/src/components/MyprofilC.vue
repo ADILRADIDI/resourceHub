@@ -24,7 +24,15 @@
       <!-- Skills and Languages -->
       <div class="skills bg-white p-4 md:p-6 rounded-lg shadow-lg mt-6">
         <h2 class="text-lg md:text-xl font-semibold text-gray-900">Skills/Languages</h2>
-        <p class="text-gray-700 mt-2">{{ userProfile.skills }}</p>
+        <div class="skills-list mt-7">
+          <span
+            v-for="(skill, index) in skillList"
+            :key="index"
+            class="skill-item bg-blue-700 text-white rounded-full px-4 py-2 mb-2 mr-2 inline-block"
+          >
+            {{ skill }}
+          </span>
+        </div>
       </div>
 
       <!-- Stats -->
@@ -67,9 +75,8 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 
-// User profile data
 const userProfile = ref({
   name: 'ADIL RADIDI',
   description: 'Développeur Full Stack Junior spécialisé dans la pile Vue.js / Laravel',
@@ -81,23 +88,22 @@ const userProfile = ref({
   tagsFollowed: 21,
 });
 
-// Sample posts data
+const skillList = computed(() => userProfile.value.skills.split(',').map(skill => skill.trim()));
+
 const posts = ref([
   { id: 1, title: 'Sample Post Title 1', excerpt: 'This is a brief summary of the post content 1.' },
   { id: 2, title: 'Sample Post Title 2', excerpt: 'This is a brief summary of the post content 2.' },
   { id: 3, title: 'Sample Post Title 3', excerpt: 'This is a brief summary of the post content 3.' },
 ]);
 
-// Sample comments data
 const comments = ref([
   { id: 1, text: 'Introduction to Azure with .NET Examples', date: 'Jul 25' },
   { id: 2, text: 'Laravel 8 - Audit for Beginners (5 easy steps) ✍🏻📒💾', date: 'Jun 5' },
 ]);
 
-// User customizable settings for colors
 const userColorSettings = ref({
-  background: '#F5F5E2', // Default background color
-  accent: '#4f46e5', // Default accent color
+  background: '#F5F5E2',
+  accent: '#4f46e5',
 });
 </script>
 
@@ -107,7 +113,7 @@ const userColorSettings = ref({
 }
 
 .crayons-avatar__image {
-  border: 4px solid #ffffff; /* White border around the profile picture */
+  border: 4px solid #ffffff;
 }
 
 .skills, .stats, .recent-comments, .posts, .aside {

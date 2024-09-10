@@ -1,36 +1,39 @@
 <template>
-  <div class="min-h-screen bg-gradient-to-b from-blue-500 to-blue-700 flex flex-col items-center p-8">
-    <!-- Header -->
-    <header class="text-center mb-8">
-      <div class="flex flex-col items-center mx-5">
-        <h1 class="text-white text-4xl font-bold">Podcasts</h1>
-        <button 
-          @click="showSuggestForm = !showSuggestForm" 
-          class="mt-4 px-4 py-2 bg-green-600 text-white font-semibold rounded-lg shadow-lg"
-        >
-          {{ showSuggestForm ? 'Hide Suggest Form' : 'Suggest a Tag' }}
-        </button>
-      </div>
-    </header>
-
-    <!-- Suggest a Tag Form -->
-    <div v-if="showSuggestForm" class="suggest-tag-form mb-8 p-4 border rounded-lg shadow-lg bg-white mx-5 w-full max-w-3xl">
-      <h2 class="text-xl font-semibold mb-4">Suggest a Tag</h2>
-      <div class="mb-4">
-        <input
-          v-model="newTagName"
-          type="text"
-          placeholder="Tag Name"
-          class="w-full p-2 border rounded-lg"
-        />
-      </div>
-      <button
-        @click="suggestTag"
-        class="px-4 py-2 bg-blue-600 text-white font-semibold rounded-lg shadow-lg"
+  <div class="min-h-screen bg-gradient-to-b from-white-500 to-white flex flex-col items-center p-8">
+    <div class="block">
+  <!-- Header -->
+  <header class="text-center mb-8">
+    <div class="flex justify-around items-center mx-5 px-5 gap-96" style="margin: 20px;">
+      <h1 class="text-black text-4xl font-bold">Podcasts</h1>
+      <button 
+        @click="showSuggestForm = !showSuggestForm" 
+        class="mt-4 px-4 py-2 bg-blue-600 text-white font-semibold rounded-lg shadow-lg"
       >
-        Add Tag
+        {{ showSuggestForm ? 'Hide Suggest Form' : 'Suggest a Podcast' }}
       </button>
     </div>
+  </header>
+
+  <!-- Suggest a Tag Form -->
+  <div v-if="showSuggestForm" class="suggest-tag-form mb-8 p-4 border rounded-lg shadow-lg bg-white mx-5 w-full max-w-3xl" style="margin: 20px;">
+    <h2 class="text-xl font-semibold mb-4">Suggest a Podcast</h2>
+    <div class="mb-4">
+      <input
+        v-model="newTagName"
+        type="text"
+        placeholder="Podcast Name"
+        class="w-full p-2 border rounded-lg"
+      />
+    </div>
+    <button
+      @click="suggestTag"
+      class="px-4 py-2 bg-blue-600 text-white font-semibold rounded-lg shadow-lg"
+    >
+      Add Tag
+    </button>
+  </div>
+</div>
+
 
     <!-- Podcast Cards -->
     <div class="flex flex-wrap gap-6 justify-center mb-60">

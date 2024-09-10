@@ -19,6 +19,7 @@ import UserProfile from '../views/UserProfile.vue'
 import DashboardAdmin from '../views/Admin/DashboardAdmin.vue'
 import statistics from '../views/Admin/statistics.vue'
 import dashboard from '../views/Admin/dashboard.vue'
+import Roadmap from '@/components/Roadmap.vue'
 // import managementUsers from '../views/Admin/'
 
 const router = createRouter({
@@ -137,6 +138,12 @@ const router = createRouter({
       path: '/dashboard',
       name: 'dashboard',
       component: dashboard
+    }
+    ,
+    { 
+      path: '/r/Front',
+      name: 'Front',
+      component: Roadmap
     }
     // ,
     // { 

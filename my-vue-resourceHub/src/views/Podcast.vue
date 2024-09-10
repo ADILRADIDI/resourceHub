@@ -1,12 +1,17 @@
 <script setup>
 import Podcast from '../components/Podcast.vue';
 import HeaderA from '../components/HeaderA.vue';
+import Aside from '../components/Aside.vue';
+
 </script>
 
 <template>
   <main class="main-container">
     <HeaderA />
-    <Podcast />
+    <div class="flex">
+      <Aside />
+      <Podcast />
+    </div>
   </main>
 </template>
 

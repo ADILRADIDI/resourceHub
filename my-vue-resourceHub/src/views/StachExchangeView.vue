@@ -1,12 +1,16 @@
 <script setup>
 import StackExchange from '../components/StackExchange.vue';
 import HeaderA from '../components/HeaderA.vue';
+import Aside from '@/components/Aside.vue';
 </script>
 
 <template>
   <main class="main-container2">
     <!-- <HeaderA /> -->
-    <StackExchange />
+    <div class="flex">
+      <Aside />
+      <StackExchange />
+    </div>
   </main>
 </template>
 

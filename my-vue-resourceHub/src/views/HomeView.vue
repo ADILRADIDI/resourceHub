@@ -1,7 +1,7 @@
 <script setup>
 import Header from '../components/Header.vue';
 import Post from '../components/Post.vue';
-import Aside from '../components/Aside.vue';
+import Aside from '../../src/components/Aside.vue';
 import HeaderA from '../components/HeaderA.vue';
 import AdsRight from '../components/AdsRight.vue';
 </script>
@@ -10,8 +10,8 @@ import AdsRight from '../components/AdsRight.vue';
   <main class="main-container">
     <Header />
     <!-- <HeaderA /> -->
-    <div class="flex">
-      <Aside />
+    <div class="flex gap-5">
+      <Aside class="mt-8" />
       <Post />
       <AdsRight />
     </div>

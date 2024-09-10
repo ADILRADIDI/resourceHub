@@ -10,7 +10,10 @@ import ReadingList from '../components/ReadingList.vue';
   <main class="main-container">
     <!-- <Header /> -->
     <HeaderA />
-    <ReadingList />
+    <div class="flex">
+      <Aside />
+      <ReadingList />
+    </div>
   </main>
 </template>
 

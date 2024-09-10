@@ -1,4 +1,5 @@
 <script setup>
+import Aside from '@/components/Aside.vue';
 import EventC from '../components/EventC.vue';
 import HeaderA from '../components/HeaderA.vue';
 </script>
@@ -7,7 +8,10 @@ import HeaderA from '../components/HeaderA.vue';
   <main class="main-container">
 
     <HeaderA />
-    <EventC />
+    <div class="flex">
+      <Aside />
+      <EventC />
+    </div>
   </main>
 </template>
 
