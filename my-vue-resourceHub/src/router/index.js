@@ -15,11 +15,18 @@ import Mynotification from '../views/Mynotification.vue'
 import PostDetail from '../views/PostDetail.vue'
 import Resources from '../views/Resources.vue'
 import NewPost from '../views/NewPost.vue'
+import TagsDetailView from '../views/TagsDetailView.vue'
 import UserProfile from '../views/UserProfile.vue'
 import DashboardAdmin from '../views/Admin/DashboardAdmin.vue'
 import statistics from '../views/Admin/statistics.vue'
 import dashboard from '../views/Admin/dashboard.vue'
 import Roadmap from '@/components/Roadmap.vue'
+import Mpost from '@/components/AdminComponents/ManagePost.vue'
+import Mresource from '@/components/AdminComponents/Mresource.vue'
+import Mtags from '@/components/AdminComponents/Mtags.vue'
+import Mpodcasts from '@/components/AdminComponents/Mpodcasts.vue'
+import Mevents from '@/components/AdminComponents/Mevents.vue'
+import Musers from '@/components/AdminComponents/manageUsers.vue/Musers.vue'
 // import managementUsers from '../views/Admin/'
 
 const router = createRouter({
@@ -29,6 +36,36 @@ const router = createRouter({
       path: '/',
       name: 'home',
       component: HomeView
+    },
+    {
+      path: '/Mpost',
+      name: 'Mpost',
+      component: Mpost
+    },
+    {
+      path: '/Musers',
+      name: 'Musers',
+      component: Musers
+    },
+    {
+      path: '/Mpodcasts',
+      name: 'Mpodcasts',
+      component: Mpodcasts
+    },
+    {
+      path: '/Mtags',
+      name: 'Mtags',
+      component: Mtags
+    },
+    {
+      path: '/Mevents',
+      name: 'Mevents',
+      component: Mevents
+    },
+    {
+      path: '/Mresource',
+      name: 'Mresource',
+      component: Mresource
     },
     {
       path: '/login',
@@ -140,11 +177,62 @@ const router = createRouter({
       component: dashboard
     }
     ,
-    { 
-      path: '/r/Front',
-      name: 'Front',
-      component: Roadmap
+    {
+      path: '/roadmaps/front',
+      name: 'FrontEnd',
+      component: Roadmap,
+      props: { roadmapUrl: 'https://roadmap.sh/frontend' } // Pass the URL as a prop
+    },
+    {
+      path: '/roadmaps/fullstack',
+      name: 'FullStack',
+      component: Roadmap,
+      props: { roadmapUrl: 'https://roadmap.sh/full-stack' }
+    },
+    {
+      path: '/roadmaps/backend',
+      name: 'BackEnd',
+      component: Roadmap,
+      props: { roadmapUrl: 'https://roadmap.sh/backend' }
+    },
+    {
+      path: '/roadmaps/mobile',
+      name: 'Mobile',
+      component: Roadmap,
+      props: { roadmapUrl: 'https://roadmap.sh/mobile' }
+    },
+    {
+      path: '/roadmaps/devops',
+      name: 'DevOps',
+      component: Roadmap,
+      props: { roadmapUrl: 'https://roadmap.sh/devops' }
+    },
+    {
+      path: '/roadmaps/docker',
+      name: 'Docker',
+      component: Roadmap,
+      props: { roadmapUrl: 'https://roadmap.sh/docker' }
+    },
+    {
+      path: '/roadmaps/python',
+      name: 'Python',
+      component: Roadmap,
+      props: { roadmapUrl: 'https://roadmap.sh/python' }
+    },
+    {
+      path: '/roadmaps/java',
+      name: 'Java',
+      component: Roadmap,
+      props: { roadmapUrl: 'https://roadmap.sh/java' }
+    },
+    {
+      path: '/t/:tag',
+      name: 'TagsDetail',
+      component: TagsDetailView
+
+      
     }
+    
     // ,
     // { 
     //   path: '/managementUsers',

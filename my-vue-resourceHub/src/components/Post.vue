@@ -23,11 +23,12 @@
 
           </button>
           <!-- Dropdown Menu -->
-          <div v-if="dropdownOpen === post.id" class="absolute right-0 mt-2 w-44 bg-white divide-y divide-gray-100 rounded-lg shadow-lg z-20">
+          <div v-if="dropdownOpen === post.id" class="absolute right-0 mt-2 w-44 bg-white divide-y divide-gray-100
+           rounded-2xl shadow-lg z-20">
             <ul class="py-2 text-sm text-gray-700">
               <li><a href="#" class="block px-4 py-2 hover:bg-blue-200 hover:rounded-full">Copy Link</a></li>
-              <li><a href="#" class="block px-4 py-2 hover:bg-red-500 hover:text-white rounded-full">Delete</a></li>
-              <li><a href="#" class="block px-4 py-2 hover:bg-blue-200 hover:rounded-full">Share &copy;</a></li>
+              <!-- <li><a href="#" class="block px-4 py-2 hover:bg-red-500 hover:text-white rounded-full">Delete</a></li> -->
+              <li><a href="#" class="block px-4 py-2 hover:bg-blue-200 hover:rounded-full">Share</a></li>
             </ul>
           </div>
         </div>
@@ -88,14 +89,14 @@
         <div class="fixed inset-0 transition-opacity" aria-hidden="true">
           <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
         </div>
-        <div class="inline-block align-middle bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full px-5">
+        <div class="inline-block align-middle bg-white rounded-lg pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full px-5">
           <div>
             <div class="mt-3 text-center sm:mt-5">
-              <h1 class="text-2xl leading-6 font-medium text-gray-900 text-start mb-8 font-bold">Log in to continue</h1>
+              <h1 class="text-2xl leading-6 text-gray-900 text-start mb-8 font-bold">Log in to continue</h1>
               <hr class="h-3 w-full">
               <img src="../../public/img/logoWithoutBackground.png" alt="" class="w-72 mb-3">
               <h2 class="text-sm leading-6 font-medium text-gray-900">We're a place where coders share, stay up-to-date and grow their careers.</h2>
-              <div class="mt-2 flex item-center justify-center gap-10 mt-12">
+              <div class=" flex item-center justify-center gap-10 mt-12">
                 <router-link to="/login" class="text-white bg-indigo-600 hover:bg-indigo-700 py-2 px-4 rounded-lg w-36">
                   <span class="flex items-center justify-center">
                     Login

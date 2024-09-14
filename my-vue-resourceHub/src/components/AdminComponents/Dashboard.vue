@@ -6,84 +6,48 @@
     </div>
 
     <!-- Key Metrics Section -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 ml-36">
-      <div class="p-6 bg-yellow-500 text-white rounded-lg shadow-lg">
-        <h2 class="text-xl font-bold">Total Posts not Accepted</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div class="p-6 bg-yellow-500 text-white rounded-lg shadow-lg animate__animated animate__fadeIn animate__delay-1s">
+        <h2 class="text-xl font-bold">Total Posts (Active)</h2>
         <p class="text-2xl mt-2">1,234</p>
       </div>
-      <div class="p-6 bg-blue-500 text-white rounded-lg shadow-lg">
-        <h2 class="text-xl font-bold">Total Podcasts not Accepted</h2>
+      <div class="p-6 bg-blue-500 text-white rounded-lg shadow-lg animate__animated animate__fadeIn animate__delay-2s">
+        <h2 class="text-xl font-bold">Total Podcasts (Active)</h2>
         <p class="text-2xl mt-2">567</p>
       </div>
-      <div class="p-6 bg-green-500 text-white rounded-lg shadow-lg">
-        <h2 class="text-xl font-bold">Total Events not Accepted</h2>
+      <div class="p-6 bg-green-500 text-white rounded-lg shadow-lg animate__animated animate__fadeIn animate__delay-3s">
+        <h2 class="text-xl font-bold">Total Events (Active)</h2>
         <p class="text-2xl mt-2">567</p>
       </div>
-      <div class="p-6 bg-blue-500 text-white rounded-lg shadow-lg">
-        <h2 class="text-xl font-bold">Total Tags not Accepted</h2>
+      <div class="p-6 bg-blue-500 text-white rounded-lg shadow-lg animate__animated animate__fadeIn animate__delay-4s">
+        <h2 class="text-xl font-bold">Total Tags (Active)</h2>
         <p class="text-2xl mt-2">600</p>
       </div>
-      <div class="p-6 bg-yellow-500 text-white rounded-lg shadow-lg">
-        <h2 class="text-xl font-bold">Total Yt-channels not Accepted</h2>
+      <div class="p-6 bg-yellow-500 text-white rounded-lg shadow-lg animate__animated animate__fadeIn animate__delay-5s">
+        <h2 class="text-xl font-bold">Total YouTube Channels (Active)</h2>
         <p class="text-2xl mt-2">1,234</p>
       </div>
     </div>
 
-    <!-- Chart Section -->
-    <!-- <div class="mt-10  bg-white rounded-lg shadow-lg p-6">
-      <canvas id="userChart" width="400" height="200"></canvas>
-    </div> -->
+    <!-- User List Section -->
+    <div class="mt-10 bg-white rounded-lg shadow-lg p-6">
+      <h2 class="text-2xl font-bold mb-4">All Premium Users</h2>
+      <ul>
+        <!-- Replace with dynamic user list -->
+        <li class="border-b py-2">Ilias 1</li>
+        <li class="border-b py-2">Mohammed 2</li>
+        <li class="border-b py-2">Abderahman 3</li>
+        <li class="border-b py-2">Abderahman 3</li>
+        <!-- Add more users here -->
+      </ul>
+    </div>
   </div>
 </template>
 
-<script>
-// import { Chart, registerables } from 'chart.js';
-
-export default {
-  name: 'Dashboard',
-  mounted() {
-    // Register the chart components
-    Chart.register(...registerables);
-
-    this.$nextTick(() => {
-      this.renderChart();
-    });
-  },
-  methods: {
-    renderChart() {
-      const ctx = document.getElementById('userChart').getContext('2d');
-      new Chart(ctx, {
-        type: 'line',
-        data: {
-          labels: ['January', 'February', 'March', 'April', 'May', 'June'],
-          datasets: [
-            {
-              label: 'User Growth',
-              data: [100, 200, 300, 400, 500, 600],
-              backgroundColor: 'rgba(54, 162, 235, 0.2)',
-              borderColor: 'rgba(54, 162, 235, 1)',
-              borderWidth: 1,
-            },
-          ],
-        },
-        options: {
-          responsive: true,
-          scales: {
-            y: {
-              beginAtZero: true,
-            },
-          },
-        },
-      });
-    },
-  },
-};
-
+<script setup>
+// You can fetch data from an API or state management if needed
 </script>
 
 <style scoped>
-/* Responsive grid and typography */
-.container {
-  max-width: 1200px;
-}
+/* Add additional styling if necessary */
 </style>

@@ -78,38 +78,41 @@
                     </ul>
 
       
-          <button @click="toggleDropdown('roadmaps')" type="button" class="flex items-center w-full p-2 
+                    <button @click="toggleDropdown('roadmaps')" type="button" class="flex items-center w-full p-2 
           text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-200 hover:rounded-full dark:text-white dark:hover:bg-gray-700">
-          <span class="material-symbols-outlined">
-            route
-            </span>
-            <span class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap transition transform hover:-translate-y-1"><b>Roadmaps</b></span>
-            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
-            </svg>
-          </button>
-          <ul v-show="dropdownStates.roadmaps" class="py-2 space-y-2">
-            <li>
-              <router-link to="/r/Front" class="flex items-center w-full p-2 text-gray-900
-               transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Front-end Developer</router-link>
-            </li>
-            <li>
-              <router-link to="/roadmaps/billing" class="flex items-center w-full p-2 text-gray-900 transition duration-75
-               rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Full-end Developer</router-link>
-            </li>
-            <li>
-              <router-link to="/roadmaps/invoice" class="flex items-center w-full p-2 text-gray-900
-               transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Back-end Developer</router-link>
-            </li>
-            <li>
-              <router-link to="/roadmaps/invoice" class="flex items-center w-full p-2 text-gray-900
-               transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Mobile Developer</router-link>
-            </li>
-            <li>
-              <router-link to="/roadmaps/invoice" class="flex items-center w-full p-2 text-gray-900
-               transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Devops</router-link>
-            </li>
-          </ul>
+    <span class="material-symbols-outlined">route</span>
+    <span class="flex-1 ms-3 text-left whitespace-nowrap"><b>Roadmaps</b></span>
+    <svg class="w-3 h-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+    </svg>
+                    </button>
+
+                    <ul v-show="dropdownStates.roadmaps" class="py-2 space-y-2">
+                      <li>
+                        <router-link to="/roadmaps/front" class="flex items-center p-2 text-gray-900 transition rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Front-end Developer</router-link>
+                      </li>
+                      <li>
+                        <router-link to="/roadmaps/fullstack" class="flex items-center p-2 text-gray-900 transition rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Full-stack Developer</router-link>
+                      </li>
+                      <li>
+                        <router-link to="/roadmaps/backend" class="flex items-center p-2 text-gray-900 transition rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Back-end Developer</router-link>
+                      </li>
+                      <li>
+                        <router-link to="/roadmaps/mobile" class="flex items-center p-2 text-gray-900 transition rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Mobile Developer</router-link>
+                      </li>
+                      <li>
+                        <router-link to="/roadmaps/devops" class="flex items-center p-2 text-gray-900 transition rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">DevOps</router-link>
+                      </li>
+                      <li>
+                        <router-link to="/roadmaps/docker" class="flex items-center p-2 text-gray-900 transition rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Docker</router-link>
+                      </li>
+                      <li>
+                        <router-link to="/roadmaps/java" class="flex items-center p-2 text-gray-900 transition rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Java</router-link>
+                      </li>
+                      <li>
+                        <router-link to="/roadmaps/python" class="flex items-center p-2 text-gray-900 transition rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Pyhton</router-link>
+                      </li>
+                    </ul>
 
 
           <!-- Popular Tags with Scroll -->
