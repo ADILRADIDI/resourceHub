@@ -1,11 +1,17 @@
 <template>
-    <div>
-      <h1 class="mx-20 mt-20 mb-5 font-bold text-2xl">Manage Resources</h1>
+  <div class="flex">
+    <!-- Sidebar -->
+    <Sidebar class="w-56" />
+    
+    <!-- Main Content -->
+    <div class="flex-1 ml-60 p-4 mt-20">
+      <!-- Manage Resources Header -->
+      <h1 class="font-bold text-2xl mb-5">Manage Resources</h1>
       
       <!-- Add Resource Button -->
       <button
         @click="showAddModal = true"
-        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-20 mb-5"
+        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-5"
       >
         Add Resource
       </button>
@@ -14,8 +20,8 @@
       <AddResourceModal :isOpen="showAddModal" @close="showAddModal = false" @added="fetchResources" />
   
       <!-- Resources Table -->
-      <div class="relative overflow-x-auto shadow-md sm:rounded-lg mx-20">
-        <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+      <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
           <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
               <th scope="col" class="px-6 py-3">Title</th>
@@ -51,56 +57,72 @@
       <!-- Edit Resource Modal -->
       <EditResourceModal :isOpen="showEditModal" :resource="currentResource" @close="showEditModal = false" @updated="fetchResources" />
     </div>
-  </template>
-  
-  <script>
-  import EditResourceModal from '@/components/AdminComponents/EditResourceModal.vue';
-  import AddResourceModal from '@/components/AdminComponents/AddResourceModal.vue';
-  
-  export default {
-    components: {
-      EditResourceModal,
-      AddResourceModal,
+  </div>
+</template>
+
+<script>
+import EditResourceModal from '@/components/AdminComponents/EditResourceModal.vue';
+import AddResourceModal from '@/components/AdminComponents/AddResourceModal.vue';
+import Sidebar from '@/components/AdminComponents/Sidebar.vue';
+
+export default {
+  components: {
+    EditResourceModal,
+    AddResourceModal,
+    Sidebar // Register the Sidebar component
+  },
+  data() {
+    return {
+      resources: [
+        {
+          id: 1,
+          title: 'First Resource',
+          body: 'This is the body of the first resource.',
+          image: 'image1.jpg',
+          url: 'https://example.com/resource1',
+          status: 'published',
+        },
+        {
+          id: 2,
+          title: 'Second Resource',
+          body: 'This is the body of the second resource.',
+          image: 'image2.jpg',
+          url: 'https://example.com/resource2',
+          status: 'draft',
+        },
+      ],
+      showEditModal: false,
+      showAddModal: false,
+      currentResource: null,
+    };
+  },
+  methods: {
+    editResource(resource) {
+      this.currentResource = { ...resource }; // Create a copy of the resource to edit
+      this.showEditModal = true;
     },
-    data() {
-      return {
-        resources: [
-          {
-            id: 1,
-            title: 'First Resource',
-            body: 'This is the body of the first resource.',
-            image: 'image1.jpg',
-            url: 'https://example.com/resource1',
-            status: 'published',
-          },
-          {
-            id: 2,
-            title: 'Second Resource',
-            body: 'This is the body of the second resource.',
-            image: 'image2.jpg',
-            url: 'https://example.com/resource2',
-            status: 'draft',
-          },
-        ],
-        showEditModal: false,
-        showAddModal: false,
-        currentResource: null,
-      };
+    deleteResource(resourceId) {
+      // Remove the resource from the static array
+      this.resources = this.resources.filter((resource) => resource.id !== resourceId);
     },
-    methods: {
-      editResource(resource) {
-        this.currentResource = { ...resource }; // Create a copy of the resource to edit
-        this.showEditModal = true;
-      },
-      deleteResource(resourceId) {
-        // Remove the resource from the static array
-        this.resources = this.resources.filter((resource) => resource.id !== resourceId);
-      },
-      fetchResources() {
-        // Fetch or refresh resources from the server or static data
-        console.log('Fetching resources...');
-      },
+    fetchResources() {
+      // Fetch or refresh resources from the server or static data
+      console.log('Fetching resources...');
     },
-  };
-  </script>
-  
+  },
+};
+</script>
+
+<style scoped>
+@media (max-width: 768px) {
+  .ml-56 {
+    margin-left: 0;
+  }
+  .w-56 {
+    width: 100%;
+  }
+  .flex-1 {
+    margin-left: 0;
+  }
+}
+</style>

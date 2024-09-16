@@ -24,9 +24,17 @@ import Roadmap from '@/components/Roadmap.vue'
 import Mpost from '@/components/AdminComponents/ManagePost.vue'
 import Mresource from '@/components/AdminComponents/Mresource.vue'
 import Mtags from '@/components/AdminComponents/Mtags.vue'
+import Mytchannels from '@/components/AdminComponents/Mytchannels.vue'
 import Mpodcasts from '@/components/AdminComponents/Mpodcasts.vue'
 import Mevents from '@/components/AdminComponents/Mevents.vue'
 import Musers from '@/components/AdminComponents/manageUsers.vue/Musers.vue'
+import Mroles from '@/components/AdminComponents/manageUsers.vue/Mroles.vue'
+import Mpermissions from '@/components/AdminComponents/manageUsers.vue/Mpermissions.vue'
+import sugPost from '@/components/AdminComponents/manageSuggeted/sugPost.vue'
+import sugPodcast from '@/components/AdminComponents/manageSuggeted/sugPodcast.vue'
+import sugTags from '@/components/AdminComponents/manageSuggeted/sugTags.vue'
+import chat from '@/components/Chat.vue'
+import sugYTchannels from '@/components/AdminComponents/manageSuggeted/sugYTchannels.vue'
 // import managementUsers from '../views/Admin/'
 
 const router = createRouter({
@@ -43,9 +51,39 @@ const router = createRouter({
       component: Mpost
     },
     {
+      path: '/Mytchannels',
+      name: 'Mytchannels',
+      component: Mytchannels
+    },
+    {
       path: '/Musers',
       name: 'Musers',
       component: Musers
+    },
+    {
+      path: '/chat',
+      name: 'chat',
+      component: chat
+    },
+    {
+      path: '/sugYTchannels',
+      name: 'sugYTchannels',
+      component: sugYTchannels
+    },
+    {
+      path: '/sugTags',
+      name: 'sugTags',
+      component: sugTags
+    },
+    {
+      path: '/Mpermissions',
+      name: 'Mpermissions',
+      component: Mpermissions
+    },
+    {
+      path: '/Mroles',
+      name: 'Mroles',
+      component: Mroles
     },
     {
       path: '/Mpodcasts',
@@ -56,6 +94,11 @@ const router = createRouter({
       path: '/Mtags',
       name: 'Mtags',
       component: Mtags
+    },
+    {
+      path: '/sugPodcast',
+      name: 'sugPodcast',
+      component: sugPodcast
     },
     {
       path: '/Mevents',
@@ -71,6 +114,11 @@ const router = createRouter({
       path: '/login',
       name: 'login',
       component: Login
+    },
+    {
+      path: '/sugPost',
+      name: 'sugPost',
+      component: sugPost
     },
     {
       path: '/register',

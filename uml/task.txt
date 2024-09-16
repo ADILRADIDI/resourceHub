@@ -1,19 +1,11 @@
 -----------------------------------------
 |-----------------------------------------"Back-end just bro work hard"------------------------------------"
-|- in deployment : add cron job status Events
-|- 
-|- tafkir fi api dyl podcast development ........
+
 |- authentification with google & github & gitlab
-|- Notification Firebase (mo7al)
-|- forget my password function
-|- copier le lien de post or click share modal socialmedia..
-|-
-|- --------------------Later---------------------
-|- Forem-shop upload sticker and ddemand t-shirt
-|- integrate stripe for forem shop
+|- copier le lien de post or click share modal socialmedia 
 |- seo <meta>
-|- MultiLanguages in setting
-|- linkedin api get all jobs 
+|- 
+|- 
 |-
 |-
 |-

@@ -25,6 +25,12 @@
             </router-link>
           </li>
           <li class="flex items-center space-x-4 ml-2 ">
+              <router-link to="/StachExchangeView"  class="text-gray-700 hover:text-blue-600 transition transform hover:-translate-y-1 flex items-center">
+                <!-- <img src="../../public/img/stackexchange.png" alt="StackExchange" class="w-8 h-8"> -->
+                <span class="material-symbols-outlined">electric_bolt</span>                <span class="ml-4">Fast Fix</span>
+            </router-link>
+          </li>
+          <li class="flex items-center space-x-4 ml-2 ">
             <router-link to="/Podcast" class="text-gray-700 hover:text-blue-600 transition transform hover:-translate-y-1 flex items-center">
               <!-- <img src="../../public/img/podcastIcon.png" alt="Podcasts" class="w-8 h-8"> -->
               <span class="material-symbols-outlined">podcasts</span>
@@ -183,7 +189,7 @@
             <li>
               <a href="#" class="flex items-center p-2 text-gray-800 rounded-lg hover:bg-gray-100 transition duration-300">
                 <span class="material-symbols-outlined">home</span>
-                <span class="ml-4">Home</span>
+                <span class="ml-4">Homee</span>
               </a>
             </li>
             <!-- Reading List -->

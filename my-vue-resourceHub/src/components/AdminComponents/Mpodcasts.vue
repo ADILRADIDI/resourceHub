@@ -1,12 +1,17 @@
 <template>
-    <div class="mx-20 mt-20">
-      <h1 class="mb-5 font-bold text-2xl">Manage Podcasts</h1>
-  
+  <div class="flex">
+    <!-- Sidebar -->
+    <Sidebar class="w-56" />
+    
+    <!-- Main Content -->
+    <div class="flex-1 ml-56 p-4 mt-20">
+      <h1 class="font-bold text-2xl mb-5">Manage Podcasts</h1>
+
       <!-- Add Podcast Button -->
       <button @click="showAddModal = true" class="mb-5 px-4 py-2 bg-blue-500 text-white rounded-lg">
         Add Podcast
       </button>
-  
+
       <!-- Podcasts Table -->
       <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
@@ -48,67 +53,83 @@
           </tbody>
         </table>
       </div>
-  
+
       <!-- Add Podcast Modal -->
       <AddPodcastModal :isOpen="showAddModal" @close="showAddModal = false" @added="fetchPodcasts" />
-  
+
       <!-- Edit Podcast Modal -->
       <EditPodcastModal :isOpen="showEditModal" :podcast="currentPodcast" @close="showEditModal = false" @updated="fetchPodcasts" />
     </div>
-  </template>
-  
-  <script>
-  import AddPodcastModal from "@/components/AdminComponents/AddPodcastModal.vue";
-  import EditPodcastModal from "@/components/AdminComponents/EditPodcastModal.vue";
-  
-  export default {
-    components: {
-      AddPodcastModal,
-      EditPodcastModal,
+  </div>
+</template>
+
+<script>
+import Sidebar from '@/components/AdminComponents/Sidebar.vue'; // Import Sidebar component
+import AddPodcastModal from "@/components/AdminComponents/AddPodcastModal.vue";
+import EditPodcastModal from "@/components/AdminComponents/EditPodcastModal.vue";
+
+export default {
+  components: {
+    Sidebar, // Register Sidebar component
+    AddPodcastModal,
+    EditPodcastModal,
+  },
+  data() {
+    return {
+      podcasts: [
+        {
+          id: 1,
+          title: 'Tech Innovations',
+          description: 'Exploring the latest in technology and innovation.',
+          logo: 'path/to/logo1.png',
+          audio_url: 'path/to/audio1.mp3',
+          status: 'draft',
+          created_at: '2024-09-03 22:37:39',
+          updated_at: '2024-09-03 22:37:39',
+        },
+        {
+          id: 2,
+          title: 'Health and Wellness',
+          description: 'Tips and advice for a healthier lifestyle.',
+          logo: 'path/to/logo2.png',
+          audio_url: 'path/to/audio2.mp3',
+          status: 'draft',
+          created_at: '2024-09-03',
+          updated_at: '2024-09-03',
+        },
+        // Add more static podcasts here
+      ],
+      showAddModal: false,
+      showEditModal: false,
+      currentPodcast: null,
+    };
+  },
+  methods: {
+    editPodcast(podcast) {
+      this.currentPodcast = { ...podcast };
+      this.showEditModal = true;
     },
-    data() {
-      return {
-        podcasts: [
-          {
-            id: 1,
-            title: 'Tech Innovations',
-            description: 'Exploring the latest in technology and innovation.',
-            logo: 'path/to/logo1.png',
-            audio_url: 'path/to/audio1.mp3',
-            status: 'draft',
-            created_at: '2024-09-03 22:37:39',
-            updated_at: '2024-09-03 22:37:39',
-          },
-          {
-            id: 2,
-            title: 'Health and Wellness',
-            description: 'Tips and advice for a healthier lifestyle.',
-            logo: 'path/to/logo2.png',
-            audio_url: 'path/to/audio2.mp3',
-            status: 'draft',
-            created_at: '2024-09-03',
-            updated_at: '2024-09-03',
-          },
-          // Add more static podcasts here
-        ],
-        showAddModal: false,
-        showEditModal: false,
-        currentPodcast: null,
-      };
+    deletePodcast(podcastId) {
+      this.podcasts = this.podcasts.filter(podcast => podcast.id !== podcastId);
     },
-    methods: {
-      editPodcast(podcast) {
-        this.currentPodcast = { ...podcast };
-        this.showEditModal = true;
-      },
-      deletePodcast(podcastId) {
-        this.podcasts = this.podcasts.filter(podcast => podcast.id !== podcastId);
-      },
-      fetchPodcasts() {
-        // Fetch podcasts from the server (for now, static data)
-        console.log("Fetching podcasts...");
-      },
+    fetchPodcasts() {
+      // Fetch podcasts from the server (for now, static data)
+      console.log("Fetching podcasts...");
     },
-  };
-  </script>
-  
+  },
+};
+</script>
+
+<style scoped>
+@media (max-width: 768px) {
+  .ml-56 {
+    margin-left: 0;
+  }
+  .w-56 {
+    width: 100%;
+  }
+  .flex-1 {
+    margin-left: 0;
+  }
+}
+</style>
