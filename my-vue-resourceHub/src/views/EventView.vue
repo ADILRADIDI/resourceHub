@@ -8,9 +8,11 @@ import HeaderA from '../components/HeaderA.vue';
   <main class="main-container">
 
     <HeaderA />
-    <div class="flex">
-      <Aside />
-      <EventC />
+    <div class="flex flex-col lg:flex-row">
+      <Aside class="lg:w-1/4" />
+      <div class="lg:w-3/4 flex-1 p-4">
+        <EventC class="" />
+      </div>
     </div>
   </main>
 </template>

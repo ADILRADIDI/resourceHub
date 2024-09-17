@@ -25,7 +25,7 @@
             </router-link>
           </li>
           <li class="flex items-center space-x-4 ml-2 ">
-              <router-link to="/StachExchangeView"  class="text-gray-700 hover:text-blue-600 transition transform hover:-translate-y-1 flex items-center">
+              <router-link to="/FastFix"  class="text-gray-700 hover:text-blue-600 transition transform hover:-translate-y-1 flex items-center">
                 <!-- <img src="../../public/img/stackexchange.png" alt="StackExchange" class="w-8 h-8"> -->
                 <span class="material-symbols-outlined">electric_bolt</span>                <span class="ml-4">Fast Fix</span>
             </router-link>
@@ -65,27 +65,23 @@
               <span class="ml-4">Tags</span>
             </router-link>
           </li>
-                    <!-- resources drop ... -->
-                    <button @click="toggleDropdown('resources')" type="button"
-                      class="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group
-                        hover:bg-gray-200 hover:rounded-full dark:text-white dark:hover:bg-gray-700">
-                        <span class="material-symbols-outlined">
-                          developer_guide
-                        </span>
-                        <span class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap transition transform hover:-translate-y-1"><b>Dev Resources</b></span>
-                        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
-                        </svg>
-                    </button>
-                    <ul v-show="dropdownStates.resources" class="py-2 mt-2 space-y-2 bg-white rounded-lg shadow-md">
-                        <li v-for="category in categories" :key="category.id">
-                            <router-link :to="`/R/${category.id}`" class="block px-4 py-2 text-gray-800 hover:bg-gray-100 transition duration-300">{{ category.name }}</router-link>
-                        </li>
-                    </ul>
-
+          <li>
+            <!-- res -->
+          <button @click="toggleDropdown('resources')" class="flex items-center w-full p-2 text-gray-800 rounded-lg hover:bg-gray-100 transition duration-300">
+            <span class="material-symbols-outlined">developer_mode</span>
+            <span class="ml-4 flex-1 text-left">Dev Resources</span>
+            <svg class="w-3 h-3" fill="none" viewBox="0 0 10 6">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+            </svg>
+          </button>
+          <ul v-show="dropdownStates.resources" class="py-2 mt-2 space-y-2 bg-white rounded-lg shadow-md">
+            <li v-for="category in categories" :key="category.id">
+              <router-link :to="`/resources/${category.id}`" class="block px-4 py-2 text-gray-800 hover:bg-gray-100 transition duration-300">{{ category.name }}</router-link>
+            </li>
+          </ul>
+        </li>
       
-                    <button @click="toggleDropdown('roadmaps')" type="button" class="flex items-center w-full p-2 
-          text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-200 hover:rounded-full dark:text-white dark:hover:bg-gray-700">
+                    <button @click="toggleDropdown('roadmaps')" type="button" class="flex items-center w-full p-2 text-gray-800 rounded-lg hover:bg-gray-100 transition duration-300">
     <span class="material-symbols-outlined">route</span>
     <span class="flex-1 ms-3 text-left whitespace-nowrap"><b>Roadmaps</b></span>
     <svg class="w-3 h-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
@@ -93,7 +89,7 @@
     </svg>
                     </button>
 
-                    <ul v-show="dropdownStates.roadmaps" class="py-2 space-y-2">
+                    <ul v-show="dropdownStates.roadmaps" class="py-2 mt-2 space-y-2 bg-white rounded-lg shadow-md">
                       <li>
                         <router-link to="/roadmaps/front" class="flex items-center p-2 text-gray-900 transition rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Front-end Developer</router-link>
                       </li>
@@ -202,19 +198,19 @@
             
             <!-- Resources Dropdown -->
             <li>
-              <button @click="toggleDropdown('resources')" class="flex items-center w-full p-2 text-gray-800 rounded-lg hover:bg-gray-100 transition duration-300">
-                <span class="material-symbols-outlined">developer_mode</span>
-                <span class="ml-4 flex-1 text-left">Dev Resources</span>
-                <svg class="w-3 h-3" fill="none" viewBox="0 0 10 6">
-                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
-                </svg>
-              </button>
-              <ul v-show="dropdownStates.resources" class="py-2 mt-2 space-y-2 bg-white rounded-lg shadow-md">
-                <li v-for="category in categories" :key="category.id">
-                  <router-link :to="`/R/${category.id}`" class="block px-4 py-2 text-gray-800 hover:bg-gray-100 transition duration-300">{{ category.name }}</router-link>
-                </li>
-              </ul>
-            </li>
+      <button @click="toggleDropdown('resources')" class="flex items-center w-full p-2 text-gray-800 rounded-lg hover:bg-gray-100 transition duration-300">
+        <span class="material-symbols-outlined">developer_mode</span>
+        <span class="ml-4 flex-1 text-left">Dev Resources</span>
+        <svg class="w-3 h-3" fill="none" viewBox="0 0 10 6">
+          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+        </svg>
+      </button>
+      <ul v-show="dropdownStates.resources" class="py-2 mt-2 space-y-2 bg-white rounded-lg shadow-md">
+        <li v-for="category in categories" :key="category.id">
+          <router-link :to="`/resources/${category.id}`" class="block px-4 py-2 text-gray-800 hover:bg-gray-100 transition duration-300">{{ category.name }}</router-link>
+        </li>
+      </ul>
+    </li>
             
             <!-- Roadmaps Dropdown -->
             <li>
@@ -269,13 +265,17 @@ const categories = [
   { id: 'rust', name: 'Rust' },
 ];
 
+function toggleDropdown(dropdown) {
+  dropdownStates.value[dropdown] = !dropdownStates.value[dropdown];
+}
+
 const toggleSidebar = () => {
   isSidebarOpen.value = !isSidebarOpen.value;
 };
 
-const toggleDropdown = (dropdown) => {
-  dropdownStates.value[dropdown] = !dropdownStates.value[dropdown];
-};
+// const toggleDropdown = (dropdown) => {
+//   dropdownStates.value[dropdown] = !dropdownStates.value[dropdown];
+// };
 </script>
 
 <style scoped>

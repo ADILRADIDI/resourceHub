@@ -1,18 +1,13 @@
 <template>
   <div class="tags-component mx-8">
-    <div class="flex items-center justify-between mx-5">
-      <div class="mb-6">
-        <h1 class="text-4xl font-bold flex items-center justify-center my-10 text-blue-700 animate-pulse">
-          YouTube Channels
-        </h1>
-      </div>
-      <!-- <h1 class="font-bold text-3xl text-gray-800 mb-6">Tags</h1> -->
+    <div class="flex items-center justify-between mx-5 mb-6">
+      <h1 class="text-4xl font-bold text-blue-700 animate-pulse">Tags</h1>
       <button 
-      @click="showSuggestForm = !showSuggestForm" 
-      class="mb-4 px-4 py-2 bg-green-600 text-white font-semibold rounded-lg shadow-lg"
-    >
-      {{ showSuggestForm ? 'Hide Suggest Form' : 'Suggest a Tag' }}
-    </button>
+        @click="showSuggestForm = true"  
+        class="px-4 py-2 bg-green-600 text-white font-semibold rounded-lg shadow-lg"
+      >
+        Suggest a Tag
+      </button>
     </div>
 
     <!-- Search Bar -->
@@ -21,31 +16,8 @@
         v-model="searchQuery"
         type="text"
         placeholder="Search for a tag"
-        class="p-2 border rounded-lg flex-grow mr-0 sm:mr-4 mb-4 sm:mb-0"
+        class="p-2 border rounded-lg flex-grow mb-4 sm:mb-0"
       />
-    </div>
-
-    <!-- Button to show/hide Suggest a Tag Form -->
-    
-
-    <!-- Suggest a Tag Form -->
-    <div v-if="showSuggestForm" class="suggest-tag-form mb-8 p-4 border rounded-lg shadow-lg bg-white">
-      <h2 class="text-xl font-semibold mb-4">Suggest a Tag</h2>
-      <div class="mb-4">
-        <input
-          v-model="newTagName"
-          type="text"
-          placeholder="Tag Name"
-          class="w-full p-2 border rounded-lg"
-        />
-      </div>
-
-      <button
-        @click="suggestTag"
-        class="px-4 py-2 bg-blue-600 text-white font-semibold rounded-lg shadow-lg"
-      >
-        Add Tag
-      </button>
     </div>
 
     <!-- Tags Grid -->
@@ -57,14 +29,38 @@
       >
         <div class="tag-info flex justify-between w-full mb-4 text-gray-800">
           <span class="tag-name text-lg font-semibold">{{ tag.name }}</span>
-          <span class="tag-count bg-green-100 text-green-800 px-2 py-1 rounded-lg text-sm">{{ tag.postCount }} Posts</span>
+          <span class="tag-count bg-green-100 text-green-800 px-2 py-1 rounded-lg text-sm">{{ tag.postCount }} P</span>
         </div>
         <button
-          class="follow-btn px-4 mt-8 py-2 rounded-lg text-white font-semibold transition duration-300"
+          class="follow-btn px-4 mt-4 py-2 rounded-lg text-white font-semibold transition duration-300"
           :class="{ 'bg-blue-500': !tag.isFollowing, 'bg-gray-500': tag.isFollowing }"
           @click="toggleFollow(tag.id)"
         >
           {{ tag.isFollowing ? 'Unfollow' : 'Follow' }}
+        </button>
+      </div>
+    </div>
+
+    <!-- Suggest a Tag Modal -->
+    <div v-if="showSuggestForm" class="modal fixed inset-0 bg-black bg-opacity-75 flex justify-center items-center z-50">
+      <div class="modal-content bg-white p-6 rounded-lg relative w-full max-w-md">
+        <button @click="closeModal" class="absolute top-2 right-2 text-black">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+        <h2 class="text-xl font-semibold mb-4">Suggest a Tag</h2>
+        <div class="mb-4">
+          <input
+            v-model="newTagName"
+            type="text"
+            placeholder="Tag Name"
+            class="w-full p-2 border rounded-lg"
+          />
+        </div>
+        <button
+          @click="suggestTag"
+          class="px-4 py-2 bg-blue-600 text-white font-semibold rounded-lg shadow-lg"
+        >
+          Add Tag
         </button>
       </div>
     </div>
@@ -81,11 +77,18 @@ const tags = ref([
   { id: 3, name: 'Vue.js', postCount: 85, isFollowing: false },
   { id: 4, name: 'CSS', postCount: 60, isFollowing: false },
   { id: 5, name: 'js', postCount: 60, isFollowing: false },
-  { id: 6, name: 'laravel', postCount: 60, isFollowing: false },
-  { id: 7, name: 'livewire', postCount: 60, isFollowing: false },
+  { id: 6, name: 'Laravel', postCount: 60, isFollowing: false },
+  { id: 7, name: 'Livewire', postCount: 60, isFollowing: false },
+  { id: 1, name: 'Web Development', postCount: 120, isFollowing: false },
+  { id: 2, name: 'JavaScript', postCount: 200, isFollowing: false },
+  { id: 3, name: 'Vue.js', postCount: 85, isFollowing: false },
+  { id: 4, name: 'CSS', postCount: 60, isFollowing: false },
+  { id: 5, name: 'js', postCount: 60, isFollowing: false },
+  { id: 6, name: 'Laravel', postCount: 60, isFollowing: false },
+  { id: 7, name: 'Livewire', postCount: 60, isFollowing: false },
 ]);
 
-// State for search query and showing the form
+// State for search query and showing the modal
 const searchQuery = ref('');
 const showSuggestForm = ref(false);
 const newTagName = ref('');
@@ -117,8 +120,13 @@ const suggestTag = () => {
     };
     tags.value.push(newTag);
     newTagName.value = ''; // Clear the input
-    showSuggestForm.value = false; // Hide the form after submission
+    closeModal(); // Hide the modal after submission
   }
+};
+
+// Close the modal
+const closeModal = () => {
+  showSuggestForm.value = false;
 };
 </script>
 
@@ -128,13 +136,14 @@ const suggestTag = () => {
 }
 
 .tags-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  display: flex;
+  flex-wrap: wrap;
   gap: 1rem;
 }
 
 .tag-card {
   text-align: center;
+  flex: 1 1 calc(25% - 1rem); /* Adjust the width for the number of columns */
 }
 
 .follow-btn {
@@ -146,16 +155,36 @@ const suggestTag = () => {
   transform: scale(1.05);
 }
 
+/* Modal styles */
+.modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 50;
+}
+
+.modal-content {
+  background-color: #ffffff;
+  padding: 2rem;
+  border-radius: 0.5rem;
+  width: 90%;
+  max-width: 600px;
+}
+
+.material-symbols-outlined {
+  font-size: 2rem;
+}
+
 /* Responsive Styles */
 @media (max-width: 1024px) {
-  .tags-grid {
-    grid-template-columns: repeat(2, 1fr);
+  .tag-card {
+    flex: 1 1 calc(50% - 1rem); /* 2 columns */
   }
 }
 
 @media (max-width: 640px) {
-  .tags-grid {
-    grid-template-columns: 1fr;
+  .tag-card {
+    flex: 1 1 calc(100% - 1rem); /* 1 column */
   } 
 
   .search-bar {

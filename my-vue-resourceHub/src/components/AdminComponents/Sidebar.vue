@@ -24,7 +24,12 @@
       </div>
       <ul class="space-y-2 font-medium">
         <li>
-          <router-link to="/DashboardAdmin" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-300  dark:hover:bg-gray-700">Dashboard</router-link>
+          <router-link to="/DashboardAdmin" class="flex items-center gap-3 p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-300  dark:hover:bg-gray-700">
+            <span class="material-symbols-outlined">
+home
+</span>
+            Dashboard
+          </router-link>
         </li>
         <li>
           <button @click="toggleDropdown('content')" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700">

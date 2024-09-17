@@ -6,6 +6,9 @@ const events = ref([
   { id: 9, user_id: 2, title: 'Event A', description: 'Details about event A.', city: 'Casablanca', location: 'Casablanca', start_time: '2024-08-21 12:57:44', end_time: '2024-08-21 12:58:44', status: 'terminé', created_at: null, updated_at: '2024-08-21T12:08:16.000000Z' },
   { id: 10, user_id: 2, title: 'Event B', description: 'Details about event B.', city: 'Agadir', location: 'Agadir', start_time: '2024-08-21 12:57:44', end_time: '2024-08-21 12:58:44', status: 'terminé', created_at: null, updated_at: '2024-08-21T12:08:16.000000Z' },
   { id: 11, user_id: 2, title: 'Event C', description: 'Details about event C.', city: 'Tangier', location: 'Tangier', start_time: '2024-08-21 12:57:44', end_time: '2024-08-21 12:58:44', status: 'terminé', created_at: null, updated_at: '2024-08-21T12:08:16.000000Z' },
+  { id: 9, user_id: 2, title: 'Event A', description: 'Details about event A.', city: 'Casablanca', location: 'Casablanca', start_time: '2024-08-21 12:57:44', end_time: '2024-08-21 12:58:44', status: 'terminé', created_at: null, updated_at: '2024-08-21T12:08:16.000000Z' },
+  { id: 10, user_id: 2, title: 'Event B', description: 'Details about event B.', city: 'Agadir', location: 'Agadir', start_time: '2024-08-21 12:57:44', end_time: '2024-08-21 12:58:44', status: 'terminé', created_at: null, updated_at: '2024-08-21T12:08:16.000000Z' },
+  { id: 11, user_id: 2, title: 'Event C', description: 'Details about event C.', city: 'Tangier', location: 'Tangier', start_time: '2024-08-21 12:57:44', end_time: '2024-08-21 12:58:44', status: 'terminé', created_at: null, updated_at: '2024-08-21T12:08:16.000000Z' },
   { id: 12, user_id: 2, title: 'Event D', description: 'Details about event D.', city: 'Rabat', location: 'Rabat', start_time: '2024-08-21 12:57:44', end_time: '2024-08-21 12:58:44', status: 'terminé', created_at: null, updated_at: '2024-08-21T12:08:16.000000Z' },
   { id: 13, user_id: 2, title: 'Event E', description: 'Details about event E.', city: 'Casablanca', location: 'Casablanca', start_time: '2024-08-21 12:57:44', end_time: '2024-08-21 12:58:44', status: 'En cour', created_at: null, updated_at: '2024-08-21T12:08:16.000000Z' },
 ]);
@@ -41,7 +44,7 @@ const registerForEvent = (eventId) => {
       <input type="text" v-model="searchQuery" placeholder="Search events..." class="rounded-xl outline-none	" />
       
       <select v-model="selectedLocation" class="rounded-xl outline-none	">
-        <option value="All">All Cities</option>
+        <option value="All">All</option>
         <option value="Casablanca">Casablanca</option>
         <option value="Agadir">Agadir</option>
         <option value="Tangier">Tangier</option>
@@ -49,13 +52,14 @@ const registerForEvent = (eventId) => {
       </select>
     </div>
 
-    <div class="events-box-container">
+    <div class="events-box-container ">
       <div class="events-box" v-for="event in filteredEvents" :key="event.id">
         <div class="events-box-inner">
           <!-- Front side of the card -->
           <div class="events-box-front">
             <div class="events-img">
-              <img src="https://cdn.guichet.com/events/neon-wave-event.jpeg?w=900&h=600&fit=clip&auto=format,compress&q=80" alt="Event Image" class="event-image" />
+              <img src="https://cdn.guichet.com/events/neon-wave-event.jpeg?w=900&h=600&fit=clip&auto=format,compress&q=80" 
+              alt="Event Image" class="event-image" />
             </div>
             <div class="events-text">
               <strong class="mr-8">{{ event.title }}</strong>
@@ -108,7 +112,7 @@ const registerForEvent = (eventId) => {
 
 .filter-container {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   margin-bottom: 20px;
 }
 
@@ -127,8 +131,9 @@ const registerForEvent = (eventId) => {
 .events-box-container {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
-  margin-top: 40px;
+  justify-content: center;
+  justify-items: center;
+  margin-top: 2.5rem; 
 }
 
 .events-box {
@@ -183,7 +188,7 @@ const registerForEvent = (eventId) => {
   object-fit: cover;
   object-position: center;
   border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
 }
 
 .events-text {

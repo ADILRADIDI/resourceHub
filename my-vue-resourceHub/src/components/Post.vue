@@ -17,17 +17,16 @@
             <!-- <svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
               <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4" class="text-blue-700 w-16"/>
             </svg> -->
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-5">
+            <i class="fa-solid fa-ellipsis-vertical text-xl"></i>            
+            <!-- <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-5">
               <path fill-rule="evenodd" d="M2 4.75A.75.75 0 0 1 2.75 4h14.5a.75.75 0 0 1 0 1.5H2.75A.75.75 0 0 1 2 4.75Zm0 10.5a.75.75 0 0 1 .75-.75h14.5a.75.75 0 0 1 0 1.5H2.75a.75.75 0 0 1-.75-.75ZM2 10a.75.75 0 0 1 .75-.75h7.5a.75.75 0 0 1 0 1.5h-7.5A.75.75 0 0 1 2 10Z" clip-rule="evenodd" />
-            </svg>
-
+            </svg> -->
           </button>
           <!-- Dropdown Menu -->
           <div v-if="dropdownOpen === post.id" class="absolute right-0 mt-2 w-44 bg-white divide-y divide-gray-100
            rounded-2xl shadow-lg z-20">
             <ul class="py-2 text-sm text-gray-700">
               <li><a href="#" class="block px-4 py-2 hover:bg-blue-200 hover:rounded-full">Copy Link</a></li>
-              <!-- <li><a href="#" class="block px-4 py-2 hover:bg-red-500 hover:text-white rounded-full">Delete</a></li> -->
               <li><a href="#" class="block px-4 py-2 hover:bg-blue-200 hover:rounded-full">Share</a></li>
             </ul>
           </div>
@@ -122,6 +121,7 @@
 </template>
 
 <script setup>
+import Header from './Header.vue';
 import { ref } from 'vue';
 
 // Sample data for posts

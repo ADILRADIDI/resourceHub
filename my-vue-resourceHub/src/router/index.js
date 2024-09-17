@@ -35,6 +35,7 @@ import sugPodcast from '@/components/AdminComponents/manageSuggeted/sugPodcast.v
 import sugTags from '@/components/AdminComponents/manageSuggeted/sugTags.vue'
 import chat from '@/components/Chat.vue'
 import sugYTchannels from '@/components/AdminComponents/manageSuggeted/sugYTchannels.vue'
+import FastFix from '../../src/views/FastFix.vue'
 // import managementUsers from '../views/Admin/'
 
 const router = createRouter({
@@ -187,12 +188,17 @@ const router = createRouter({
       path: '/Pd/:id',
       name: 'Pd',
       component: PostDetail
+    } 
+    ,{
+      path: '/resources/:category',
+      name: 'Resources',
+      component: Resources,
     }
     ,
     {
-      path: '/R/:idCategorie',
-      name: 'R',
-      component: Resources
+      path: '/FastFix',
+      name: 'FastFix',
+      component: FastFix,
     }
     ,
     {
@@ -229,7 +235,7 @@ const router = createRouter({
       path: '/roadmaps/front',
       name: 'FrontEnd',
       component: Roadmap,
-      props: { roadmapUrl: 'https://roadmap.sh/frontend' } // Pass the URL as a prop
+      props: { roadmapUrl: 'https://roadmap.sh/frontend' }
     },
     {
       path: '/roadmaps/fullstack',

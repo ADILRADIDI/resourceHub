@@ -6,11 +6,17 @@ import Aside from '../components/Aside.vue';
 </script>
 
 <template>
-    <!-- <Header /> -->
-     <div class="flex bg-black">
-         <Aside class="mt-28 h-1/2" />
+    <HeaderA />
+     <!-- <div class="flex bg-black">
+         <Aside class="h-1/2 mt-9" />
          <CrashCourseComponent />
-     </div>
+     </div> -->
+     <div class="flex flex-col lg:flex-row bg-white">
+      <Aside class="lg:w-1/4" />
+      <div class="lg:w-3/4 flex-1 p-4">
+        <CrashCourseComponent/>
+      </div>
+    </div>
 </template>
 
 <style>

@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed } from 'vue'; // Ensure computed is imported
+import { ref, computed } from 'vue';
 
 // Sample data for YouTube channels
 const channels = ref([
@@ -64,65 +64,68 @@ const suggestChannel = () => {
 
 <template>
   <div class="ytchannels-page container mx-auto py-8">
-    <!-- Title -->
-    <!-- <h1 class="text-3xl font-bold mb-6 text-center">YouTube Channels</h1> -->
     <div class="mb-6">
-        <h1 class="text-4xl font-bold flex items-center justify-center my-10 text-blue-300 animate-pulse">
-          YouTube Channels
-        </h1>
-      </div>
-    <!-- Button to show/hide Suggest a Channel Form -->
-    <button 
-      @click="showSuggestForm = !showSuggestForm" 
-      class="mb-4 px-4 py-2 bg-green-600 text-white font-semibold rounded-lg shadow-lg">
-      {{ showSuggestForm ? 'Hide Suggest Form' : 'Suggest a YouTube Channel' }}
-    </button>
-
-    <!-- Suggest a Channel Form -->
-    <div v-if="showSuggestForm" class="suggest-channel-form mb-8 p-4 border rounded-lg shadow-lg bg-white">
-      <h2 class="text-xl font-semibold mb-4">Suggest a YouTube Channel</h2>
-      <div class="mb-4">
-        <input
-          v-model="newChannelName"
-          type="text"
-          placeholder="Channel Name"
-          class="w-full p-2 border rounded-lg"
-        />
-      </div>
-      <div class="mb-4">
-        <input
-          v-model="newChannelUrl"
-          type="url"
-          placeholder="Channel URL"
-          class="w-full p-2 border rounded-lg"
-        />
-      </div>
-      <div class="mb-4">
-        <select v-model="newChannelCategory" class="w-full p-2 border rounded-lg">
-          <option disabled value="">Select a Category</option>
-          <option v-for="category in categories" :key="category" :value="category">{{ category }}</option>
-        </select>
-      </div>
-      <button
-        @click="suggestChannel"
-        class="px-4 py-2 bg-blue-600 text-white font-semibold rounded-lg shadow-lg"
-      >
-        Suggest Channel
-      </button>
+      <h1 class="text-4xl font-bold flex items-center justify-center my-5 text-blue-300 animate-pulse">
+        YouTube Channels
+      </h1>
     </div>
 
     <!-- Search Bar -->
-    <div class="search-bar mb-6 flex justify-between">
+    <div class="search-bar mb-6 flex flex-col sm:flex-row items-center justify-between gap-3">
       <input
         v-model="searchQuery"
         type="text"
         placeholder="Search for a channel"
-        class="p-2 border rounded-lg flex-grow mr-4"
+        class="p-2 border rounded-lg flex-grow mb-4 sm:mb-0 sm:mr-4"
       />
-      <select v-model="selectedCategory" class="p-2 border rounded-lg">
-        <option value="">All Categories</option>
+      <select v-model="selectedCategory" class="p-2 border rounded-lg mb-4 sm:mb-0">
+        <option value="">All</option>
         <option v-for="category in categories" :key="category" :value="category">{{ category }}</option>
       </select>
+      <button 
+        @click="showSuggestForm = !showSuggestForm" 
+        class="px-4 py-2 bg-green-600 text-white font-semibold rounded-lg shadow-lg"
+      >
+        {{ showSuggestForm ? 'Hide Suggest' : 'Suggest a YT-Channel' }}
+      </button>
+    </div>
+
+    <!-- Suggest a Channel Form -->
+    <div v-if="showSuggestForm" class="modal fixed inset-0 bg-black bg-opacity-75 flex justify-center items-center z-50">
+      <div class="modal-content bg-white p-6 rounded-lg w-11/12 max-w-md relative">
+        <button @click="showSuggestForm = false" class="absolute top-2 right-2 text-black text-2xl">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+        <h2 class="text-xl font-semibold mb-4">Suggest a YouTube Channel</h2>
+        <div class="mb-4">
+          <input
+            v-model="newChannelName"
+            type="text"
+            placeholder="Channel Name"
+            class="w-full p-2 border rounded-lg"
+          />
+        </div>
+        <div class="mb-4">
+          <input
+            v-model="newChannelUrl"
+            type="url"
+            placeholder="Channel URL"
+            class="w-full p-2 border rounded-lg"
+          />
+        </div>
+        <div class="mb-4">
+          <select v-model="newChannelCategory" class="w-full p-2 border rounded-lg">
+            <option disabled value="">Select a Category</option>
+            <option v-for="category in categories" :key="category" :value="category">{{ category }}</option>
+          </select>
+        </div>
+        <button
+          @click="suggestChannel"
+          class="px-4 py-2 bg-blue-600 text-white font-semibold rounded-lg shadow-lg"
+        >
+          Suggest Channel
+        </button>
+      </div>
     </div>
 
     <!-- Channels List -->
@@ -141,14 +144,30 @@ const suggestChannel = () => {
   max-width: 1200px;
 }
 
-.suggest-channel-form {
-  margin-bottom: 2rem;
-}
-
 .search-bar {
   margin-bottom: 2rem;
 }
 
+.modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 50;
+}
+
+.modal-content {
+  background-color: #ffffff;
+  padding: 2rem;
+  border-radius: 0.5rem;
+  width: 90%;
+  max-width: 600px;
+}
+
+.material-symbols-outlined {
+  font-size: 2rem;
+}
+
+/* Channel Card Styles */
 .channel-card {
   background-color: #ffffff;
   padding: 1.5rem;
@@ -159,5 +178,12 @@ const suggestChannel = () => {
 
 .channel-card h3 {
   color: #e3342f; /* Red color */
+}
+
+/* Responsive Styles */
+@media (max-width: 640px) {
+  .modal-content {
+    width: 95%;
+  }
 }
 </style>

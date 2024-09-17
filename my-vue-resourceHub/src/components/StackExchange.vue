@@ -62,11 +62,21 @@ const selectedPost = ref(null);
 const selectedAnswers = ref([]);
 
 // Method to fetch answers
-const fetchAnswers = async (questionId) => {
-  if (!showAnswersModal.value) {
-    const response = await fetch(`https://api.stackexchange.com/2.3/questions/${questionId}/answers?order=desc&sort=activity&site=stackoverflow&filter=withbody`);
-    const data = await response.json();
-    selectedAnswers.value = data.items || [];
+// const fetchAnswers = async (questionId) => {
+//   if (!showAnswersModal.value) {
+//     const response = await fetch(`https://api.stackexchange.com/2.3/questions/${questionId}/answers?order=desc&sort=activity&site=stackoverflow&filter=withbody`);
+//     const data = await response.json();
+//     selectedAnswers.value = data.items || [];
+//   }
+//   showAnswersModal.value = !showAnswersModal.value;
+// };
+
+const toggleAnswersModal = (post) => {
+  if (selectedPost.value?.id !== post.id) {
+    selectedPost.value = post;
+    selectedAnswers.value = [
+      { answer_id: 1, body: 'This is a static answer.', owner: { display_name: 'Static User' } }
+    ]; // Example static answer
   }
   showAnswersModal.value = !showAnswersModal.value;
 };
@@ -82,55 +92,58 @@ const closeModals = () => {
   showDetailsModal.value = false;
   showAnswersModal.value = false;
 };
-</script>
-
+</script> 
 
 <template>
-  <div class="stackexchange-page container mx-auto py-8 bg-black text-white">
+  <div class="stackexchange-page container mx-auto py-8 bg-gray-100 text-black">
     <div class="mb-6">
-      <h1 class="text-4xl font-bold flex items-center justify-center my-10 text-blue-300 animate-pulse">
+      <h1 class="text-4xl font-bold flex items-center pb-5 justify-center text-grey-300 animate-pulse">
         StackExchange
       </h1>
     </div>
 
     <!-- Search and Tag dropdown -->
     <div class="mb-6 flex flex-col lg:flex-row items-center justify-between">
-      <!-- Search input -->
       <input
         v-model="searchQuery"
         type="text"
-        placeholder="Search questions or content..."
-        class="w-full lg:w-3/4 p-2 mb-4 lg:mb-0 border rounded-lg bg-gray-700 text-white focus:outline-none"
+        placeholder="Search by Questions or Content . . . "
+        class="w-full mx-10 lg:w-3/4 p-2 mb-4 lg:mb-0 border rounded-lg bg-white text-black focus:outline-none shadow-md transition-transform transform hover:scale-105"
       />
 
-      <!-- Tag dropdown -->
-      <select v-model="selectedTag" class="w-full lg:w-1/4 p-2 border rounded-lg bg-gray-700 text-white">
-        <option value="">All Tags</option>
-        <option v-for="tag in tags" :key="tag" :value="tag">{{ tag }}</option>
+      <select v-model="selectedTag" class="w-full lg:w-1/4 p-2 border rounded-lg bg-white text-black shadow-md transition-transform transform hover:scale-105">
+        <option value="">All</option>
+        <option class="rounded-full bg-gray-50" v-for="tag in tags" :key="tag" :value="tag">{{ tag }}</option>
       </select>
     </div>
 
     <!-- Main content -->
     <div class="main-content flex flex-col lg:flex-row">
       <section class="posts w-full lg:w-full p-4">
-        <h2 class="text-xl font-bold mb-4">Questions</h2>
-        <div v-if="filteredPosts.length === 0" class="text-gray-600 text-center mt-20 bg-black py-5">
+        <div v-if="filteredPosts.length === 0" class="text-gray-600 text-center mt-20 bg-white py-5">
           <img src="../../public/img/noQuestion.jpg" alt="No questions available" class="w-60 mx-auto mb-8 rounded-xl">
-          <p class="text-2xl font-bold text-white">No questions available for this tag or search.</p>
+          <p class="text-2xl font-bold text-gray-700">No questions available for this tag or search.</p>
         </div>
-        <div v-for="post in filteredPosts" :key="post.id" class="post mb-6 p-4 border rounded-lg shadow-lg bg-gray-900 text-white">
+        <div v-for="post in filteredPosts" :key="post.id" class="post mb-6 p-4 border rounded-lg shadow-lg bg-white text-black hover:bg-gray-50 transition-colors">
           <h3 class="font-semibold text-lg mb-2">{{ post.title }}</h3>
-          <h3 class="font-semibold text-sm mb-5">{{ post.tags }}</h3>
+          <h3 class="font-semibold text-sm mb-5">{{ post.tags.join(', ') }}</h3>
           <button
             @click="openDetailsModal(post)"
-            class="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700"
+            class="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition-colors"
           >
-            See Question Details
+            See Details
           </button>
-          <button
+          <!-- <button
             @click="fetchAnswers(post.id)"
-            class="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 ml-2"
+            class="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 ml-2 transition-colors"
           >
+            {{ showAnswersModal && selectedPost.id === post.id ? 'Hide Answers' : 'See Answers' }}
+          </button> -->
+          <button
+            @click="toggleAnswersModal(post)"
+            class="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 ml-2 transition-colors"
+          >
+          
             {{ showAnswersModal && selectedPost.id === post.id ? 'Hide Answers' : 'See Answers' }}
           </button>
         </div>
@@ -139,21 +152,21 @@ const closeModals = () => {
 
     <!-- Question Details Modal -->
     <div v-if="showDetailsModal" class="modal fixed inset-0 bg-black bg-opacity-75 flex justify-center items-center z-50">
-      <div class="modal-content bg-gray-900 p-6 rounded-lg w-3/4 max-w-3xl relative">
-        <button @click="closeModals" class="absolute top-2 right-2 text-white">
+      <div class="modal-content bg-white p-6 rounded-lg w-3/4 max-w-3xl relative">
+        <button @click="closeModals" class="absolute top-2 right-2 text-black">
           <span class="material-symbols-outlined">close</span>
         </button>
         <h2 class="text-2xl font-bold mb-4">{{ selectedPost?.title }}</h2>
-        <p class="text-gray-400 mb-4">By: <a :href="selectedPost?.owner.link" class="text-blue-400 hover:underline">{{ selectedPost?.owner.display_name }}</a></p>
-        <p class="text-gray-400 mb-4">{{ selectedPost?.content }}</p>
-        <a :href="selectedPost?.link" target="_blank" class="text-blue-400 hover:underline">View on StackOverflow</a>
+        <p class="text-gray-800 mb-4">By: <a :href="selectedPost?.owner.link" class="text-blue-500 hover:underline">{{ selectedPost?.owner.display_name }}</a></p>
+        <p class="text-gray-800 mb-4">{{ selectedPost?.content }}</p>
+        <a :href="selectedPost?.link" target="_blank" class="text-blue-500 hover:underline">View on StackOverflow</a>
       </div>
     </div>
 
     <!-- Answers Modal -->
     <div v-if="showAnswersModal && selectedPost" class="modal fixed inset-0 bg-black bg-opacity-75 flex justify-center items-center z-50">
-      <div class="modal-content bg-gray-900 p-6 rounded-lg w-3/4 max-w-3xl relative">
-        <button @click="closeModals" class="absolute top-2 right-2 text-white">
+      <div class="modal-content bg-white p-6 rounded-lg w-3/4 max-w-3xl relative">
+        <button @click="closeModals" class="absolute top-2 right-2 text-black">
           <span class="material-symbols-outlined">close</span>
         </button>
         <h2 class="text-2xl font-bold mb-4">Answers for: {{ selectedPost?.title }}</h2>
@@ -161,9 +174,9 @@ const closeModals = () => {
         <!-- Scrollable Answers Section -->
         <div class="answers-container max-h-96 overflow-y-auto">
           <div v-if="selectedAnswers.length > 0">
-            <div v-for="answer in selectedAnswers" :key="answer.answer_id" class="answer mb-4 p-4 bg-gray-800 rounded-lg">
-              <pre class="text-gray-300 whitespace-pre-wrap">{{ answer.body }}</pre>
-              <p class="text-white text-xl mt-4 font-bold">By: {{ answer.owner.display_name || 'Anonymous' }}</p>
+            <div v-for="answer in selectedAnswers" :key="answer.answer_id" class="answer mb-4 p-4 bg-gray-100 rounded-lg shadow-md">
+              <pre class="text-gray-800 whitespace-pre-wrap">{{ answer.body }}</pre>
+              <p class="text-black text-xl mt-4 font-bold">By: {{ answer.owner.display_name || 'Anonymous' }}</p>
             </div>
           </div>
           <div v-if="selectedAnswers.length === 0" class="text-gray-600">No answers available.</div>
@@ -172,7 +185,6 @@ const closeModals = () => {
     </div>
   </div>
 </template>
-
 
 <style scoped>
 .stackexchange-page {
@@ -203,24 +215,25 @@ input, select {
 }
 
 .modal-content {
-  background-color: #1a202c;
+  background-color: #ffffff;
   padding: 2rem;
   border-radius: 0.5rem;
-  position: relative;
+  width: 90%;
+  max-width: 600px;
 }
 
-pre {
-  background-color: #2d3748;
-  padding: 1rem;
+.answers-container {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.answer {
+  border: 1px solid #ddd;
   border-radius: 0.5rem;
-  white-space: pre-wrap;
-  color: #e2e8f0;
+  padding: 1rem;
 }
 
-@media (max-width: 1024px) {
-  .main-content {
-    flex-direction: column;
-  }
+.material-symbols-outlined {
+  font-size: 2rem;
 }
 </style>
-

@@ -1,21 +1,22 @@
-<script setup>
-import Podcast from '../components/Podcast.vue';
-import HeaderA from '../components/HeaderA.vue';
-import Aside from '../components/Aside.vue';
-
-</script>
-
 <template>
   <main class="main-container">
     <HeaderA />
-    <div class="flex">
-      <Aside />
-      <Podcast />
+    <div class="flex flex-col lg:flex-row">
+      <Aside class="lg:w-1/4" />
+      <div class="lg:w-3/4 flex-1 p-4">
+        <Podcast />
+      </div>
     </div>
   </main>
 </template>
 
-<style>
+<script setup>
+import Podcast from '../components/Podcast.vue';
+import HeaderA from '../components/HeaderA.vue';
+import Aside from '../components/Aside.vue';
+</script>
+
+<style scoped>
 .main-container {
   background-color: #F5F5F5;
   min-height: 100vh;

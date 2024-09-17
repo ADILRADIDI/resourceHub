@@ -26,8 +26,8 @@
       </div>
       <!-- Navigation Links -->
       <div class="flex items-center space-x-4">
-        <router-link to="login" class="text-gray-600 hover:text-black transition transform hover:-translate-y-2">Login</router-link>
-        <router-link to="register" class="text-white bg-indigo-600 hover:bg-indigo-700 py-2 px-4 rounded-lg transition transform hover:-translate-y-2 ">Register</router-link>
+        <router-link to="login" class="text-gray-600 hover:text-black ">Login</router-link>
+        <router-link to="register" class="text-white bg-indigo-600 hover:bg-indigo-700 py-2 px-4 rounded-lg ">Register</router-link>
       </div>
     </div>
   </template>
