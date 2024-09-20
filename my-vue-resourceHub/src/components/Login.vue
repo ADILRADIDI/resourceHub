@@ -64,7 +64,9 @@
 </template>
 
 <script>
+// Login.vue
 import axios from 'axios';
+import { API_BASE_URL } from '../config'; 
 
 export default {
   name: 'Login',
@@ -78,28 +80,30 @@ export default {
   methods: {
     async login() {
       try {
-        const response = await axios.post('http://localhost:8000/api/login', {
+        const response = await axios.post(`${API_BASE_URL}login`, {
           email: this.email,
           password: this.password
         });
-
-        const token = response.data.token; // Adjust if needed
+        console.log(response.data)
+        const token = response.data.token;
         localStorage.setItem('user-token', token);
-        console.log(token);
         axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-
+        
         if (response.data.roles.includes('super-admin')) {
+          console.log('success login')
           this.$router.push('/DashboardAdmin');
         } else {
           this.$router.push('/');
         }
       } catch (error) {
+        console.log('failed bro login')
         console.error('Login error:', error.response ? error.response.data : error.message);
         this.error = error.response?.data?.message || 'An error occurred';
       }
     }
   }
 };
+
 </script>
 <style scoped>
 #container {

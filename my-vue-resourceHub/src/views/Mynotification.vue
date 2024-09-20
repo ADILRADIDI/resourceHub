@@ -1,11 +1,15 @@
 <script setup>
 import Notification from '@/components/Notification.vue';
-import HeaderA from '@/components/HeaderA.vue';
+import Header from '@/components/Header.vue';
+import HeaderA from '../components/HeaderA.vue';
+// Check if the token exists in localStorage
+const tokenExists = localStorage.getItem('user-token');
 </script>
 
 <template>
   <main class="main-container">
-        <HeaderA />
+        <Header v-if="!tokenExists" />
+        <HeaderA v-else="tokenExists" />
         <Notification />
   </main>
 </template>

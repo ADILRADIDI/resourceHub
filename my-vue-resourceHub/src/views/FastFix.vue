@@ -1,11 +1,17 @@
 <script setup>
-import HeaderA from '../components/HeaderA.vue';
+import Header from '../components/Header.vue';
 import Aside from '../../src/components/Aside.vue';
 import FastFix from '../../src/components/FastFix.vue';
+
+import HeaderA from '../components/HeaderA.vue';
+// Check if the token exists in localStorage
+const tokenExists = localStorage.getItem('user-token');
+
 </script>
 
 <template>
-  <HeaderA />
+  <Header v-if="!tokenExists" class="shadow-sm"   />
+  <HeaderA v-else="tokenExists" class="shadow-sm"  />
   <main class="main-container">
     <div class="flex flex-col lg:flex-row">
       <Aside class="lg:w-1/4" />

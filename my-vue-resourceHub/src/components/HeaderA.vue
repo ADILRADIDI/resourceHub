@@ -31,9 +31,9 @@ search
     </div>
 
     <!-- Create Post Button -->
-    <router-link to="/new" class="text-blue-700 border-solid border-indigo-600 border-2 
-      hover:text-white hover:bg-indigo-700 py-2 px-4 rounded-lg w-36">
-      <span class="flex items-center justify-center transition transform hover:-translate-y-1">
+    <router-link to="/new" class="text-blue-700 border-solid border-indigo-500 border-2 
+      hover:text-white hover:bg-indigo-500 py-2 px-4 rounded-lg w-36">
+      <span class="flex items-center justify-center">
         Create Post
       </span>
     </router-link>
