@@ -70,7 +70,7 @@ const categoryName = computed(() => {
 
 const fetchResources = async () => {
   try {
-    const response = await axios.get('http://127.0.0.1:8000/api/resources', {
+    const response = await axios.get('/resources', {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('token')}`
       }
