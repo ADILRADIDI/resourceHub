@@ -90,7 +90,10 @@ export default {
         });
         console.log(response.data)
         const token = response.data.token;
+        const userId = response.data.user_id;
         localStorage.setItem('user-token', token);
+        localStorage.setItem('user-id', userId);
+
         axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
         // Redirect to dashboard after successful registration

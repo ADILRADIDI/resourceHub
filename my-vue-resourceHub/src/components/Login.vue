@@ -86,7 +86,10 @@ export default {
         });
         console.log(response.data)
         const token = response.data.token;
+        const userid = response.data.user_id;
         localStorage.setItem('user-token', token);
+        localStorage.setItem('user-id', userid);
+
         axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
         
         if (response.data.roles.includes('super-admin')) {

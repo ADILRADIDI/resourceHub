@@ -198,19 +198,19 @@
             
             <!-- Resources Dropdown -->
             <li>
-      <button @click="toggleDropdown('resources')" class="flex items-center w-full p-2 text-gray-800 rounded-lg hover:bg-gray-100 transition duration-300">
-        <span class="material-symbols-outlined">developer_mode</span>
-        <span class="ml-4 flex-1 text-left">Dev Resources</span>
-        <svg class="w-3 h-3" fill="none" viewBox="0 0 10 6">
-          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
-        </svg>
-      </button>
-      <ul v-show="dropdownStates.resources" class="py-2 mt-2 space-y-2 bg-white rounded-lg shadow-md">
-        <li v-for="category in categories" :key="category.id">
-          <router-link :to="`/resources/${category.id}`" class="block px-4 py-2 text-gray-800 hover:bg-gray-100 transition duration-300">{{ category.name }}</router-link>
-        </li>
-      </ul>
-    </li>
+              <button @click="toggleDropdown('resources')" class="flex items-center w-full p-2 text-gray-800 rounded-lg hover:bg-gray-100 transition duration-300">
+                <span class="material-symbols-outlined">developer_mode</span>
+                <span class="ml-4 flex-1 text-left">Dev Resources</span>
+                <svg class="w-3 h-3" fill="none" viewBox="0 0 10 6">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+                </svg>
+              </button>
+              <ul v-show="dropdownStates.resources" class="py-2 mt-2 space-y-2 bg-white rounded-lg shadow-md">
+                <li v-for="category in categories" :key="category.id">
+                  <router-link :to="`/resources/${category.id}`" class="block px-4 py-2 text-gray-800 hover:bg-gray-100 transition duration-300">{{ category.name }}</router-link>
+                </li>
+              </ul>
+            </li>
             
             <!-- Roadmaps Dropdown -->
             <li>
@@ -255,14 +255,27 @@ const dropdownStates = ref({
 });
 
 const categories = [
-  { id: 'webdev', name: 'Web Development' },
-  { id: 'javascript', name: 'JavaScript' },
-  { id: 'python', name: 'Python' },
-  { id: 'java', name: 'Java' },
-  { id: 'php', name: 'PHP' },
-  { id: 'ruby', name: 'Ruby' },
-  { id: 'go', name: 'Go' },
-  { id: 'rust', name: 'Rust' },
+  { id: 'accessibility', name: 'Accessibility' },
+  { id: 'ai', name: 'AI' },
+  { id: 'analytics', name: 'Analytics' },
+  { id: 'animation', name: 'Animation' },
+  { id: 'api-building', name: 'API Building' },
+  { id: 'audio', name: 'Audio' },
+  { id: 'authentication', name: 'Authentication' },
+  { id: 'blog', name: 'Blog' },
+  { id: 'book', name: 'Book' },
+  { id: 'browser', name: 'Browser' },
+  { id: 'cdn', name: 'CDN' },
+  { id: 'cheatsheet', name: 'Cheatsheet' },
+  { id: 'cloud-computing', name: 'Cloud Computing' },
+  { id: 'code-challenge', name: 'Code Challenge' },
+  { id: 'code-generator', name: 'Code Generator' },
+  { id: 'code-snippet', name: 'Code Snippet' },
+  { id: 'color', name: 'Color' },
+  { id: 'conference', name: 'Conference' },
+  { id: 'database', name: 'Database' },
+  { id: 'design', name: 'Design' },
+  { id: 'documentation', name: 'Documentation' },
 ];
 
 function toggleDropdown(dropdown) {

@@ -1,101 +1,136 @@
 <template>
   <div class="app-container">
-    <div class="mb-6">
+    <div class="mb-16">
       <h1 class="text-4xl font-bold flex items-center justify-center my-10 text-blue-600 animate-pulse">
         {{ categoryName }} Resources
       </h1>
     </div>
-    <div class="flex items-center mb-8">
-      <form class="w-full max-w-lg mx-auto" @submit.prevent="handleSearch">
-        <div class="relative">
-          <input
-            type="search"
-            id="default-search"
-            class="block w-full py-3 pl-12 pr-4 text-sm text-gray-200 bg-gray-900 border border-gray-700 rounded-full focus:ring-blue-500 focus:border-blue-500"
-            placeholder="Search resources..."
-            v-model="searchQuery"
-            required
-          />
-          <button
-            type="submit"
-            class="absolute right-3 top-1/2 transform -translate-y-1/2 bg-blue-700 hover:bg-blue-800 text-white font-medium rounded-full text-sm px-4 py-2"
-          >
-            Search
-          </button>
-        </div>
-      </form>
-    </div>
 
-    <div class="resources grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-      <div
-        class="resource-card"
-        v-for="resource in filteredResources"
-        :key="resource.id"
-      >
-        <img :src="resource.image" :alt="resource.title" class="resource-image" />
-        <div class="resource-content">
-          <h2 class="text-xl font-semibold mb-2">{{ resource.title }}</h2>
-          <p class="text-gray-600 mb-4">{{ resource.description }}</p>
-          <button
-            class="visit-button bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-full px-4 py-2"
-            @click="openResource(resource.url)"
-          >
-            Visit Now
-          </button>
+    <!-- Display resources by selected category -->
+    <div v-if="selectedCategory">
+      <div class="resources grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div
+          class="resource-card"
+          v-for="(resource, index) in filteredResources"
+          :key="index"
+          @click="openResource(resource.url)"
+        >
+          <img :src="resource.image_url" :alt="resource.title" class="resource-image" />
+          <div class="resource-content">
+            <h3 class="text-xl font-semibold mb-2">{{ resource.title }}</h3>
+            <p class="text-gray-600 mb-4">{{ resource.description }}</p>
+            <button
+              class="visit-button bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-full px-4 py-2"
+              @click="openResource(resource.url)"
+            >
+              Visit Now
+            </button>
+          </div>
         </div>
       </div>
+    </div>
+
+    <!-- Display all categories for selection -->
+    <div v-else>
+      <h2 class="text-2xl font-semibold mb-4">Categories</h2>
+      <ul class="flex flex-wrap gap-4">
+        <li
+          v-for="(category, index) in categories"
+          :key="index"
+          @click="selectCategory(category)"
+          class="cursor-pointer bg-gray-200 hover:bg-gray-300 px-4 py-2 rounded-md"
+        >
+          {{ category.name }}
+        </li>
+      </ul>
     </div>
   </div>
 </template>
 
 <script setup>
 import { ref, computed, onMounted } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import axios from 'axios';
+import { API_BASE_URL } from '@/config';
 
+// Define state variables
 const resources = ref([]);
-const searchQuery = ref('');
 const route = useRoute();
-const selectedCategory = computed(() => parseInt(route.params.categoryId));
+const router = useRouter();
+const selectedCategory = computed(() => route.params.category);
 
-const categoryName = computed(() => {
-  const categoryMap = {
-    4: 'Accessibility',
-    5: 'AI',
-    // Add mappings for other category IDs
-  };
-  return categoryMap[selectedCategory.value] || 'All Categories';
-});
+// Category name mapping based on category ID
+const categoryMap = {
+  'accessibility': 'Accessibility',
+  'ai': 'AI',
+  'analytics': 'Analytics',
+  'animation': 'Animation',
+  'api-building': 'API Building',
+  'audio': 'Audio',
+  'authentication': 'Authentication',
+  'blog': 'Blog',
+  'book': 'Book',
+  'browser': 'Browser',
+  'cdn': 'CDN',
+  'cheatsheet': 'Cheatsheet',
+  'cloud-computing': 'Cloud Computing',
+  'code-challenge': 'Code Challenge',
+  'code-generator': 'Code Generator',
+  'code-snippet': 'Code Snippet',
+  'color': 'Color',
+  'conference': 'Conference',
+  'database': 'Database',
+  'design': 'Design',
+  'documentation': 'Documentation'
+};
 
+const categoryName = computed(() => categoryMap[selectedCategory.value]);
+const token = localStorage.getItem('user-token');
 
+// Fetch resources from the API
 const fetchResources = async () => {
   try {
-    const response = await axios.get('/resources', {
+    const response = await axios.get(`${API_BASE_URL}resources`, {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`
+        Authorization: `Bearer ${token}`
       }
     });
-    resources.value = response.data.filter(resource => resource.category_id === selectedCategory.value);
-    console.log(resources.value);
+    resources.value = response.data;
+    console.log('Fetched Resources:', response.data);
   } catch (error) {
     console.error('Error fetching resources:', error);
   }
 };
 
-
+// Run the fetch function on component mount
 onMounted(fetchResources);
 
+// Filter resources by selected category
 const filteredResources = computed(() => {
-  if (!searchQuery.value) return resources.value;
-  return resources.value.filter(resource =>
-    resource.title.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
-    resource.description.toLowerCase().includes(searchQuery.value.toLowerCase())
-  );
+  if (!resources.value || resources.value.length === 0) return [];
+
+  return resources.value.filter(resource => resource.category.slug === selectedCategory.value);
 });
 
+// Open resource link in a new tab
 const openResource = (url) => {
   window.open(url, '_blank');
 };
+
+// List of all categories
+const categories = computed(() => {
+  return Object.keys(categoryMap).map(key => ({
+    slug: key,
+    name: categoryMap[key]
+  }));
+});
+
+// Function to select a category
+const selectCategory = (category) => {
+  // Navigate to selected category route
+  router.push({ name: 'category', params: { category: category.slug } });
+};
+
 </script>
 
 <style scoped>

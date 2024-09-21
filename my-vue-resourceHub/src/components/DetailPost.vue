@@ -63,7 +63,7 @@
           <p class="text-gray-700 text-md mt-1 ml-10">{{ comment.content }}</p>
         </div>
   
-        <!-- Add New Comment Section -->
+        <!-- Add New Comment Section --> 
         <div class="add-comment mt-6">
           <form @submit.prevent="addComment">
             <div class="w-full mb-4 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-700 dark:border-gray-600">

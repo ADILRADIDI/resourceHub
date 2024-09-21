@@ -18,8 +18,8 @@ const tokenExists = localStorage.getItem('user-token');
   <main class="main-container">
     <div class="flex gap-5">
       <Aside class="mt-8" />
-      <Post />
-      <AdsRight />
+      <Post class="w-3/4 items-start"/>
+      <AdsRight v-if="tokenExists" class="w-1/2"/>
     </div>
   </main>
 </template>

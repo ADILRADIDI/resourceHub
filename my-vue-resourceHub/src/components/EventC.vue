@@ -35,7 +35,7 @@ const filteredEvents = computed(() => {
 const registerForEvent = async (eventId) => {
   const eventToRegister = events.value.find(event => event.id === eventId);
   if (eventToRegister.is_registered) {
-    modalMessage.value = 'You are already registered for this event.';
+    modalMessage.value = 'You are already registered for this event check you mail.';
     isModalOpen.value = true;
   } else {
     try {
@@ -86,12 +86,12 @@ onMounted(fetchEvents);
       <div class="events-box flex items-center justify-center text-center" v-for="event in filteredEvents" :key="event.id">
         <div class="events-box-inner">
           <div class="events-box-front">
-            <div class="events-text">
-                <marquee behavior="scroll" direction="left" scrollamount="3" style="font-size: 1.2rem; color: #027179;">
-                    <strong>{{ event.title }}</strong>
-                </marquee>
-              <!-- <strong>{{ event.title }}</strong> -->
-              <br><br>
+            <div class="events-text ">
+              <h1 class="text-green-500 font-bold text-xl">
+                {{ event.title }}
+              </h1>
+              <br>
+              <br>
               <span class="flex items-center justify-center">
                 <span class="material-symbols-outlined">
                     location_on
@@ -104,13 +104,17 @@ onMounted(fetchEvents);
 
           <div class="events-box-back">
             <div class="back-content ">
-              <strong class="event-title">{{ event.title }}</strong>
-              <p>{{ event.description }}</p>
-              <p class="status my-6">{{ event.status }}</p>
-              <p class="mb-4"><strong>{{ event.formatted_date }}</strong></p>
-              <button @click="registerForEvent(event.id)" class="register-button">
+              <strong class="event-title text-xl">{{ event.title }}</strong>
+              <!-- <p class="my-5 "><strong>{{ event.formatted_date }}</strong></p> -->
+              <p class="mt-10">{{ event.description }}</p>
+              <span class="flex items-center justify-around ">
+                <p class="status my-6 text-xl text-green-500">{{ event.status }}</p>              
+                <button @click="registerForEvent(event.id)" class="register-button bg-green-500 hover:bg-green-600
+                text-white">
                 {{ event.is_registered ? 'Already Registered' : 'Register' }}
               </button>
+              </span>
+              
             </div>
           </div>
         </div>
@@ -118,12 +122,15 @@ onMounted(fetchEvents);
     </div>
 
     <div v-if="isModalOpen" class="modal">
-      <div class="modal-content">
-        <h3>Registration Status</h3>
-        <p>{{ modalMessage }}</p>
-        <button @click="isModalOpen = false" class="close-button">Close</button>
+      <div class="modal-content w-1/3 flex flex-col items-center justify-center">
+        <h3 class="text-green-600 text-2xl font-bold">Registration Status</h3>
+        <img class="w-72" src="../../public/img/iconmail.png" alt="icon mail">
+        <p class="my-10 font-semibold text-xl text-center">{{ modalMessage }}</p>
+        <button @click="isModalOpen = false" class="close-button bg-green-400 rounded-full
+        px-8 py-2 hover:bg-transparent hover:shadow-2xl">Close</button>
       </div>
     </div>
+
   </section>
 </template>
 
@@ -222,14 +229,11 @@ onMounted(fetchEvents);
 }
 
 .event-title {
-  font-size: 1.5rem;
   font-weight: bold;
 }
 
 .status {
-  background-color: #4c8bf5;
-  color: white;
-  padding: 5px 10px;
+  padding: 10px 20px;
   border-radius: 100px;
 
 
@@ -238,15 +242,10 @@ onMounted(fetchEvents);
 .register-button {
   padding: 10px 20px;
   border: none;
-  background-color: #007bff;
-  color: white;
   border-radius: 25px;
   cursor: pointer;
   transition: background-color 0.3s;
-}
-
-.register-button:hover {
-  background-color: #0056b3;
+  color:white;
 }
 
 .modal {
@@ -265,18 +264,17 @@ onMounted(fetchEvents);
   border-radius: 10px;
   text-align: center;
 }
-
-.close-button {
-  background: #007bff;
-  color: white;
-  border: none;
-  padding: 10px 15px;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s;
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  display: flex;
+  align-items: center; /* Center vertically */
+  justify-content: center; /* Center horizontally */
 }
 
-.close-button:hover {
-  background-color: #0056b3;
-}
+
 </style>

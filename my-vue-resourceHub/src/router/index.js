@@ -189,7 +189,8 @@ const router = createRouter({
       name: 'Pd',
       component: PostDetail
     } 
-    ,{
+    ,
+    {
       path: '/resources/:category',
       name: 'Resources',
       component: Resources,

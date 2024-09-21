@@ -129,7 +129,7 @@ const closeModals = () => {
           <h3 class="font-semibold text-sm mb-5">{{ post.tags.join(', ') }}</h3>
           <button
             @click="openDetailsModal(post)"
-            class="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition-colors"
+            class="bg-green-600 text-white py-2 px-4 rounded-full hover:bg-green-700 transition-colors"
           >
             See Details
           </button>
@@ -141,7 +141,7 @@ const closeModals = () => {
           </button> -->
           <button
             @click="toggleAnswersModal(post)"
-            class="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 ml-2 transition-colors"
+            class="bg-yellow-500 text-white py-2 px-4 rounded-full hover:bg-yellow-600 ml-2 transition-colors"
           >
           
             {{ showAnswersModal && selectedPost.id === post.id ? 'Hide Answers' : 'See Answers' }}
