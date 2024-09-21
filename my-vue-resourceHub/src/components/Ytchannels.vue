@@ -1,65 +1,75 @@
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
+import axios from 'axios';
+import { API_BASE_URL } from '../config';
 
-// Sample data for YouTube channels
-const channels = ref([
-  { id: 1, channel_name: 'Frontend Mastery', channel_url: 'https://www.youtube.com/channel/UC1', category: 'Front-end Dev' },
-  { id: 2, channel_name: 'Backend Experts', channel_url: 'https://www.youtube.com/channel/UC2', category: 'Back-end Dev' },
-  { id: 3, channel_name: 'Cloud Gurus', channel_url: 'https://www.youtube.com/channel/UC3', category: 'Cloud Computing' },
-  { id: 4, channel_name: 'Full-Stack Overflow', channel_url: 'https://www.youtube.com/channel/UC4', category: 'Full-stack Dev' },
-  { id: 5, channel_name: 'Machine Learning Masters', channel_url: 'https://www.youtube.com/channel/UC5', category: 'Machine Learning' },
-  { id: 6, channel_name: 'Code with Aymen', channel_url: 'https://www.youtube.com/channel/UC6', category: 'Front-end Dev' },
-  { id: 7, channel_name: 'Ninja Masters', channel_url: 'https://www.youtube.com/channel/UC7', category: 'Front-end Dev' },
-]);
+// State to store YouTube channels
+const channels = ref([]);
 
-const categories = ref([
-  'Front-end Dev',
-  'Back-end Dev',
-  'Cloud Computing',
-  'Full-stack Dev',
-  'Machine Learning',
-  'Devops & Big Data',
-  'Mobile Dev',
-  'Cybersecurity',
-  'UI/UX Design'
-]);
-
-const selectedCategory = ref('');
+// State for search query
 const searchQuery = ref('');
 const showSuggestForm = ref(false); // State to control the visibility of the form
 
-const filteredChannels = computed(() => {
-  return channels.value.filter(channel => {
-    return (
-      (selectedCategory.value === '' || channel.category === selectedCategory.value) &&
-      (searchQuery.value === '' || channel.channel_name.toLowerCase().includes(searchQuery.value.toLowerCase()))
-    );
-  });
-});
-
+// Form data for suggesting a new channel
 const newChannelName = ref('');
 const newChannelUrl = ref('');
-const newChannelCategory = ref('');
 
-const suggestChannel = () => {
-  if (newChannelName.value && newChannelUrl.value && newChannelCategory.value) {
-    const newId = channels.value.length + 1;
-    channels.value.push({
-      id: newId,
-      channel_name: newChannelName.value,
-      channel_url: newChannelUrl.value,
-      category: newChannelCategory.value,
-    });
+// Get the token from localStorage (or replace with your method)
+const token = localStorage.getItem('user-token');
 
-    // Reset form
-    newChannelName.value = '';
-    newChannelUrl.value = '';
-    newChannelCategory.value = '';
-    
-    // Hide the form after submission
-    showSuggestForm.value = false;
+// Axios instance with default headers for the token
+const axiosInstance = axios.create({
+  baseURL: API_BASE_URL,
+  headers: {
+    Authorization: `Bearer ${token}`,
+  },
+});
+
+// Fetch YouTube channels when the component is mounted
+const fetchChannels = async () => {
+  try {
+    const response = await axiosInstance.get('youtubeChannels');
+    channels.value = response.data;
+  } catch (error) {
+    console.error('Error fetching channels:', error);
   }
 };
+
+// Filtered channels based on the search query
+const filteredChannels = computed(() => {
+  return channels.value.filter(channel =>
+    searchQuery.value === '' || channel.channel_name.toLowerCase().includes(searchQuery.value.toLowerCase())
+  );
+});
+
+// Suggest a new YouTube channel
+const suggestChannel = async () => {
+  if (newChannelName.value && newChannelUrl.value) {
+    try {
+      const newChannel = {
+        channel_name: newChannelName.value,
+        channel_url: newChannelUrl.value,
+      };
+
+      const response = await axiosInstance.post('/suggested-yt-channels', newChannel);
+
+      // Add the new suggested channel to the list
+      channels.value.push(response.data);
+
+      // Reset the form
+      newChannelName.value = '';
+      newChannelUrl.value = '';
+      showSuggestForm.value = false; // Hide the form after submission
+    } catch (error) {
+      console.error('Error suggesting channel:', error);
+    }
+  }
+};
+
+// Fetch channels when the component is mounted
+onMounted(() => {
+  fetchChannels();
+});
 </script>
 
 <template>
@@ -71,19 +81,15 @@ const suggestChannel = () => {
     </div>
 
     <!-- Search Bar -->
-    <div class="search-bar mb-6 flex flex-col sm:flex-row items-center justify-between gap-3">
+    <div class="search-bar mb-6 flex items-center justify-between gap-3">
       <input
         v-model="searchQuery"
         type="text"
         placeholder="Search for a channel"
-        class="p-2 border rounded-lg flex-grow mb-4 sm:mb-0 sm:mr-4"
+        class="p-2 border rounded-lg flex-grow"
       />
-      <select v-model="selectedCategory" class="p-2 border rounded-lg mb-4 sm:mb-0">
-        <option value="">All</option>
-        <option v-for="category in categories" :key="category" :value="category">{{ category }}</option>
-      </select>
-      <button 
-        @click="showSuggestForm = !showSuggestForm" 
+      <button
+        @click="showSuggestForm = !showSuggestForm"
         class="px-4 py-2 bg-green-600 text-white font-semibold rounded-lg shadow-lg"
       >
         {{ showSuggestForm ? 'Hide Suggest' : 'Suggest a YT-Channel' }}
@@ -113,12 +119,6 @@ const suggestChannel = () => {
             class="w-full p-2 border rounded-lg"
           />
         </div>
-        <div class="mb-4">
-          <select v-model="newChannelCategory" class="w-full p-2 border rounded-lg">
-            <option disabled value="">Select a Category</option>
-            <option v-for="category in categories" :key="category" :value="category">{{ category }}</option>
-          </select>
-        </div>
         <button
           @click="suggestChannel"
           class="px-4 py-2 bg-blue-600 text-white font-semibold rounded-lg shadow-lg"
@@ -130,60 +130,29 @@ const suggestChannel = () => {
 
     <!-- Channels List -->
     <div class="channels-list grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-      <div v-for="channel in filteredChannels" :key="channel.id" class="channel-card p-4 border rounded-lg shadow-lg bg-white">
-        <h3 class="font-semibold text-lg text-red-500">{{ channel.channel_name }}</h3>
-        <a :href="channel.channel_url" target="_blank" class="text-blue-600 underline">Visit Channel</a>
-        <p class="text-sm text-gray-500 mt-2">{{ channel.category }}</p>
+      <div v-for="channel in filteredChannels" :key="channel.id" class="p-4 border rounded-lg shadow-md">
+        <h3 class="text-xl font-semibold mb-5">{{ channel.channel_name }}</h3>
+        <a :href="channel.channel_url" target="_blank" class="text-blue-500 underline">Visit Channel</a>
       </div>
     </div>
   </div>
 </template>
 
 <style scoped>
-.ytchannels-page {
-  max-width: 1200px;
-}
-
-.search-bar {
-  margin-bottom: 2rem;
-}
-
 .modal {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 50;
+  backdrop-filter: blur(5px);
 }
 
 .modal-content {
-  background-color: #ffffff;
-  padding: 2rem;
-  border-radius: 0.5rem;
-  width: 90%;
-  max-width: 600px;
+  animation: fadeIn 0.3s ease-in-out;
 }
 
-.material-symbols-outlined {
-  font-size: 2rem;
-}
-
-/* Channel Card Styles */
-.channel-card {
-  background-color: #ffffff;
-  padding: 1.5rem;
-  border: 1px solid #e2e8f0;
-  border-radius: 0.5rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.channel-card h3 {
-  color: #e3342f; /* Red color */
-}
-
-/* Responsive Styles */
-@media (max-width: 640px) {
-  .modal-content {
-    width: 95%;
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
   }
 }
 </style>
