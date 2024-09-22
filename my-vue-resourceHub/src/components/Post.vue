@@ -4,9 +4,9 @@
       <div class="post-header flex items-center mb-4 justify-around">
         <img :src="post.userProfileImage || 'default-image-url.jpg'" alt="Profile Picture" class="w-10 h-10 rounded-full mr-4">
         <div>
-          <router-link :to="`/u/${post.user_id}`">
-            <p class="font-semibold text-gray-800 hover:text-blue-500">{{ post.user.name }}</p>
-          </router-link>
+            <router-link :to="`/u/${post.user?.id}`" class="font-semibold text-gray-800 hover:text-blue-500">
+              {{ post.user?.name || 'Unknown User' }}
+            </router-link>
           <p class="text-sm text-gray-500">{{ new Date(post.created_at).toLocaleString() }}</p>
         </div>
         <div class="relative ml-auto">
@@ -28,19 +28,11 @@
 
       <div class="post-content text-gray-700 mb-6">
         <p class="mb-6">{{ post.body }}</p>
-
-        <!-- <div class="hashtags mb-4">
-          <span v-for="(tag, index) in post.tags" :key="index">
-            <router-link :to="`/t/${tag}`" class="text-blue-500 hover:underline mr-2">#{{ tag }}</router-link>
-          </span>
-        </div> -->
-        <!-- sss -->
         <div class="hashtags mb-4">
             <span v-for="(tag, index) in post.tags" :key="index">
                 <router-link :to="`/t/${tag}`" class="text-blue-500 hover:underline mr-2">#{{ tag }}</router-link>
             </span>
         </div>
-
       </div>
 
       <div class="post-footer flex items-center justify-between">
@@ -106,7 +98,7 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
-import { API_BASE_URL } from '../config';
+import { API_BASE_URL, Image_Unkown_user } from '../config';
 
 const posts = ref([]);
 const showModal = ref(false);
@@ -122,7 +114,7 @@ const fetchPosts = async () => {
     });
     posts.value = response.data.map(post => ({
       ...post,
-      userProfileImage: post.user.profile_picture || 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Unknown_person.jpg/925px-Unknown_person.jpg',
+      userProfileImage: post.user.profile_picture || `${Image_Unkown_user}`,
       liked: post.likes.some(like => like.user_id === parseInt(localStorage.getItem('user-id'))),
       saved: post.saved || false,
     }));

@@ -1,11 +1,11 @@
 <template>
-  <div :style="{ backgroundColor: userColorSettings.background }">
-
+  <div class="">
     <div class="profile-page container mx-auto p-4 md:p-6">
+      <!-- User Profile Section -->
       <div class="flex flex-wrap bg-white rounded-lg items-center justify-center shadow-lg">
         <span class="crayons-avatar crayons-avatar--3xl">
           <img
-            :src="userProfile.image"
+            :src="userProfile.profile_picture || Image_Unkown_user"
             width="128"
             height="128"
             :alt="`${userProfile.name} profile picture`"
@@ -13,15 +13,23 @@
           />
         </span>
         <div class="skills p-4 md:p-6 mt-6">
-          <h1 class="text-xl md:text-2xl font-bold text-gray-900 xl:text-3xl lg:text-2xl">{{ userProfile.name }}</h1>
-          <p class="text-base md:text-lg text-gray-700 mt-1">{{ userProfile.description }}</p>
-          <p class="text-sm text-gray-500 mt-1">{{ userProfile.location }}</p>
-          <p class="text-sm text-gray-500 mt-1">Joined on {{ userProfile.joinDate }}</p>
-          <a :href="userProfile.website" class="text-blue-600 hover:underline mt-2 block">{{ userProfile.website }}</a>
+          <h1 class="text-xl md:text-2xl font-bold text-gray-900 xl:text-3xl lg:text-2xl">
+            {{ loading ? 'Loading...' : userProfile.name }}
+          </h1>
+          <p class="text-base md:text-lg text-gray-700 mt-1">{{ userProfile.bio || 'No bio available' }}</p>
+          <p class="text-sm text-gray-500 mt-1">{{ userProfile.location || 'Location not specified' }}</p>
+          <span class="flex items-center justify-start gap-5">
+            <a :href="userProfile.github" class="text-blue-600 hover:underline mt-2 block" target="_blank">
+              <span class="material-symbols-outlined">github</span>
+            </a>
+            <a :href="userProfile.website" class="text-blue-600 hover:underline mt-2 block" target="_blank">
+              <span class="material-symbols-outlined w-10">language</span>
+            </a>
+          </span>
         </div>
       </div>
 
-      <!-- Skills and Languages -->
+      <!-- Skills Section -->
       <div class="skills bg-white p-4 md:p-6 rounded-lg shadow-lg mt-6">
         <h2 class="text-lg md:text-xl font-semibold text-gray-900">Skills/Languages</h2>
         <div class="skills-list mt-7">
@@ -35,38 +43,39 @@
         </div>
       </div>
 
-      <!-- Stats -->
-      <div class="stats bg-white p-4 md:p-6 rounded-lg shadow-lg mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div class="comments flex flex-col items-center">
-          <h3 class="text-base md:text-lg font-semibold text-gray-900">Posts Published</h3>
-          <p class="text-gray-700 text-lg md:text-xl font-bold">{{ posts.length }}</p>
-        </div>
-        <div class="comments flex flex-col items-center">
-          <h3 class="text-base md:text-lg font-semibold text-gray-900">Comments Written</h3>
-          <p class="text-gray-700 text-lg md:text-xl font-bold">{{ comments.length }}</p>
-        </div>
-        <div class="tags flex flex-col items-center">
-          <h3 class="text-base md:text-lg font-semibold text-gray-900">Tags Followed</h3>
-          <p class="text-gray-700 text-lg md:text-xl font-bold">{{ userProfile.tagsFollowed }}</p>
-        </div>
-      </div>
+      <!-- Recent Posts Section -->
+      <div class="recent-posts bg-white p-4 rounded-lg shadow-md mt-6">
+        <h3 class="text-lg font-semibold text-gray-800">My Posts</h3>
+        <div class="mt-4">
+          <div v-for="post in userProfile.posts" :key="post.id" class="post-container bg-white p-6 rounded-lg shadow-md mb-4">
+            <div class="post-header flex items-center mb-4">
+              <img :src="post.user.profile_picture || 'default-image-url.jpg'" alt="Profile Picture" class="w-10 h-10 rounded-full mr-4">
+              <div class="flex-1">
+                <router-link :to="`/u/${post.user.id}`" class="font-semibold text-gray-800 hover:text-blue-500">
+                  {{ post.user.name }}
+                </router-link>
+                <p class="text-sm text-gray-500">{{ new Date(post.created_at).toLocaleString() }}</p>
+              </div>
+              <div class="relative ml-auto">
+                <button @click="toggleDropdown(post.id)" class="text-black bg-white hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 inline-flex items-center">
+                  <i class="fa-solid fa-ellipsis-vertical text-xl"></i>
+                </button>
+                <div v-if="dropdownOpen === post.id" class="absolute right-0 mt-2 w-44 bg-white divide-y divide-gray-100 rounded-2xl shadow-lg z-20">
+                  <ul class="py-2 text-sm text-gray-700">
+                    <li><a href="#" class="block px-4 py-2 hover:bg-blue-200 hover:rounded-full">Copy Link</a></li>
+                    <li><a href="#" class="block px-4 py-2 hover:bg-blue-200 hover:rounded-full">Share</a></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
 
-      <!-- Recent Comments -->
-      <div class="recent-comments bg-white p-4 md:p-6 rounded-lg shadow-lg mt-6">
-        <h2 class="text-lg md:text-xl font-semibold text-gray-900 mb-4">Recent Comments</h2>
-        <div v-for="comment in comments" :key="comment.id" class="comment bg-gray-100 p-3 md:p-4 rounded-lg mb-4 border-l-4" :style="{ borderColor: userColorSettings.accent }">
-          <p class="text-gray-700">{{ comment.text }}</p>
-          <p class="text-sm text-gray-500 mt-2">{{ comment.date }}</p>
-        </div>
-      </div>
+            <router-link :to="`/Pd/${post.id}`">
+              <h2 class="post-title text-2xl font-bold text-gray-900 mb-4 hover:text-blue-500">{{ post.title }}</h2>
+            </router-link>
 
-      <!-- Posts Section -->
-      <div class="posts-section flex flex-col md:flex-row gap-6 mt-6">
-        <div class="posts bg-white p-4 md:p-6 rounded-lg shadow-lg flex-1">
-          <h2 class="text-lg md:text-xl font-semibold text-gray-900 mb-4">My Posts</h2>
-          <div v-for="post in posts" :key="post.id" class="post bg-gray-100 p-3 md:p-4 rounded-lg mb-4">
-            <h3 class="text-base md:text-lg font-bold text-gray-900 hover:text-blue-600">{{ post.title }}</h3>
-            <p class="text-gray-700">{{ post.excerpt }}</p>
+            <div class="post-content text-gray-700 mb-6">
+              <p class="mb-6">{{ post.body }}</p>
+            </div>
           </div>
         </div>
       </div>
@@ -75,71 +84,80 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, onMounted, computed } from 'vue';
+import axios from 'axios';
+import { API_BASE_URL, Image_Unkown_user } from '@/config';
 
-const userProfile = ref({
-  name: 'ADIL RADIDI',
-  description: 'Développeur Full Stack Junior spécialisé dans la pile Vue.js / Laravel',
-  location: 'Casablanca, Morocco',
-  joinDate: 'Jun 2, 2024',
-  website: 'https://adilradidi.netlify.app/',
-  image: 'https://media.dev.to/cdn-cgi/image/width=320,height=320,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F1564448%2F9e3a5175-795f-4040-8813-8eeb6e22397f.jpeg',
-  skills: 'Laravel, Vue.js, Next.js, UML, JavaScript, PHP, HTML5 & CSS, Tailwind CSS, Bootstrap, SQL, MySQL',
-  tagsFollowed: 21,
-});
-
-const skillList = computed(() => userProfile.value.skills.split(',').map(skill => skill.trim()));
-
-const posts = ref([
-  { id: 1, title: 'Sample Post Title 1', excerpt: 'This is a brief summary of the post content 1.' },
-  { id: 2, title: 'Sample Post Title 2', excerpt: 'This is a brief summary of the post content 2.' },
-  { id: 3, title: 'Sample Post Title 3', excerpt: 'This is a brief summary of the post content 3.' },
-]);
-
-const comments = ref([
-  { id: 1, text: 'Introduction to Azure with .NET Examples', date: 'Jul 25' },
-  { id: 2, text: 'Laravel 8 - Audit for Beginners (5 easy steps) ✍🏻📒💾', date: 'Jun 5' },
-]);
-
+const userProfile = ref({});
+const loading = ref(true);
 const userColorSettings = ref({
-  background: '#F5F5E2',
-  accent: '#4f46e5',
+  background: '#FFFFFFFF',
 });
+const dropdownOpen = ref(null);
+const errorMessage = ref(null);
+const posts = ref([]);
+const tagName = ref(''); // Replace with the desired tag
+
+// Fetch user profile and posts on component mount
+onMounted(async () => {
+  await fetchUserProfile();
+  await fetchPostsByTag();
+});
+
+// Function to fetch user profile
+const fetchUserProfile = async () => {
+  try {
+    const userId = localStorage.getItem('user-id');
+    const response = await axios.get(`${API_BASE_URL}profile/${userId}`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('user-token')}`,
+      },
+    });
+    userProfile.value = response.data;
+    console.log('User profile fetched:', userProfile.value); // Debugging
+  } catch (error) {
+    console.error('Error fetching user profile:', error);
+  } finally {
+    loading.value = false;
+  }
+};
+
+// Function to fetch posts by tag
+const fetchPostsByTag = async () => {
+  loading.value = true;
+  errorMessage.value = null;
+  const token = localStorage.getItem('user-token');
+  try {
+    console.log('Fetching posts with tag:', tagName.value); // Debugging
+    const response = await axios.post(`${API_BASE_URL}posts/by-tag`, { tag: tagName.value }, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: 'application/json',
+      },
+    });
+    posts.value = response.data;
+    console.log('Posts fetched:', posts.value); // Debugging
+  } catch (error) {
+    errorMessage.value = 'Error fetching posts. Please try again later.';
+    console.error('Error fetching posts:', error.response ? error.response.data : error);
+  } finally {
+    loading.value = false;
+  }
+};
+
+// Toggle dropdown for post options
+const toggleDropdown = (postId) => {
+  dropdownOpen.value = dropdownOpen.value === postId ? null : postId;
+};
+
+// Compute skill list from user profile
+const skillList = computed(() => 
+  userProfile.value.skills 
+    ? userProfile.value.skills.split('|').map(skill => skill.trim().replace(/\.$/, '')) 
+    : []
+);
 </script>
 
 <style scoped>
-.profile-page {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-
-.crayons-avatar__image {
-  border: 4px solid #ffffff;
-}
-
-.skills, .stats, .recent-comments, .posts, .aside {
-  margin-top: 1.5rem;
-}
-
-.comment {
-  border-left-width: 4px;
-}
-
-.posts-section {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.posts {
-  flex: 2;
-}
-
-@media (min-width: 768px) {
-  .stats {
-    grid-template-columns: repeat(3, 1fr);
-  }
-  .posts-section {
-    flex-direction: row;
-  }
-}
+/* Add any additional styling here */
 </style>

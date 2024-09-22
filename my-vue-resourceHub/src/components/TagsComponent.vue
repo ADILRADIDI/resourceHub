@@ -103,7 +103,7 @@ const fetchTags = async () => {
   try {
     const response = await apiClient.get('/tags');
     tags.value = response.data;
-    console.log(tags.value); // Debugging log
+    // console.log(tags.value); 
   } catch (error) {
     if (error.response && error.response.status === 403) {
       console.error('Error 403: Access Forbidden. Invalid token or insufficient permissions.');

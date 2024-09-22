@@ -21,7 +21,7 @@ const tokenExists = localStorage.getItem('user-token');
       <Post class="w-3/4 items-start"/>
       <AdsRight v-if="tokenExists" class="w-1/2"/>
     </div>
-  </main>
+  </main> 
 </template>
 
 <style scoped>

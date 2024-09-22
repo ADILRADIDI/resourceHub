@@ -212,7 +212,7 @@ const router = createRouter({
       path: '/u/:userId',
       name: 'UserProfile',
       component: UserProfile
-    }
+    }    
     ,
     {
       path: '/DashboardAdmin',
