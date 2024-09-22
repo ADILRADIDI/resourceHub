@@ -2,6 +2,7 @@
 import Notification from '@/components/Notification.vue';
 import Header from '@/components/Header.vue';
 import HeaderA from '../components/HeaderA.vue';
+import Aside from '../components/Aside.vue';
 // Check if the token exists in localStorage
 const tokenExists = localStorage.getItem('user-token');
 </script>
@@ -10,7 +11,12 @@ const tokenExists = localStorage.getItem('user-token');
   <main class="main-container">
         <Header v-if="!tokenExists" />
         <HeaderA v-else="tokenExists" />
-        <Notification />
+        <div class="flex flex-col lg:flex-row bg-white">
+      <Aside class="lg:w-1/4" />
+      <div class="lg:w-3/4 flex-1 p-4"> 
+        <Notification class="bg-white" />
+      </div>
+    </div>
   </main>
 </template>
 

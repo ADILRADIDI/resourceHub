@@ -1,156 +1,125 @@
 <script setup>
-// Update Vue.js Component
 import { ref, onMounted, computed } from 'vue';
-import axios from 'axios';
-import { useStore } from 'vuex';
+import axios from '../axios'; // Use your axios configuration
+import { API_BASE_URL } from '@/config';
 
-const store = useStore();
 const notifications = ref([]);
 const selectedFilter = ref('all');
 
 // Fetch notifications from the Laravel API
 const fetchNotifications = async () => {
   try {
-    const response = await axios.get('http://127.0.0.1:8000/api/notifications');
+    const token = localStorage.getItem('user-token'); // Retrieve the token
+    const response = await axios.get(`${API_BASE_URL}notifications`, {
+      headers: {
+        Authorization: `Bearer ${token}` // Set the authorization header
+      }
+    });
     notifications.value = response.data;
-    store.commit('SET_NOTIFICATIONS', response.data);
-    console.log(response.data);
   } catch (error) {
     console.error('Error fetching notifications:', error);
   }
 };
 
-onMounted(() => {
-  fetchNotifications();
-});
+// Fetch notifications on component mount
+onMounted(fetchNotifications);
 
-// Computed property to filter notifications based on the selected filter
+// Computed property to filter notifications
 const filteredNotifications = computed(() => {
-  if (selectedFilter.value === 'all') {
-    return notifications.value;
-  }
-  return notifications.value.filter(notification => notification.type === selectedFilter.value);
+  return selectedFilter.value === 'all'
+    ? notifications.value
+    : notifications.value.filter(n => n.type === selectedFilter.value);
 });
 
-// Function to mark a single notification as read
+// Mark a notification as read
 const markAsRead = async (id) => {
   try {
-    await axios.post(`http://127.0.0.1:8000/api/notifications/${id}/mark-as-read`);
-    store.dispatch('markAsRead', id);
-    // Optionally update the local notifications state
-    notifications.value = notifications.value.map(notification =>
-      notification.id === id ? { ...notification, read: true } : notification
+    const token = localStorage.getItem('user-token'); // Retrieve the token
+    await axios.post(`${API_BASE_URL}notifications/${id}/mark-as-read`, {}, {
+      headers: {
+        Authorization: `Bearer ${token}` // Set the authorization header
+      }
+    });
+    notifications.value = notifications.value.map(n =>
+      n.id === id ? { ...n, read: true } : n
     );
   } catch (error) {
     console.error('Error marking notification as read:', error);
   }
 };
 
-// Function to mark all notifications as read
+// Mark all notifications as read
 const markAllAsRead = async () => {
   try {
-    await axios.post('http://127.0.0.1:8000/api/notifications/mark-all-as-read');
-    store.dispatch('markAllAsRead');
-    notifications.value = notifications.value.map(notification => ({ ...notification, read: true }));
+    const token = localStorage.getItem('user-token'); // Retrieve the token
+    await axios.post(`${API_BASE_URL}notifications/mark-all-as-read`, {}, {
+      headers: {
+        Authorization: `Bearer ${token}` // Set the authorization header
+      }
+    });
+    notifications.value.forEach(n => n.read = true);
   } catch (error) {
     console.error('Error marking all notifications as read:', error);
   }
 };
 
-// Function to clear all notifications
+// Clear all notifications
 const clearAllNotifications = async () => {
   try {
-    await axios.delete('http://127.0.0.1:8000/api/notifications');
-    store.dispatch('clearNotifications');
+    const token = localStorage.getItem('user-token'); // Retrieve the token
+    await axios.delete(`${API_BASE_URL}notifications`, {
+      headers: {
+        Authorization: `Bearer ${token}` // Set the authorization header
+      }
+    });
     notifications.value = [];
   } catch (error) {
     console.error('Error clearing notifications:', error);
   }
 };
-
 </script>
 
 <template>
   <main class="main-container flex justify-center">
     <div class="w-full max-w-3xl">
-      <div class="flex items-center justify-between mx-12 mt-8">
-        <h1 class="text-3xl font-bold">Notifications</h1>
-      </div>
+      <h1 class="text-3xl font-bold mx-12 mt-8">Notifications</h1>
 
       <!-- Filter Options -->
       <div class="flex justify-between items-center mx-12 mt-4">
         <div class="flex space-x-4">
-          <button
-            @click="selectedFilter = 'all'"
-            :class="selectedFilter === 'all' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700'"
-            class="px-4 py-2 rounded-lg"
-          >
-            All
-          </button>
-          <button
-            @click="selectedFilter = 'follow'"
-            :class="selectedFilter === 'follow' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700'"
-            class="px-4 py-2 rounded-lg"
-          >
-            Followed
-          </button>
-          <button
-            @click="selectedFilter = 'like'"
-            :class="selectedFilter === 'like' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700'"
-            class="px-4 py-2 rounded-lg"
-          >
-            Liked Posts
-          </button>
+          <button @click="selectedFilter = 'all'" :class="{'bg-blue-500 text-white': selectedFilter === 'all'}" class="px-4 py-2 rounded-lg">All</button>
+          <button @click="selectedFilter = 'follow'" :class="{'bg-blue-500 text-white': selectedFilter === 'follow'}" class="px-4 py-2 rounded-lg">Followed</button>
+          <button @click="selectedFilter = 'like'" :class="{'bg-blue-500 text-white': selectedFilter === 'like'}" class="px-4 py-2 rounded-lg">Liked Posts</button>
         </div>
-
-        <!-- Mark all as read button -->
-        <button @click="markAllAsRead" class="text-lg hover:bg-gray-300 px-5 py-2 rounded-lg">
-          Mark All as Read
-        </button>
-
-        <button @click="clearAllNotifications" class="text-lg hover:bg-gray-300 px-5 py-2 rounded-lg">
-          Clear All
-        </button>
+        <div class="flex space-x-4">
+          <button @click="markAllAsRead" class="text-lg hover:bg-gray-300 px-5 py-2 rounded-lg">Mark All as Read</button>
+          <button @click="clearAllNotifications" class="text-lg hover:bg-gray-300 px-5 py-2 rounded-lg">Clear All</button>
+        </div>
       </div>
 
       <!-- Notifications List -->
-      <div class="notification-wrapper mt-10 mx-10">
-        <div
-          v-for="notification in filteredNotifications"
-          :key="notification.id"
-          @click="markAsRead(notification.id)"
-          class="notification-container p-6 rounded-lg shadow-md mb-6 h-32"
-          :class="notification.read ? 'bg-gray-200 border-gray-500' : 'bg-white border-blue-500'"
-        >
-          <div class="flex items-center">
-            <img
-              src="https://via.placeholder.com/40"
-              alt="Profile Picture"
-              class="w-10 h-10 rounded-full mr-4"
-            />
+      <div class="notification-wrapper mb-44 mx-10">
+        <template v-if="filteredNotifications.length === 0">
+          <img src="../../public/img/readingListIcon1.png" alt="Empty List" class="w-1/3 mx-auto mt-10">
+          <p class="text-xl font-bold text-center mt-10">
+            No notifications yet. Start engaging with content to receive updates!
+          </p>
+        </template>
+        <template v-else>
+          <div v-for="notification in filteredNotifications" :key="notification.id" @click="markAsRead(notification.id)" 
+          class="notification-container p-6 rounded-lg shadow-md mb-6 cursor-pointer mt-5" :class="notification.read ? 'bg-gray-200' : 'bg-white'">
             <div>
-              <router-link :to="notification.userLink">
-                <p class="font-semibold text-gray-800 hover:text-blue-500">
-                  {{ notification.username }}
-                </p>
-              </router-link>
-              <p class="text-sm text-gray-500">{{ notification.time }}</p>
+              <span class="flex items-center justify-start">
+                <img src="https://via.placeholder.com/40" alt="Profile" class="w-10 h-10 rounded-full mr-4" />
+                <span>
+                  <p class="font-semibold">{{ notification.username }}</p>
+                  <p class="text-sm text-gray-500">{{ notification.time }}</p>
+                </span>
+              </span>
+              <p class="mt-5 ml-14 text-gray-700 font-mono">{{ notification.action }}</p>
             </div>
           </div>
-          <p class="mt-5 text-gray-700">
-            <router-link :to="notification.userLink" class="font-bold text-blue-500">
-              {{ notification.username }}
-            </router-link>
-            {{ notification.action }}
-            <template v-if="notification.type === 'like'">
-              your
-              <router-link :to="notification.postLink" class="text-blue-500 font-semibold">
-                post
-              </router-link>
-              .
-            </template>
-          </p>
-        </div>
+        </template>
       </div>
     </div>
   </main>

@@ -82,10 +82,12 @@ const archiveItem = async (index, id) => {
                                 <p class="text-sm text-gray-500">{{ item.created_at }}</p>
                             </div>
                         </div>
-
-                        <router-link to="/Pd/1" class="hover:text-blue-600">
+                        <!-- <router-link :to="`/Pd/${post.id}`">
+                            <h2 class="post-title text-xl font-bold text-gray-900 mb-4 hover:text-blue-500">{{ post.title }}</h2>
+                        </router-link> -->
+                        <router-link :to="`/Pd/${item.post.id}`" class="hover:text-blue-600">
                             <h2 class="font-bold text-lg mb-2">{{ item.post.title }}</h2>
-                        </router-link>
+                        </router-link> 
                         <p class="text-sm">{{ item.post.body }}</p>
                         
                         <button 

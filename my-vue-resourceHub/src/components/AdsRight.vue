@@ -27,16 +27,24 @@ const fetchAds = async () => {
   loading.value = true;
   errorMessage.value = null;
   
-  // Get the token from localStorage
   const token = localStorage.getItem('user-token');
 
   try {
     const response = await axios.get(`${API_BASE_URL}ads`, {
       headers: {
-        Authorization: `Bearer ${token}` // Set the Authorization header
+        Authorization: `Bearer ${token}`
       }
     });
-    ads.value = response.data;
+
+    // Log the fetched ads
+    console.log("Fetched ads:", response.data);
+
+    // Remove duplicates based on ad id
+    const uniqueAds = response.data.filter((ad, index, self) =>
+      index === self.findIndex((a) => a.id === ad.id)
+    );
+
+    ads.value = uniqueAds;
   } catch (error) {
     console.error('Error fetching ads:', error);
     errorMessage.value = 'Failed to fetch ads. Please try again.';

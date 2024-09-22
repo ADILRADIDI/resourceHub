@@ -28,11 +28,19 @@
 
       <div class="post-content text-gray-700 mb-6">
         <p class="mb-6">{{ post.body }}</p>
-        <div class="hashtags mb-4">
+
+        <!-- <div class="hashtags mb-4">
           <span v-for="(tag, index) in post.tags" :key="index">
             <router-link :to="`/t/${tag}`" class="text-blue-500 hover:underline mr-2">#{{ tag }}</router-link>
           </span>
+        </div> -->
+        <!-- sss -->
+        <div class="hashtags mb-4">
+            <span v-for="(tag, index) in post.tags" :key="index">
+                <router-link :to="`/t/${tag}`" class="text-blue-500 hover:underline mr-2">#{{ tag }}</router-link>
+            </span>
         </div>
+
       </div>
 
       <div class="post-footer flex items-center justify-between">
@@ -114,11 +122,11 @@ const fetchPosts = async () => {
     });
     posts.value = response.data.map(post => ({
       ...post,
-      userProfileImage: post.user.profile_picture || 'default-profile-image-url.jpg',
+      userProfileImage: post.user.profile_picture || 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Unknown_person.jpg/925px-Unknown_person.jpg',
       liked: post.likes.some(like => like.user_id === parseInt(localStorage.getItem('user-id'))),
       saved: post.saved || false,
     }));
-    console.log(posts.value);
+    // console.log(posts.value);
     
   } catch (error) {
     console.error('Error fetching posts:', error);
@@ -156,7 +164,7 @@ const toggleSave = async (post) => {
   
   try {
     if (post.saved) {
-      await axios.delete(`${API_BASE_URL}save`, {
+      await axios.delete(`${API_BASE_URL}bookmarks`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -164,7 +172,7 @@ const toggleSave = async (post) => {
       });
       post.saved = false;
     } else {
-      await axios.post(`${API_BASE_URL}save`, { post_id: post.id }, {
+      await axios.post(`${API_BASE_URL}bookmarks`, { post_id: post.id }, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
