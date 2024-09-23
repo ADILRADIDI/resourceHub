@@ -7,9 +7,6 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 use Spatie\Permission\Models\Role;
-use Spatie\Permission\Models\Permission;
-use Illuminate\Support\Facades\Mail;
-use App\Mail\LoginNotification;
 
 class AuthController extends Controller
 {
@@ -35,12 +32,14 @@ class AuthController extends Controller
 
         // Generate API token for the user
         $token = $user->createToken('auth_token')->plainTextToken;
-        // Get the users roles and permissions
+
+        // Get the user's roles and permissions
         $roles = $user->getRoleNames();
         $permissions = $user->getAllPermissions()->pluck('name');
 
         return response()->json([
             'message' => 'User registered successfully',
+            'user_id' => $user->id,  // Include user ID
             'token' => $token,
             'roles' => $roles,
             'permissions' => $permissions,
@@ -71,21 +70,20 @@ class AuthController extends Controller
         // Get the user's roles and permissions
         $roles = $user->getRoleNames();
         $permissions = $user->getAllPermissions()->pluck('name');
-        // send notification email in login
-        Mail::to($user->email)->send(new LoginNotification($user));      
+
         return response()->json([
             'token' => $token,
+            'user_id' => $user->id,  // Include user ID
             'roles' => $roles,
             'permissions' => $permissions,
         ]);
     }
 
     public function logout(Request $request)
-{
-    $request->user()->currentAccessToken()->delete();
-    return response()->json(['message' => 'Logged out successfully']);
-}
-
+    {
+        $request->user()->currentAccessToken()->delete();
+        return response()->json(['message' => 'Logged out successfully']);
+    }
 
     public function user(Request $request)
     {

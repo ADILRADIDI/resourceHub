@@ -37,20 +37,20 @@ class EventRegistrationController extends Controller
 
         // Generate PDF with formatted date and time
         $pdf = Pdf::loadView('pdf.event_ticket', [
-            'event' => $event, 
+            'event' => $event,
             'user' => $user,
             'formattedDateTime' => $formattedDateTime
         ]);
 
         // Prepare data for the email template
-        $data = [
+        $data = [ 
             'user' => $user,
             'event' => $event,
         ];
 
         // Send Email with PDF Attachment
         try {
-            Mail::to($user->email)->send(new EventRegistrationMail($pdf->output(), $data));
+            // Mail::to($user->email)->send(new EventRegistrationMail($pdf->output(), $data));
             return response()->json([
                 'message' => 'Registered successfully and ticket sent to your email.',
                 'data' => $registration

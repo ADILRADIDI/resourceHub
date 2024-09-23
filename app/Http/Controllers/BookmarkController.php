@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Bookmark;
+use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -21,10 +22,45 @@ class BookmarkController extends Controller
         // get the ID of the authenticated user
         $userId = Auth::id();
         // get all bookmarks where the user_id matches the authenticated user's ID
-        $bookmarks = Bookmark::where('user_id', $userId)->get();
-        // Return the bookmarks a JSON
-        return response()->json($bookmarks);
-    } 
+        $bookmarks = Bookmark::where('user_id', $userId)
+        ->where('read', false)
+        ->with('post')
+        ->get();
+
+        $response = [
+            'user' => [
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+                'profile_picture' => $user->profile_picture
+            ],
+            'bookmarks' => $bookmarks
+        ];
+        return response()->json($response);
+    }
+
+
+
+    // after read bookmark user click archive => set status read is true okay
+    public function archive($id)
+    {
+        // Get the authenticated user's ID
+        $userId = Auth::id();
+        // Find the bookmark by its ID and ensure it belongs to the authenticated user
+        $bookmark = Bookmark::where('id', $id)
+            ->where('user_id', $userId)
+            ->first();
+        // Check if the bookmark exists and belongs to the authenticated user
+        if (!$bookmark) {
+            return response()->json(['message' => 'Bookmark not found or unauthorized'], 404);
+        }
+        // Update the 'read' status to true
+        $bookmark->delete();
+        // Return a success response with the updated bookmark
+        return response()->json(['message' => 'Bookmark archived successfully', 'bookmark' => $bookmark], 200);
+    }
+
+
 
     /**
      * Store a newly created resource in storage.

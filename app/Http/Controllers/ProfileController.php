@@ -6,146 +6,207 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 
 class ProfileController extends Controller
 {
-    // Update the user's name
-    public function updateName(Request $request)
+    // get data user profil by id
+    public function getUserProfile($userId)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-        ]);
+        // Find the user by ID
+        $user = User::find($userId);
 
-        $user = Auth::user();
-        $user->name = $request->input('name');
-        $user->save();
-
-        return response()->json($user);
-    }
-
-    // Update the user's email
-    public function updateEmail(Request $request)
-    {
-        $request->validate([
-            'email' => 'required|email|max:255|unique:users,email,' . Auth::id(),
-        ]);
-
-        $user = Auth::user();
-        $user->email = $request->input('email');
-        $user->save();
-
-        return response()->json($user);
-    }
-
-    // Update the user's password
-    public function updatePassword(Request $request)
-    {
-        $request->validate([
-            'password' => 'required|string|min:8|confirmed',
-        ]);
-
-        $user = Auth::user();
-        $user->password = Hash::make($request->input('password'));
-        $user->save();
-
-        return response()->json($user);
-    }
-
-    // Update the user's bio
-    public function updateBio(Request $request)
-    {
-        $request->validate([
-            'bio' => 'required|string|max:1000',
-        ]);
-
-        $user = Auth::user();
-        $user->bio = $request->input('bio');
-        $user->save();
-
-        return response()->json($user);
-    }
-
-    // Update the user's profile picture
-    public function updateProfilePicture(Request $request)
-    {
-        $request->validate([
-            'profile_picture' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-        ]);
-
-        $user = Auth::user();
-
-        // Delete old profile picture if exists
-        if ($user->profile_picture) {
-            Storage::delete($user->profile_picture);
+        if (!$user) {
+            return response()->json(['message' => 'User not found'], 404);
         }
 
-        // Store new profile picture
-        $path = $request->file('profile_picture')->store('profile_pictures');
-        $user->profile_picture = $path;
-        $user->save();
+        // Retrieve user's posts along with their tags
+        $posts = $user->posts()->with(['tags', 'user:id,name,profile_picture'])->get();
 
-        return response()->json($user);
+        // Transform the posts to include tag names and user data
+        $formattedPosts = $posts->map(function ($post) {
+            // Check if tags is a collection and then get tag names
+            $tagNames = collect($post->tags)->pluck('name'); // Use collect to ensure it's a collection
+
+            return [
+                'id' => $post->id,
+                'title' => $post->title,
+                'body' => $post->body,
+                'image' => $post->image,
+                'video' => $post->video,
+                'document' => $post->document,
+                'pdf' => $post->pdf,
+                'tags' => $tagNames, // Get tag names
+                'user' => [
+                    'id' => $post->user->id,
+                    'name' => $post->user->name,
+                    'profile_picture' => $post->user->profile_picture,
+                ],
+                'status' => $post->status,
+                'created_at' => $post->created_at,
+                'updated_at' => $post->updated_at,
+            ];
+        });
+
+        // Return user data along with formatted posts
+        return response()->json([
+            'id' => $user->id,
+            'name' => $user->name,
+            'email' => $user->email,
+            'bio' => $user->bio,
+            'profile_picture' => $user->profile_picture,
+            'website' => $user->website,
+            'skills' => $user->skills,
+            'github' => $user->github,
+            'location' => $user->location,
+            'position' => $user->position,
+            'brand_color' => $user->brand_color,
+            'posts' => $formattedPosts,
+        ]);
     }
 
-    // Delete the user's account
-    public function deleteAccount(Request $request)
+    public function updateName(Request $request)
     {
         $user = Auth::user();
-        $user->delete();
-        return response()->json(['message' => 'Account deleted successfully']);
+        $request->validate(['name' => 'required|string|max:255']);
+
+        $user->name = $request->name;
+        $user->save();
+
+        return response()->json(['message' => 'Name updated successfully']);
     }
 
-    // Update the user's website
+    public function updateEmail(Request $request)
+    {
+        $user = Auth::user();
+        $request->validate(['email' => 'required|string|email|max:255|unique:users,email,' . $user->id]);
+
+        $user->email = $request->email;
+        $user->save();
+
+        return response()->json(['message' => 'Email updated successfully']);
+    }
+
+    public function updatePassword(Request $request)
+    {
+        $user = Auth::user();
+        $request->validate([
+            'current_password' => 'required|string',
+            'new_password' => 'required|string|min:8|confirmed',
+        ]);
+
+        if (!Hash::check($request->current_password, $user->password)) {
+            return response()->json(['message' => 'Current password is incorrect'], 400);
+        }
+
+        $user->password = Hash::make($request->new_password);
+        $user->save();
+        return response()->json(['message' => 'Password changed successfully']);
+    }
+
+    public function updateBio(Request $request)
+    {
+        $user = Auth::user();
+        $request->validate(['bio' => 'nullable|string|max:500']);
+
+        $user->bio = $request->bio;
+        $user->save();
+
+        return response()->json(['message' => 'Bio updated successfully']);
+    }
+
+    public function updateSkills(Request $request)
+    {
+        $user = Auth::user();
+        $request->validate(['skills' => 'nullable|string|max:500']);
+
+        $user->skills = $request->skills;
+        $user->save();
+
+        return response()->json(['message' => 'Skills updated successfully']);
+    }
+
+    public function updateGithub(Request $request)
+    {
+        $user = Auth::user();
+        $request->validate(['github' => 'nullable|url|max:255']);
+
+        $user->github = $request->github;
+        $user->save();
+
+        return response()->json(['message' => 'GitHub link updated successfully']);
+    }
+
+    public function updateProfilePicture(Request $request)
+    {
+        $user = Auth::user();
+        $request->validate(['profile_picture' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048']);
+
+        if ($request->hasFile('profile_picture')) {
+            // Delete old profile picture if exists
+            if ($user->profile_picture) {
+                Storage::delete($user->profile_picture);
+            }
+            $user->profile_picture = $request->file('profile_picture')->store('profile_pictures');
+            $user->save();
+        }
+
+        return response()->json(['message' => 'Profile picture updated successfully']);
+    }
+
     public function updateWebsite(Request $request)
     {
-        $request->validate([
-            'website' => 'required|url',
-        ]);
-
         $user = Auth::user();
-        $user->website = $request->input('website');
+        $request->validate(['website' => 'nullable|url|max:255']);
+
+        $user->website = $request->website;
         $user->save();
 
-        return response()->json($user);
+        return response()->json(['message' => 'Website updated successfully']);
     }
 
-    // Update the user's location
     public function updateLocation(Request $request)
     {
-        $request->validate([
-            'location' => 'required|string|max:255',
-        ]);
-
         $user = Auth::user();
-        $user->location = $request->input('location');
+        $request->validate(['location' => 'nullable|string|max:255']);
+
+        $user->location = $request->location;
         $user->save();
 
-        return response()->json($user);
+        return response()->json(['message' => 'Location updated successfully']);
     }
 
-    // Update the user's position
     public function updatePosition(Request $request)
     {
-        $request->validate([
-            'position' => 'required|string|max:255',
-        ]);
-
         $user = Auth::user();
-        $user->position = $request->input('position');
+        $request->validate(['position' => 'nullable|string|max:255']);
+
+        $user->position = $request->position;
         $user->save();
 
-        return response()->json($user);
+        return response()->json(['message' => 'Position updated successfully']);
     }
-    // updaste brand_color
-    public function updateBrandColor(Request $request){
-        $request->validate(
-            [
-                'brand_color' => 'required|string',
-            ]);
-            $user = Auth::user();
-            $user->brand_color = $request->input('brand_color');
-            $user->save();
 
-            return response()->json($user);
+    public function updateBrandColor(Request $request)
+    {
+        $user = Auth::user();
+        $request->validate(['brand_color' => 'nullable|string|max:7']); // Assuming hex color code
+
+        $user->brand_color = $request->brand_color;
+        $user->save();
+
+        return response()->json(['message' => 'Brand color updated successfully']);
     }
+
+    public function updateBirthday(Request $request)
+    {
+        $user = Auth::user();
+        $request->validate(['birthday' => 'nullable|date']);
+
+        $user->birthday = $request->birthday;
+        $user->save();
+
+        return response()->json(['message' => 'Birthday updated successfully']);
+    }
+
 }

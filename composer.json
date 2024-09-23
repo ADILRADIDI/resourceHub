@@ -12,8 +12,8 @@
         "guzzlehttp/guzzle": "^7.9",
         "laravel/framework": "^10.10",
         "laravel/sanctum": "^3.3",
-        "laravel/socialite": "^5.15",
-        "laravel/tinker": "^2.8",
+        "laravel/socialite": "^5.16",
+        "laravel/tinker": "^2.9",
         "spatie/laravel-permission": "^6.9"
     },
     "require-dev": {

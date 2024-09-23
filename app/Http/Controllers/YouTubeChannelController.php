@@ -5,22 +5,22 @@ namespace App\Http\Controllers;
 use App\Models\YouTubeChannel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-
+ 
 class YouTubeChannelController extends Controller
-{ 
+{
     /**
      * Display a listing of the resource.
      */
     public function index()
-    {   
+    {
         $user = Auth::user();
         // Check if the user has the 'view YouTubeChannel' permission
         if (!$user->can('view yt channels')) {
             return response()->json(['error' => 'Unauthorized'], 403);
         }
-        // fetch->get() all YouTubeChannel 
-        $channels = YouTubeChannel::all();
-        return response()->json($channels);
+        // fetch->get() all YouTubeChannel where status = published
+        $ytChannels = YouTubeChannel::where('status', 'published')->get();
+        return response()->json($ytChannels);
     }
 
     /**
@@ -56,7 +56,7 @@ class YouTubeChannelController extends Controller
      * Update the specified resource in storage.
      */
     public function update(Request $request,$id)
-    {   
+    {
         $user = Auth::user();
         // Check if the user has the 'update YouTubeChannel' permission
         if (!$user->can('edit yt channels')) {
@@ -117,5 +117,5 @@ class YouTubeChannelController extends Controller
  * created by : Adil radidi  |
  * 16 august 2024            |
  * managment YT-CHANNELS     |
- *---------------------------| 
+ *---------------------------|
  */

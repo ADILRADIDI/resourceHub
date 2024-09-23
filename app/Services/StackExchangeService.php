@@ -6,25 +6,36 @@ use Illuminate\Support\Facades\Http;
 
 class StackExchangeService
 {
-    protected $apiUrl = 'https://api.stackexchange.com/2.3/questions';
+    protected $baseUrl = 'https://api.stackexchange.com/2.3';
+    protected $apiKey = 'rl_RKNgzMurrb66fyGzP5N3ubapZ'; // Ensure this is correct
 
-    public function fetchQuestions($tag)
+    public function fetchQuestions($tags)
     {
-        try {
-            $response = Http::get($this->apiUrl, [
-                'order' => 'desc',
-                'sort' => 'activity',
-                'site' => 'stackoverflow',
-                'tagged' => $tag,
-            ]);
+        $response = Http::get("{$this->baseUrl}/questions", [
+            'order' => 'desc',
+            'sort' => 'activity',
+            'site' => 'stackoverflow',
+            'tagged' => $tags,
+            'key' => $this->apiKey,
+        ]);
 
-            if ($response->successful()) {
-                return $response->json();
-            } else {
-                return ['error' => 'API request failed'];
-            }
-        } catch (\Exception $e) {
-            return ['error' => $e->getMessage()];
-        }
+        \Log::info('Stack Exchange Questions Response:', $response->json());
+
+        return $response->json();
+    }
+
+    public function fetchAnswers($questionId)
+    {
+        $response = Http::get("{$this->baseUrl}/questions/{$questionId}/answers", [
+            'order' => 'desc',
+            'sort' => 'activity',
+            'site' => 'stackoverflow',
+            'filter' => 'withbody',
+            'key' => $this->apiKey,
+        ]);
+
+        \Log::info('Stack Exchange Answers Response:', $response->json());
+
+        return $response->json();
     }
 }

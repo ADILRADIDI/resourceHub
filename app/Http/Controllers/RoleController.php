@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Role;
 use Illuminate\Http\Request;
+use Spatie\Permission\Models\Permission;
 
 class RoleController extends Controller
 {
@@ -14,7 +15,6 @@ class RoleController extends Controller
      */
     public function index()
     {
-        // Retrieve all roles along with their associated permissions
         $roles = Role::with('permissions')->get();
         return response()->json($roles);
     }
@@ -27,29 +27,29 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
-        // Validate the request data
         $request->validate([
-            'name' => 'required|string|unique:roles', // Role name must be unique
-            'permissions' => 'array', // Permissions must be an array
-            'permissions.*' => 'string|exists:permissions,name', // Each permission must exist
-            // No need to validate guard_name as it will be set automatically
+            'name' => 'required|string|unique:roles',
+            'permissions' => 'array',
+            'permissions.*' => 'string|exists:permissions,name',
         ]);
 
-        // Create a new role with guard_name set to 'web'
         $role = Role::create([
             'name' => $request->input('name'),
-            'guard_name' => 'web' // Set guard_name to 'web'
+            'guard_name' => 'web'
         ]);
 
-        // Assign permissions if provided
-        if ($request->has('permissions')) {
+        // If the role is "super-admin", assign all available permissions
+        if ($role->name === 'super-admin') {
+            $allPermissions = Permission::all();
+            $role->syncPermissions($allPermissions);
+        } elseif ($request->has('permissions')) {
             $permissions = $request->input('permissions');
             $role->givePermissionTo($permissions);
         }
 
         return response()->json([
             'message' => 'Role created successfully',
-            'role' => $role
+            'role' => $role->load('permissions')
         ], 201);
     }
 
@@ -61,7 +61,6 @@ class RoleController extends Controller
      */
     public function show(Role $role)
     {
-        // Return the specific role with its permissions
         return response()->json($role->load('permissions'));
     }
 
@@ -74,22 +73,22 @@ class RoleController extends Controller
      */
     public function update(Request $request, Role $role)
     {
-        // Validate the request data
         $request->validate([
-            'name' => 'required|string|unique:roles,name,' . $role->id, // Role name must be unique except for this role
-            'permissions' => 'array', // Permissions must be an array
-            'permissions.*' => 'string|exists:permissions,name', // Each permission must exist
-            // No need to validate guard_name as it will be set automatically
+            'name' => 'required|string|unique:roles,name,' . $role->id,
+            'permissions' => 'array',
+            'permissions.*' => 'string|exists:permissions,name',
         ]);
 
-        // Update role details with guard_name set to 'web'
         $role->update([
             'name' => $request->input('name'),
-            'guard_name' => 'web' // Set guard_name to 'web'
+            'guard_name' => 'web'
         ]);
 
-        // Sync permissions if provided
-        if ($request->has('permissions')) {
+        // If the role is "super-admin", assign all available permissions
+        if ($role->name === 'super-admin') {
+            $allPermissions = Permission::all();
+            $role->syncPermissions($allPermissions);
+        } elseif ($request->has('permissions')) {
             $permissions = $request->input('permissions');
             $role->syncPermissions($permissions);
         }
@@ -108,9 +107,7 @@ class RoleController extends Controller
      */
     public function destroy(Role $role)
     {
-        // Delete the role
         $role->delete();
-
         return response()->json(['message' => 'Role deleted successfully']);
     }
 }

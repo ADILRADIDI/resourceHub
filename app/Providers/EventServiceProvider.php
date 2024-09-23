@@ -18,6 +18,10 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
+        // i addedd this for after login check complete profil
+        \Illuminate\Auth\Events\Login::class => [
+            \App\Listeners\CheckProfileCompletionAfterLogin::class,
+        ],
     ];
 
     /**

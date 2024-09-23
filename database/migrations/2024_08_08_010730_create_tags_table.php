@@ -11,6 +11,7 @@ class CreateTagsTable extends Migration
         Schema::create('tags', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->enum('status', ['draft', 'published', 'archived'])->default('draft');
             $table->timestamps();
         });
     }

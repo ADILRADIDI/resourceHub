@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Schema;
 
 class CreatePostTagsTable extends Migration
 {
-    public function up()
+    public function up() 
     {
         Schema::create('post_tags', function (Blueprint $table) {
             $table->id();

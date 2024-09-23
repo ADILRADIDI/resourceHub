@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Podcast;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
+
+
 
 
 class PodcastController extends Controller
@@ -18,12 +22,11 @@ class PodcastController extends Controller
         if (!$user->can('view podcasts')) {
             return response()->json(['error' => 'Unauthorized'], 403);
         }
-        // fetch->get() all podcasts 
-        $podcasts = Podcast::all();
+        // fetch->get() all podcasts where published is accepted from admin 
+        $podcasts = Podcast::where('status', 'published')->get();
         return response()->json($podcasts);
     }
 
-    // store new podcast 
     public function store(Request $request)
     {
         $user = Auth::user();
@@ -33,24 +36,43 @@ class PodcastController extends Controller
             return response()->json(['error' => 'Unauthorized'], 403);
         }
 
-        // // Check if the user is premium
-        // if (!$user || !$user->premium) {
-        //     return response()->json(['error' => 'Access restricted to premium users'], 403);
-        // }
-
-        // Validate the request data
-        $request->validate([
+        // Custom validation
+        $validator = Validator::make($request->all(), [
             'title' => 'required|string|max:255',
             'description' => 'required|string',
-            'logo' => 'nullable|string',
-            'audio_url' => 'nullable|string',
+            'logo' => 'nullable|file|mimes:jpeg,png,jpg,gif|max:2048',
+            // 'audio_url' => 'nullable|file|mimes:mp3,wav|max:50000',
+            'audio_url' => 'nullable|string|max:255',
         ]);
 
-        // create a new podcast
-        $podcast = Podcast::create($request->all());
-        // return status 201 success add poscasts
+        // Return validation errors if any
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+
+        // Log request data
+        \Log::info('Request data: ', $request->all());
+
+        // Log file upload status
+        if ($request->hasFile('logo')) {
+            \Log::info('Logo file received', [$request->file('logo')]);
+        } else {
+            \Log::info('No logo file received');
+        }
+
+        // Prepare data for creation
+        $data = $request->only('title', 'description', 'audio_url');
+
+        if ($request->hasFile('logo')) {
+            $data['logo'] = $request->file('logo')->store('uploads/logos', 'public');
+        }
+
+        // Create the podcast
+        $podcast = Podcast::create($data);
+
         return response()->json($podcast, 201);
     }
+
 
     //function search a podcasts by title
     public function search(Request $request)
@@ -64,19 +86,19 @@ class PodcastController extends Controller
         $title = $request->input('title');
 
         // Search for events by title
-        $events = Event::where('title', 'like', '%' . $title . '%')->get();
-        
-        return response()->json($events);
+        $podcasts = Podcast::where('title', 'like', '%' . $title . '%')->get();
+
+        return response()->json($podcasts);
     }
 
-    
+
 
     // Display the specified podcast by {id}
     public function show($id)
     {
         // Fetch podcast by ID
         $podcast = Podcast::find($id);
-        // Check if podcast exists or not 
+        // Check if podcast exists or not
         if (!$podcast) {
             return response()->json(['message' => 'Podcast not found'], 404);
         }
@@ -136,5 +158,5 @@ class PodcastController extends Controller
  * created by : Adil radidi  |
  * 16 august 2024            |
  * managment podcasts        |
- *---------------------------| 
+ *---------------------------|
  */

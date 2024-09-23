@@ -50,8 +50,8 @@ class User extends Authenticatable
     ];
 
 
-    // i addedd this 
-    
+    // i addedd this
+
     // Methods to follow/unfollow a user
     public function follow(User $user)
     {
@@ -81,5 +81,40 @@ class User extends Authenticatable
     public function isFollowedBy(User $user)
     {
         return $this->followers()->where('follower_id', $user->id)->exists();
+    }
+
+    // in completed your profil or not
+    public function isProfileComplete()
+    {
+        $requiredFields = [
+            'bio' => $this->bio,
+            'profile_picture' => $this->profile_picture,
+            'website' => $this->website,
+            'location' => $this->location,
+            'position' => $this->position,
+            'brand_color' => $this->brand_color,
+            'birthday' => $this->birthday,
+        ];
+
+        $filledFields = array_filter($requiredFields, function($value) {
+            return !is_null($value) && $value !== '';
+        });
+
+        $completionPercentage = (count($filledFields) / count($requiredFields)) * 100;
+
+        return [
+            'complete' => $completionPercentage >= 100,
+            'completion_percentage' => $completionPercentage,
+        ];
+    }
+
+    public function likes()
+    {
+        return $this->hasMany(Like::class);
+    }
+
+    public function posts()
+    {
+        return $this->hasMany(Post::class);
     }
 }

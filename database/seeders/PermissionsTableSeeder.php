@@ -22,11 +22,13 @@ class PermissionsTableSeeder extends Seeder
             'edit comments',
             'delete comments',
             // podcast
-            // just premium mombre manage podcast 
+            // just premium mombre manage podcast
             'view podcasts',
             'create podcasts',
             'edit podcasts',
             'delete podcasts',
+            'suggest podcasts',
+            'manage podcasts',
             // yt channels
             'view yt channels',
             'create yt channels',
@@ -39,7 +41,7 @@ class PermissionsTableSeeder extends Seeder
             'delete events',
             'register events',
             // search in yt and watch
-            'search in yt', 
+            'search in yt',
             'watch yt videos',
             // bookmarks
             'view bookmarks',
@@ -57,6 +59,10 @@ class PermissionsTableSeeder extends Seeder
             'view users',
             'edit users',
             'delete users',
+            'manage suggested tags',
+            'view Ad',
+            'manage tags',
+
         ];
 
         foreach ($permissions as $permissionName) {

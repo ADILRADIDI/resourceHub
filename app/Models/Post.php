@@ -17,12 +17,16 @@ class Post extends Model
         'title',
         'body',
         'image',
-        'user_id',
+        'video',
+        'document',
+        'pdf',
         'status',
+        'user_id'
     ];
 
     // Optionally, specify the attributes that should be cast to native types
     protected $casts = [
+        'tags' => 'array',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
@@ -45,15 +49,31 @@ class Post extends Model
         return $this->hasMany(Comment::class);
     }
 
-    // 
+    //
     public function tags()
     {
-        return $this->belongsToMany(Tag::class, 'post_tags');
+        return $this->belongsToMany(Tag::class, 'post_tags'); // Ensure the pivot table name is correct
     }
+    // public function tags()
+    // {
+    //     return $this->belongsToMany(Tag::class);
+    // }
 
-    // 
+
+
+
+    //
     public function reactions()
     {
         return $this->hasMany(Reaction::class);
+    }
+
+    public function likes()
+    {
+        return $this->hasMany(Like::class);
+    }
+    public function bookmarks()
+    {
+        return $this->hasMany(Bookmark::class);
     }
 }

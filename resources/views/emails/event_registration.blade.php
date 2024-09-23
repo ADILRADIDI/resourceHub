@@ -65,7 +65,7 @@
     <div class="email-container">
         <div class="header">
             <div class="logo">
-                resourceHub
+                RDEV
             </div>
         </div>
         <div class="content">

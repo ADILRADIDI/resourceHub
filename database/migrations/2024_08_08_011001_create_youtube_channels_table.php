@@ -12,6 +12,7 @@ class CreateYoutubeChannelsTable extends Migration
             $table->id();
             $table->string('channel_name');
             $table->string('channel_url');
+            $table->enum('status', ['draft', 'published', 'archived'])->default('draft');
             $table->timestamps();
         });
     }

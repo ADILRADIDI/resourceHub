@@ -78,7 +78,7 @@
 <body>
     <div class="email-container">
         <div class="header">
-            <h1>ResourceHub</h1>
+            <h1>RDEV</h1>
         </div>
         <div class="content">
             <h1>Hello, {{ $user->name }}</h1>
@@ -88,8 +88,8 @@
         </div>
         <div class="footer">
             <p>Best regards,</p>
-            <p>The ResourceHub Team</p>
-            <p><a href="mailto:support@resourcehub.com">support@resourcehub.com</a> | <a href="#">Visit our Website</a></p>
+            <p>The RDEV Team</p>
+            <p><a href="mailto:support@RDEV.com">support@RDEV.com</a> | <a href="#">Visit our Website</a></p>
         </div>
     </div>
 </body>

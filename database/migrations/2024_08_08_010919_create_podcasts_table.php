@@ -15,6 +15,7 @@ class CreatePodcastsTable extends Migration
             // logo podcst
             $table->string('logo')->nullable();
             $table->string('audio_url');
+            $table->enum('status', ['draft', 'published', 'archived'])->default('draft');
             $table->timestamps();
         });
     }

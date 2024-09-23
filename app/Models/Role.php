@@ -1,24 +1,20 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\Permission\Models\Role as SpatieRole;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-class Role extends Model
+class Role extends SpatieRole
 {
-    use HasFactory ;
+    use HasFactory;
 
-    protected $fillable =['role'];
+    protected $fillable = ['name', 'guard_name'];
 
-    public function user(){
-        return $this->hasMany(User::class)->withTrashed();
+    // Override the permissions method with the correct return type
+    public function permissions(): BelongsToMany
+    {
+        return $this->belongsToMany(Permission::class, 'role_has_permissions');
     }
-
-    public function permission(){
-
-        return $this->belongsToMany(Permission::class , 'role_permission');
-    }
-
 }
+

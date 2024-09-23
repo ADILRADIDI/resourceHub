@@ -17,4 +17,9 @@ class Tag extends Model
     {
         return $this->belongsToMany(Post::class, 'post_tags');
     }
+    public function followTags()
+    {
+        return $this->hasMany(FollowTag::class);
+    }
+
 }

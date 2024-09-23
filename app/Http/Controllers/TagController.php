@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Tag;
+use App\Models\SuggestedTag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -21,8 +22,9 @@ class TagController extends Controller
         if (!$user->can('manage tags')) {
             return response()->json(['error' => 'Unauthorized to view Tags'], 403);
         }
-        // get al tags
-        $tags = Tag::all();
+        // get al tags where status  published
+        // $tags = Tag::all();
+        $tags = Tag::where('status', 'published')->get();
         return response()->json($tags);
     }
 
@@ -45,7 +47,7 @@ class TagController extends Controller
         $tag = Tag::create($request->all());
         return response()->json($tag, 201);
     }
- 
+
     /**
      * Display the specified resource.
      */
@@ -93,4 +95,64 @@ class TagController extends Controller
         // return message is deleted
         return response()->json(['message' => 'Tag deleted succcessfully']);
     }
+
+    // in accpeted suggested tags from admin => creation tags
+    public function acceptSuggestedTag($suggestedTagId)
+    {
+        $user = Auth::user();
+
+        // Check if the user has the 'manage tags' permission
+        if (!$user->can('manage tags')) {
+            return response()->json(['error' => 'Unauthorized to accept Suggested Tags'], 403);
+        }
+
+        // Find the suggested tag
+        $suggestedTag = SuggestedTag::find($suggestedTagId);
+
+        if (!$suggestedTag) {
+            return response()->json(['error' => 'Suggested Tag not found'], 404);
+        }
+
+        // Create a new tag from the suggested tag
+        $tag = Tag::create([
+            'name' => $suggestedTag->name,
+            'status' => 'published',
+        ]);
+
+        // Optionally, delete the suggested tag after creating the new tag
+        $suggestedTag->delete();
+
+        return response()->json($tag, 201);
+    }
+
+    public function getByName($name)
+    {
+        $tag = Tag::where('name', $name)->first();
+
+        if (!$tag) {
+            return response()->json(['error' => 'Tag not found.'], 404);
+        }
+
+        return response()->json(['id' => $tag->id]);
+    }
+
+    public function getPopularTags()
+    {
+        try {
+            $popularTags = Tag::limit(5)->get();
+
+
+            if ($popularTags->isEmpty()) {
+                return response()->json(['message' => 'No popular tags found.'], 404);
+            }
+
+            return response()->json($popularTags);
+        } catch (\Exception $e) {
+            \Log::error('Error fetching popular tags: ' . $e->getMessage());
+            return response()->json(['error' => 'Something went wrong.'], 500);
+        }
+    }
+
+
+
 }

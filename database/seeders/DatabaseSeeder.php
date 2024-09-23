@@ -22,9 +22,13 @@ class DatabaseSeeder extends Seeder
             RolesTableSeeder::class,
             PermissionsTableSeeder::class,
             UsersTableSeeder::class,
+            PostsTableSeeder::class,
             EventsSeeder::class,
             EventRegistrationsSeeder::class,
             EventTicketsSeeder::class,
+            PodcastsTableSeeder::class,
+            AdsSeeder::class,
         ]);
+
     }
 }

@@ -18,8 +18,8 @@ return new class extends Migration
             $table->text('description');
             $table->string('city');
             $table->string('location');
-            $table->dateTime('start_date');
-            $table->dateTime('end_date');
+            $table->timestamp('start_time')->nullable();
+            $table->timestamp('end_time')->nullable();
             $table->enum('status', ['planifié', 'en cours', 'terminé'])->default('planifié');
             $table->timestamps();
         });
