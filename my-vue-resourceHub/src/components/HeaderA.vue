@@ -17,15 +17,9 @@
         </router-link>
       </div>
       <!-- Search Bar -->
-      <div class="w-4/5">
-        <div class="relative w-full">
-          <span class="absolute inset-y-0 left-0 flex items-center pl-3">
-            <span class="material-symbols-outlined">search</span>
-          </span>
-          <input type="search" placeholder="Search..." name="search" id="search-input"
-            class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
-        </div>
-      </div>
+      <!-- <div class="w-4/5"> -->
+        <!-- Search bar implementation -->
+      <!-- </div> -->
     </div>
 
     <!-- Create Post Button -->
@@ -63,17 +57,16 @@
 </template>
 
 <script>
-import Aside from '../components/Aside.vue';
 import axios from 'axios';
 import { API_BASE_URL } from '@/config'; // Adjust this path as necessary
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 
 export default {
   data() {
     return {
       isDropdownOpen: false,
-      unreadNotifications: 10,
+      unreadNotifications: 0,
     };
   },
   setup() {
@@ -88,6 +81,7 @@ export default {
         });
         // Clear the token from localStorage
         localStorage.removeItem('user-token');
+        localStorage.removeItem('user-id');
         // Redirect to login or home page
         router.push('/login'); // Change this route as needed
       } catch (error) {
@@ -98,6 +92,32 @@ export default {
     return { logout };
   },
   methods: {
+    async fetchUnreadNotifications() {
+      this.loading = true;
+      try {
+        const response = await axios.get(`${API_BASE_URL}notifications`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('user-token')}`
+          }
+        });
+        
+        // console.log('API Response:', response.data);
+
+        // Assuming response.data is an array of notifications
+        if (Array.isArray(response.data)) {
+          // Count unread notifications (where read is 0)
+          this.unreadNotifications = response.data.filter(notification => notification.read === 0).length;
+        } else {
+          console.warn('Response data is not an array');
+          this.unreadNotifications = 0;
+        }
+      } catch (error) {
+        console.error('Error fetching notifications:', error);
+      } finally {
+        this.loading = false;
+      }
+    }
+,
     toggleDropdown(event) {
       this.isDropdownOpen = !this.isDropdownOpen;
       event.stopPropagation();
@@ -107,6 +127,12 @@ export default {
         this.isDropdownOpen = false;
       }
     },
+  },
+  mounted() {
+    this.fetchUnreadNotifications();
+    setInterval(() => {
+      this.fetchUnreadNotifications();
+    }, 60000);
   },
 };
 </script>

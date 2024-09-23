@@ -16,7 +16,7 @@
           <div v-if="dropdownOpen === post.id" class="absolute right-0 mt-2 w-44 bg-white divide-y divide-gray-100 rounded-2xl shadow-lg z-20">
             <ul class="py-2 text-sm text-gray-700">
               <li><a href="#" class="block px-4 py-2 hover:bg-blue-200 hover:rounded-full">Copy Link</a></li>
-              <li><a href="#" class="block px-4 py-2 hover:bg-blue-200 hover:rounded-full">Share</a></li>
+              <!-- <li><a href="#" class="block px-4 py-2 hover:bg-blue-200 hover:rounded-full">Share</a></li> -->
             </ul>
           </div>
         </div>

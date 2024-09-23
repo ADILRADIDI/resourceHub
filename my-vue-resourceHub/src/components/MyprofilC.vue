@@ -62,8 +62,9 @@
                 </button>
                 <div v-if="dropdownOpen === post.id" class="absolute right-0 mt-2 w-44 bg-white divide-y divide-gray-100 rounded-2xl shadow-lg z-20">
                   <ul class="py-2 text-sm text-gray-700">
+                    <li @click="deletePost(post.id)" class="cursor-pointer block px-4 py-2 hover:bg-red-500 hover:text-white hover:rounded-full">Delete</li>
                     <li><a href="#" class="block px-4 py-2 hover:bg-blue-200 hover:rounded-full">Copy Link</a></li>
-                    <li><a href="#" class="block px-4 py-2 hover:bg-blue-200 hover:rounded-full">Share</a></li>
+                    <!-- <li><a href="#" class="block px-4 py-2 hover:bg-blue-200 hover:rounded-full">Share</a></li> -->
                   </ul>
                 </div>
               </div>
@@ -121,6 +122,25 @@ const fetchUserProfile = async () => {
     loading.value = false;
   }
 };
+
+// Function to delete a post
+const deletePost = async (postId) => {
+  const token = localStorage.getItem('user-token');
+  try {
+    await axios.delete(`${API_BASE_URL}posts/${postId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: 'application/json',
+      },
+    });
+    console.log('Deleted post ID:', postId);
+    // Optionally, refresh the posts or remove the post from the local state
+    userProfile.value.posts = userProfile.value.posts.filter(post => post.id !== postId);
+  } catch (error) {
+    console.error('Error deleting post:', error.response ? error.response.data : error);
+  }
+};
+
 
 // Function to fetch posts by tag
 const fetchPostsByTag = async () => {

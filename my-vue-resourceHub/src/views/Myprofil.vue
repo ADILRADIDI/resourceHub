@@ -3,9 +3,12 @@ import HeaderA from '../components/HeaderA.vue';
 import Header from '../components/Header.vue';
 import Aside from '../components/Aside.vue';
 import MyprofilC from '../components/MyprofilC.vue';
+
+// Check if the token exists in localStorage
+const tokenExists = localStorage.getItem('user-token');
 </script>
 
-<template>
+<template> 
   <main class="main-container">
       <Header v-if="!tokenExists" />
       <HeaderA v-else="tokenExists" />

@@ -24,12 +24,11 @@
                 <span class="ml-4"> StackExchange</span>
             </router-link>
           </li>
-          <li class="flex items-center space-x-4 ml-2 ">
+          <!-- <li class="flex items-center space-x-4 ml-2 ">
               <router-link to="/FastFix"  class="text-gray-700 hover:text-blue-600 transition transform hover:-translate-y-1 flex items-center">
-                <!-- <img src="../../public/img/stackexchange.png" alt="StackExchange" class="w-8 h-8"> -->
                 <span class="material-symbols-outlined">electric_bolt</span>                <span class="ml-4">Fast Fix</span>
             </router-link>
-          </li>
+          </li> -->
           <li class="flex items-center space-x-4 ml-2 ">
             <router-link to="/Podcast" class="text-gray-700 hover:text-blue-600 transition transform hover:-translate-y-1 flex items-center">
               <!-- <img src="../../public/img/podcastIcon.png" alt="Podcasts" class="w-8 h-8"> -->
@@ -44,13 +43,12 @@
               <span class="ml-4">Events</span>
             </router-link>
           </li>
-          <li class="flex items-center space-x-4 ml-2 ">
+          <!-- <li class="flex items-center space-x-4 ml-2 ">
             <router-link to="/CrashCourse" class="text-gray-700 hover:text-blue-600 transition transform hover:-translate-y-1 flex items-center">
-              <!-- <img src="../././public/img/CrashIcon.png" alt="Podcasts" class="w-9 h-9"> -->
               <span class="material-symbols-outlined">local_library</span>
               <span class="ml-4">Crash Course</span>
             </router-link>
-          </li>
+          </li> -->
           <li class="flex items-center space-x-4 ml-2 ">
             <router-link to="/YtChannels" class="text-gray-700 hover:text-blue-600 transition transform hover:-translate-y-1 flex items-center">
               <!-- <img src="../../public/img/Yt-channels.png" alt="Podcasts" class="w-9 h-9"> -->
@@ -119,55 +117,15 @@
 
           <!-- Popular Tags with Scroll -->
           <li class="font-bold text-gray-900 mt-4">Popular Tags</li>
-          <div class="h-48 overflow-y-auto">
-            <ul class="space-y-2">
-              <li class="flex items-center space-x-4">
-                <router-link class="text-gray-600 hover:text-blue-600 flex items-center" to="/t/webdev">#webdev</router-link>
-              </li>
-              <li class="flex items-center space-x-4">
-                <router-link class="text-gray-600 hover:text-blue-600 flex items-center" to="/t/javascript">#javascript</router-link>
-              </li>
-              <li class="flex items-center space-x-4">
-                <router-link class="text-gray-600 hover:text-blue-600 flex items-center" to="/t/python">#python</router-link>
-              </li>
-              <li class="flex items-center space-x-4">
-                <router-link class="text-gray-600 hover:text-blue-600 flex items-center" to="/t/c++">#c++</router-link>
-              </li>
-              <li class="flex items-center space-x-4">
-                <router-link class="text-gray-600 hover:text-blue-600 flex items-center" to="/t/Laravel">#Laravel</router-link>
-              </li>
-              <li class="flex items-center space-x-4">
-                <router-link class="text-gray-600 hover:text-blue-600 flex items-center" to="/t/Vuejs">#Vuejs</router-link>
-              </li>
-              <li class="flex items-center space-x-4">
-                <router-link class="text-gray-600 hover:text-blue-600 flex items-center" to="/t/Vuejs">#Vuejs</router-link>
-              </li>
-              <li class="flex items-center space-x-4">
-                <router-link class="text-gray-600 hover:text-blue-600 flex items-center" to="/t/Vuejs">#Vuejs</router-link>
-              </li>
-              <li class="flex items-center space-x-4">
-                <router-link class="text-gray-600 hover:text-blue-600 flex items-center" to="/t/Vuejs">#Vuejs</router-link>
-              </li>
-              <li class="flex items-center space-x-4">
-                <router-link class="text-gray-600 hover:text-blue-600 flex items-center" to="/t/Vuejs">#Vuejs</router-link>
-              </li>
-              <li class="flex items-center space-x-4">
-                <router-link class="text-gray-600 hover:text-blue-600 flex items-center" to="/t/Vuejs">#Vuejs</router-link>
-              </li>
-              <li class="flex items-center space-x-4">
-                <router-link class="text-gray-600 hover:text-blue-600 flex items-center" to="/t/Vuejs">#chartjs</router-link>
-              </li>
-              <li class="flex items-center space-x-4">
-                <router-link class="text-gray-600 hover:text-blue-600 flex items-center" to="/t/Vuejs">#Reactjs</router-link>
-              </li>
-              <li class="flex items-center space-x-4">
-                <router-link class="text-gray-600 hover:text-blue-600 flex items-center" to="/t/Vuejs">#Jquery</router-link>
-              </li>
-              <li class="flex items-center space-x-4">
-                <router-link class="text-gray-600 hover:text-blue-600 flex items-center" to="/t/Vuejs">#Ruby</router-link>
-              </li>
-            </ul>
-          </div>
+          <div class="h-48 overflow-y-auto mt-2">
+              <ul class="space-y-2">
+                <li v-for="tag in popularTags" :key="tag.id">
+                  <router-link :to="`/t/${tag.name}`" class="block px-4 py-2 text-gray-600 hover:text-blue-600 hover:bg-gray-100 transition duration-300">
+                    #{{ tag.name }}
+                  </router-link>
+                </li>
+              </ul>
+            </div>
         </ul>
     </aside>
 
@@ -232,10 +190,11 @@
             <li class="font-bold text-gray-900 mt-4">Popular Tags</li>
             <div class="h-48 overflow-y-auto mt-2">
               <ul class="space-y-2">
-                <li>
-                  <router-link to="/t/webdev" class="block px-4 py-2 text-gray-600 hover:text-blue-600 hover:bg-gray-100 transition duration-300">#webdev</router-link>
+                <li v-for="tag in popularTags" :key="tag.id">
+                  <router-link :to="`/t/${tag.name}`" class="block px-4 py-2 text-gray-600 hover:text-blue-600 hover:bg-gray-100 transition duration-300">
+                    #{{ tag.name }}
+                  </router-link>
                 </li>
-                <!-- Additional tags... -->
               </ul>
             </div>
           </ul>
@@ -246,8 +205,11 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
+import axios from '../axios';
+import { API_BASE_URL } from '@/config';
 
+const popularTags = ref([]);
 const isSidebarOpen = ref(false);
 const dropdownStates = ref({
   resources: false,
@@ -282,6 +244,35 @@ function toggleDropdown(dropdown) {
   dropdownStates.value[dropdown] = !dropdownStates.value[dropdown];
 }
 
+
+// Fetch popular tags from the API
+const fetchPopularTags = async () => {
+  try {
+    const token = localStorage.getItem('user-token'); // Retrieve the token
+    const response = await axios.get(`${API_BASE_URL}tag/popular`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+    popularTags.value = response.data;
+    console.log('Fetched popular tags:', popularTags.value); // Log the data
+  } catch (error) {
+    console.error('Error fetching popular tags:', error);
+    if (error.response) {
+      console.error('Response data:', error.response.data); // Log response data
+      console.error('Response status:', error.response.status); // Log response status
+    }
+  }
+};
+
+
+// Fetch popular tags on component mount
+// Fetch popular tags on component mount
+onMounted(async () => {
+  await fetchPopularTags(); // Call the fetch function
+});
+
+
 const toggleSidebar = () => {
   isSidebarOpen.value = !isSidebarOpen.value;
 };
@@ -289,6 +280,7 @@ const toggleSidebar = () => {
 // const toggleDropdown = (dropdown) => {
 //   dropdownStates.value[dropdown] = !dropdownStates.value[dropdown];
 // };
+
 </script>
 
 <style scoped>

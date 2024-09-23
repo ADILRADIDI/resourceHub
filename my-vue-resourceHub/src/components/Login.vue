@@ -52,7 +52,7 @@
       <br>
       <hr class="my-6 w-full border-gray-300">
       <p class="text-center text-sm text-gray-600">
-        New to ResourceHub Community? 
+        New to RDEV Community? 
         <router-link class="text-blue-500 hover:underline" to="/register">Create account</router-link>
       </p>
     </div>

@@ -15,7 +15,7 @@ const fetchNotifications = async () => {
         Authorization: `Bearer ${token}` // Set the authorization header
       }
     });
-    notifications.value = response.data;
+    notifications.value = response.data; // Ensure the response has the correct structure
   } catch (error) {
     console.error('Error fetching notifications:', error);
   }
@@ -73,12 +73,12 @@ const clearAllNotifications = async () => {
       }
     });
     notifications.value = [];
+    console.log(notifications.value);
   } catch (error) {
     console.error('Error clearing notifications:', error);
   }
 };
 </script>
-
 <template>
   <main class="main-container flex justify-center">
     <div class="w-full max-w-3xl">
@@ -124,10 +124,3 @@ const clearAllNotifications = async () => {
     </div>
   </main>
 </template>
-
-<style>
-.main-container {
-  background-color: #F5F5F5;
-  min-height: 100vh;
-}
-</style>

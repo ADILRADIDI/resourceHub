@@ -3,6 +3,9 @@ import SettingV from '../components/SettingV.vue';
 import HeaderA from '../components/HeaderA.vue';
 import Header from '../components/Header.vue';
 import Aside from '../components/Aside.vue';
+
+// Check if the token exists in localStorage
+const tokenExists = localStorage.getItem('user-token');
 </script>
 
 <template>

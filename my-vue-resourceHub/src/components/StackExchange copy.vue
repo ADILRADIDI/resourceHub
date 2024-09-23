@@ -1,13 +1,11 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue';
 import axios from 'axios';
-import { API_BASE_URL, API_BASE_URL_WITHOUT, Image_Unkown_user } from '@/config';
 
-// Example tags
+// Example tags (can be replaced by data from your backend)
 const tags = ref([
-  'php', 'c++', 'html', 'java', 'javascript', 'cloud', 'css', 'js', 'Flutter', 'laravel', 'npm', 'node.js', 'openai-api', 'azure',
-  'vuejs', 'angular', 'django', 'eloquent', 'python','eloquent','webpack','typescript','react-native','android','linux','docker','jenkins',
-  'github-actions','macos','swift','xcode14','windows','fsevents',
+  'php', 'c++', 'html','java','javascript','cloud',  'css', 'js', 'Flutter', 'laravel','npm','node.js','openai-api','azure',
+  'vuejs', 'angular', '.Net', 'eloquent', 'python',
 ]);
 
 // State for questions and API response
@@ -22,37 +20,31 @@ const selectedAnswers = ref([]);
 // Fetch questions from Stack Exchange API
 const fetchQuestions = async () => {
   try {
-    const response = await axios.get(`${API_BASE_URL}stackexchange/questions`, {
+    const response = await axios.get(`http://localhost:8000/api/stackexchange/questions`, {
       params: {
         tags: selectedTag.value || 'php',
+        search: searchQuery.value,
       },
     });
-    // console.log('Fetched Questions:', response.data);
-    posts.value = response.data; // Set the entire response
+    console.log('Fetched Questions:', response.data);
+    posts.value = response.data.items || []; // Ensure we only set items
   } catch (error) {
     console.error('Error fetching questions:', error);
   }
 };
 
+
+
+// Fetch answers for a specific question
 const fetchAnswers = async (questionId) => {
-  console.log(`Fetching answers for question ID: ${questionId}`);
   try {
-    const response = await axios.get(`${API_BASE_URL}stackexchange/questions/${questionId}/answers`);
-    const answers = response.data; // Directly use response.data
-
-    // console.log('Fetched Answers:', answers); // Log fetched answers
-
-    // Check if the response data contains answers
-    selectedAnswers.value = answers.length > 0 ? answers : [];
-    
-    if (selectedAnswers.value.length === 0) {
-      console.log('No answers found for this question.');
-    }
+    const response = await axios.get(`http://localhost:8000/api/stackexchange/questions/${questionId}/answers`);
+    console.log('Fetched Answers:', response.data);
+    selectedAnswers.value = response.data || [];
   } catch (error) {
     console.error('Error fetching answers:', error);
   }
 };
-
 
 // Compute filtered posts based on search query and selected tag
 const filteredPosts = computed(() => {
@@ -63,6 +55,7 @@ const filteredPosts = computed(() => {
   });
 });
 
+
 // Open Details Modal
 const openDetailsModal = (post) => {
   selectedPost.value = post;
@@ -71,15 +64,9 @@ const openDetailsModal = (post) => {
 
 // Toggle Answers Modal
 const toggleAnswersModal = async (post) => {
-  selectedPost.value = post; // Set selected post first
-  console.log(`Toggling answers modal for post ID: ${post.question_id}`); // Log question ID
-  // Check if the post has a valid ID before fetching answers
-  if (!post.question_id) {
-    console.error('No valid post ID found.');
-    return;
-  }
-  if (!showAnswersModal.value || selectedPost.value.question_id !== post.question_id) {
-    await fetchAnswers(post.question_id);
+  if (selectedPost.value?.id !== post.id) {
+    selectedPost.value = post;
+    await fetchAnswers(post.id);
   }
   showAnswersModal.value = !showAnswersModal.value;
 };
@@ -104,20 +91,31 @@ onMounted(() => {
       </h1>
     </div>
 
+    <!-- Search and Tag dropdown -->
     <div class="mb-6 flex flex-col lg:flex-row items-center justify-between">
-      <select v-model="selectedTag" @change="fetchQuestions" class="w-full lg:w-full mx-10 p-2 border rounded-lg bg-white text-black shadow-md transition-transform transform hover:scale-105">
+      <input
+        v-model="searchQuery"
+        @input="fetchQuestions"
+        type="text"
+        placeholder="Search by Questions or Content . . . "
+        class="w-full mx-10 lg:w-3/4 p-2 mb-4 lg:mb-0 border rounded-lg bg-white text-black focus:outline-none shadow-md transition-transform transform hover:scale-105"
+      />
+
+
+      <select v-model="selectedTag" @change="fetchQuestions" class="w-full lg:w-1/4 p-2 border rounded-lg bg-white text-black shadow-md transition-transform transform hover:scale-105">
         <option value="">All</option>
         <option v-for="tag in tags" :key="tag" :value="tag">{{ tag }}</option>
       </select>
     </div>
 
+    <!-- Main content -->
     <div class="main-content flex flex-col lg:flex-row">
       <section class="posts w-full lg:w-full p-4">
         <div v-if="filteredPosts.length === 0" class="text-gray-600 text-center mt-20 bg-white py-5">
           <img src="../../public/img/noQuestion.jpg" alt="No questions available" class="w-60 mx-auto mb-8 rounded-xl">
           <p class="text-2xl font-bold text-gray-700">No questions available for this tag or search.</p>
         </div>
-        <div v-for="post in filteredPosts" :key="post.question_id" class="post mb-6 p-4 border rounded-lg shadow-lg bg-white text-black hover:bg-gray-50 transition-colors">
+        <div v-for="post in filteredPosts" :key="post.id" class="post mb-6 p-4 border rounded-lg shadow-lg bg-white text-black hover:bg-gray-50 transition-colors">
           <h3 class="font-semibold text-lg mb-2">{{ post.title }}</h3>
           <h3 class="font-semibold text-sm mb-5">{{ post.tags.join(', ') }}</h3>
           <button
@@ -130,7 +128,7 @@ onMounted(() => {
             @click="toggleAnswersModal(post)"
             class="bg-yellow-500 text-white py-2 px-4 rounded-full hover:bg-yellow-600 ml-2 transition-colors"
           >
-            {{ showAnswersModal && selectedPost.question_id === post.question_id ? 'Hide Answers' : 'See Answers' }}
+            {{ showAnswersModal && selectedPost.id === post.id ? 'Hide Answers' : 'See Answers' }}
           </button>
         </div>
       </section>
@@ -144,31 +142,30 @@ onMounted(() => {
         </button>
         <h2 class="text-2xl font-bold mb-4">{{ selectedPost?.title }}</h2>
         <p class="text-gray-800 mb-4">By: <a :href="selectedPost?.owner.link" class="text-blue-500 hover:underline">{{ selectedPost?.owner.display_name }}</a></p>
-        <!-- <p class="text-gray-800 mb-4">{{ selectedPost?.question_id }}</p> -->
-        <p class="text-gray-800 mb-4">{{ selectedPost?.body }}</p>
+        <p class="text-gray-800 mb-4">{{ selectedPost?.content }}</p>
         <a :href="selectedPost?.link" target="_blank" class="text-blue-500 hover:underline">View on StackOverflow</a>
       </div>
     </div>
 
     <!-- Answers Modal -->
     <div v-if="showAnswersModal && selectedPost" class="modal fixed inset-0 bg-black bg-opacity-75 flex justify-center items-center z-50">
-      <div class="modal-content bg-white p-6 rounded-lg w-full sm:w-5/6 md:w-4/5 lg:w-3/4 xl:w-2/3 relative">
+      <div class="modal-content bg-white p-6 rounded-lg w-3/4 max-w-3xl relative">
         <button @click="closeModals" class="absolute top-2 right-2 text-black">
           <span class="material-symbols-outlined">close</span>
         </button>
-        <h2 class="text-2xl font-bold mb-4">Answers for: {{ selectedPost.title }}</h2>
+        <h2 class="text-2xl font-bold mb-4">Answers for: {{ selectedPost?.title }}</h2>
 
+        <!-- Scrollable Answers Section -->
         <div class="answers-container max-h-96 overflow-y-auto">
           <div v-if="selectedAnswers.length > 0">
-            <div v-for="answer in selectedAnswers" :key="answer.answer_id" class="bg-gray-200 px-5 rounded-lg mb-5 py-3 ">
-              <pre class="text-gray-800 whitespace-pre-wrap" v-html="answer.body"></pre>
-              <p class="text-black text-xl mt-4 font-bold">By: {{ answer.owner?.display_name || 'Anonymous' }}</p>
+            <div v-for="answer in selectedAnswers" :key="answer.answer_id" class="answer mb-4 p-4 bg-gray-100 rounded-lg shadow-md">
+              <pre class="text-gray-800 whitespace-pre-wrap">{{ answer.body }}</pre>
+              <p class="text-black text-xl mt-4 font-bold">By: {{ answer.owner.display_name || 'Anonymous' }}</p>
             </div>
           </div>
-          <div v-else class="text-gray-600">No answers available.</div>
+          <div v-if="selectedAnswers.length === 0" class="text-gray-600">No answers available.</div>
         </div>
       </div>
-
     </div>
   </div>
 </template>
@@ -198,13 +195,29 @@ input, select {
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 50;
 }
 
-/* .modal-content {
-  background: white;
+.modal-content {
+  background-color: #ffffff;
   padding: 2rem;
   border-radius: 0.5rem;
   width: 90%;
   max-width: 600px;
-} */
+}
+
+.answers-container {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.answer {
+  border: 1px solid #ddd;
+  border-radius: 0.5rem;
+  padding: 1rem;
+}
+
+.material-symbols-outlined {
+  font-size: 2rem;
+}
 </style>

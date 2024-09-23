@@ -1,6 +1,5 @@
 <template>
   <div>
-    <!-- Main Content -->
     <div class="tags-component mx-8">
       <div class="flex items-center justify-between mx-5 mb-6">
         <h1 class="text-4xl font-bold text-blue-700 animate-pulse">Tags</h1>
@@ -12,7 +11,6 @@
         </button>
       </div>
 
-      <!-- Search Bar -->
       <div class="search-bar mb-6 flex flex-col sm:flex-row justify-between">
         <input
           v-model="searchQuery"
@@ -22,7 +20,6 @@
         />
       </div>
 
-      <!-- Tags Grid -->
       <div class="tags-grid"> 
         <div
           class="tag-card bg-white shadow-md border border-gray-200 rounded-lg p-4 flex flex-col items-center"
@@ -43,7 +40,6 @@
         </div>
       </div>
 
-      <!-- Suggest a Tag Modal -->
       <div v-if="showSuggestForm" class="modal fixed inset-0 bg-black bg-opacity-75 flex justify-center items-center z-50">
         <div class="modal-content bg-white p-6 rounded-lg relative w-full max-w-md">
           <button @click="closeModal" class="absolute top-2 right-2 text-black">
@@ -75,22 +71,12 @@ import { ref, computed, onMounted } from 'vue';
 import axios from 'axios';
 import { API_BASE_URL } from '../config';
 
-// State management
 const tags = ref([]);
 const searchQuery = ref('');
 const showSuggestForm = ref(false);
 const newTagName = ref('');
-
-// Fetch token from localStorage
 const token = localStorage.getItem('user-token');
 
-// Ensure the token exists
-if (!token) {
-  console.error('No token found. Please log in.');
-  // Optionally, redirect to login page or show an error message
-}
-
-// Axios instance with the Authorization header
 const apiClient = axios.create({
   baseURL: API_BASE_URL,
   headers: {
@@ -98,44 +84,51 @@ const apiClient = axios.create({
   },
 });
 
-// Fetch tags from the API
 const fetchTags = async () => {
   try {
     const response = await apiClient.get('/tags');
     tags.value = response.data;
-    // console.log(tags.value); 
+
+    // Check follow status for each tag
+    await Promise.all(tags.value.map(async (tag) => {
+      const isFollowingResponse = await apiClient.get(`/tags/${tag.id}/is-following`);
+      tag.isFollowing = isFollowingResponse.data.isFollowing; // Adjust based on your API response structure
+    }));
   } catch (error) {
-    if (error.response && error.response.status === 403) {
-      console.error('Error 403: Access Forbidden. Invalid token or insufficient permissions.');
-      // Optionally, handle the 403 error (e.g., redirect to login)
-    } else {
-      console.error('Error fetching tags:', error);
-    }
+    console.error('Error fetching tags:', error);
   }
 };
 
-// Fetch tags on component mount
 onMounted(() => {
   fetchTags();
 });
 
-// Computed property to filter tags based on search query
 const filteredTags = computed(() => {
-  if (searchQuery.value) {
-    return tags.value.filter(tag => tag.name.toLowerCase().includes(searchQuery.value.toLowerCase()));
-  }
-  return tags.value;
+  return searchQuery.value 
+    ? tags.value.filter(tag => tag.name.toLowerCase().includes(searchQuery.value.toLowerCase())) 
+    : tags.value;
 });
 
-// Toggle follow/unfollow status for a tag
 const toggleFollow = async (tagId) => {
   const tag = tags.value.find((t) => t.id === tagId);
+  
   if (tag) {
-    tag.isFollowing = !tag.isFollowing;
+    try {
+      if (tag.isFollowing) {
+        await apiClient.delete(`/tags/${tagId}/unfollow`);
+        console.log(`Unfollowed tag ID: ${tagId}`);
+      } else {
+        await apiClient.post(`/tags/${tagId}/follow`);
+        console.log(`Followed tag ID: ${tagId}`);
+      }
+      // Update the follow status immediately after the action
+      tag.isFollowing = !tag.isFollowing;
+    } catch (error) {
+      console.error('Error toggling follow status:', error);
+    }
   }
 };
 
-// Suggest a new tag and send it to the API
 const suggestTag = async () => {
   if (newTagName.value.trim()) {
     try {
@@ -143,23 +136,19 @@ const suggestTag = async () => {
         name: newTagName.value,
       });
       tags.value.push(response.data);
-      newTagName.value = ''; // Clear the input field
-      closeModal(); // Close modal after submission
+      newTagName.value = '';
+      closeModal();
     } catch (error) {
-      if (error.response && error.response.status === 403) {
-        console.error('Error 403: Access Forbidden when suggesting tag.');
-      } else {
-        console.error('Error suggesting tag:', error);
-      }
+      console.error('Error suggesting tag:', error);
     }
   }
 };
 
-// Close the modal
 const closeModal = () => {
   showSuggestForm.value = false;
 };
 </script>
+
 
 <style scoped>
 .tags-component {
@@ -168,13 +157,13 @@ const closeModal = () => {
 
 .tags-grid {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: wrap;  
   gap: 1rem;
 }
 
 .tag-card {
   text-align: center;
-  flex: 1 1 calc(25% - 1rem); /* Adjust the width for the number of columns */
+  flex: 1 1 calc(25% - 1rem);
 }
 
 .follow-btn {
@@ -182,11 +171,10 @@ const closeModal = () => {
 }
 
 .follow-btn:hover {
-  background-color: #0056b3; /* Darker blue on hover */
+  background-color: #0056b3;
   transform: scale(1.05);
 }
 
-/* Modal styles */
 .modal {
   display: flex;
   justify-content: center;
