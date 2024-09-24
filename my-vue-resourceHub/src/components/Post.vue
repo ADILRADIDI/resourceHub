@@ -1,7 +1,7 @@
 <template>
   <div class="post-wrapper mt-14">
     <div v-for="post in posts" :key="post.id" class="post-container bg-white p-6 rounded-lg shadow-md relative mb-3">
-      <div class="post-header flex items-center mb-4 justify-around">
+      <div class="post-header flex items-center mb-4 justify-start">
         <img :src="post.userProfileImage || 'default-image-url.jpg'" alt="Profile Picture" class="w-10 h-10 rounded-full mr-4">
         <div>
             <router-link :to="`/u/${post.user?.id}`" class="font-semibold text-gray-800 hover:text-blue-500">
@@ -9,17 +9,17 @@
             </router-link>
           <p class="text-sm text-gray-500">{{ new Date(post.created_at).toLocaleString() }}</p>
         </div>
-        <div class="relative ml-auto">
+        <!-- <div class="relative ml-auto">
           <button @click="toggleDropdown(post.id)" class="text-black bg-white hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center">
             <i class="fa-solid fa-ellipsis-vertical text-xl"></i>
           </button>
           <div v-if="dropdownOpen === post.id" class="absolute right-0 mt-2 w-44 bg-white divide-y divide-gray-100 rounded-2xl shadow-lg z-20">
             <ul class="py-2 text-sm text-gray-700">
               <li><a href="#" class="block px-4 py-2 hover:bg-blue-200 hover:rounded-full">Copy Link</a></li>
-              <!-- <li><a href="#" class="block px-4 py-2 hover:bg-blue-200 hover:rounded-full">Share</a></li> -->
+              <li><a href="#" class="block px-4 py-2 hover:bg-blue-200 hover:rounded-full">Share</a></li>
             </ul>
           </div>
-        </div>
+        </div> -->
       </div>
 
       <router-link :to="`/Pd/${post.id}`">

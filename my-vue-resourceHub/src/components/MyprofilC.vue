@@ -1,11 +1,14 @@
 <template>
-  <div class="">
+  <div>
     <div class="profile-page container mx-auto p-4 md:p-6">
       <!-- User Profile Section -->
       <div class="flex flex-wrap bg-white rounded-lg items-center justify-center shadow-lg">
         <span class="crayons-avatar crayons-avatar--3xl">
+          <!-- 
+          :src="userProfile.profile_picture ? `${API_BASE_URL_WITHOUT}storage/uploads/${userProfile.profile_picture}` : Image_Unkown_user"
+          -->
           <img
-            :src="userProfile.profile_picture || Image_Unkown_user"
+            :src="userProfile.profile_picture ? `${API_BASE_URL_WITHOUT}storage/uploads/profile_pictures/hQuyHERzI68R3eUHRfNKsQj18WLdsd0Qdl6pXDnp.png` : Image_Unkown_user"
             width="128"
             height="128"
             :alt="`${userProfile.name} profile picture`"
@@ -47,6 +50,8 @@
       <div class="recent-posts bg-white p-4 rounded-lg shadow-md mt-6">
         <h3 class="text-lg font-semibold text-gray-800">My Posts</h3>
         <div class="mt-4">
+          <div v-if="loading" class="text-center">Loading posts...</div>
+          <div v-if="errorMessage" class="text-red-500">{{ errorMessage }}</div>
           <div v-for="post in userProfile.posts" :key="post.id" class="post-container bg-white p-6 rounded-lg shadow-md mb-4">
             <div class="post-header flex items-center mb-4">
               <img :src="post.user.profile_picture || 'default-image-url.jpg'" alt="Profile Picture" class="w-10 h-10 rounded-full mr-4">
@@ -63,8 +68,6 @@
                 <div v-if="dropdownOpen === post.id" class="absolute right-0 mt-2 w-44 bg-white divide-y divide-gray-100 rounded-2xl shadow-lg z-20">
                   <ul class="py-2 text-sm text-gray-700">
                     <li @click="deletePost(post.id)" class="cursor-pointer block px-4 py-2 hover:bg-red-500 hover:text-white hover:rounded-full">Delete</li>
-                    <li><a href="#" class="block px-4 py-2 hover:bg-blue-200 hover:rounded-full">Copy Link</a></li>
-                    <!-- <li><a href="#" class="block px-4 py-2 hover:bg-blue-200 hover:rounded-full">Share</a></li> -->
                   </ul>
                 </div>
               </div>
@@ -87,22 +90,16 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue';
 import axios from 'axios';
-import { API_BASE_URL, Image_Unkown_user } from '@/config';
+import { API_BASE_URL, Image_Unkown_user, API_BASE_URL_WITHOUT } from '@/config';
 
 const userProfile = ref({});
 const loading = ref(true);
-const userColorSettings = ref({
-  background: '#FFFFFFFF',
-});
 const dropdownOpen = ref(null);
 const errorMessage = ref(null);
-const posts = ref([]);
-const tagName = ref(''); // Replace with the desired tag
 
 // Fetch user profile and posts on component mount
 onMounted(async () => {
   await fetchUserProfile();
-  await fetchPostsByTag();
 });
 
 // Function to fetch user profile
@@ -115,9 +112,10 @@ const fetchUserProfile = async () => {
       },
     });
     userProfile.value = response.data;
-    console.log('User profile fetched:', userProfile.value); // Debugging
+    console.log('User profile fetched:', userProfile.value);
   } catch (error) {
     console.error('Error fetching user profile:', error);
+    errorMessage.value = 'Error fetching user profile. Please try again later.';
   } finally {
     loading.value = false;
   }
@@ -134,34 +132,9 @@ const deletePost = async (postId) => {
       },
     });
     console.log('Deleted post ID:', postId);
-    // Optionally, refresh the posts or remove the post from the local state
     userProfile.value.posts = userProfile.value.posts.filter(post => post.id !== postId);
   } catch (error) {
     console.error('Error deleting post:', error.response ? error.response.data : error);
-  }
-};
-
-
-// Function to fetch posts by tag
-const fetchPostsByTag = async () => {
-  loading.value = true;
-  errorMessage.value = null;
-  const token = localStorage.getItem('user-token');
-  try {
-    console.log('Fetching posts with tag:', tagName.value); // Debugging
-    const response = await axios.post(`${API_BASE_URL}posts/by-tag`, { tag: tagName.value }, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        Accept: 'application/json',
-      },
-    });
-    posts.value = response.data;
-    console.log('Posts fetched:', posts.value); // Debugging
-  } catch (error) {
-    errorMessage.value = 'Error fetching posts. Please try again later.';
-    console.error('Error fetching posts:', error.response ? error.response.data : error);
-  } finally {
-    loading.value = false;
   }
 };
 

@@ -3,14 +3,45 @@
     <div class="profile-settings bg-white p-6 border rounded-lg shadow-lg mb-8">
       <h1 class="font-bold text-3xl text-gray-800 mb-6">Profile Settings</h1>
 
-      <div class="mb-6 flex items-center justify-between">
+      <!-- <div class="mb-6 flex items-center justify-between">
         <h2 class="text-xl font-semibold mb-2">Profile Image</h2>
         <div class="flex items-center">
-          <img :src="user.profileImage || Image_Unkown_user" alt="Profile Image" class="w-24 h-24 rounded-full mr-4" />
+          <img
+            :src="user.profile_picture ? `http://localhost:8000/storage/uploads/${user.profile_picture}` : Image_Unkown_user"
+            width="30"
+            height="30"
+            class="crayons-avatar__image w-24 h-24 rounded-full mx-10 mt-5"
+          />
           <input type="file" @change="handleProfilePictureUpload" class="p-2 border rounded-lg" />
         </div>
         <button @click="updateProfilePicture" class="px-4 py-2 bg-blue-600 text-white font-semibold rounded-full ">Update Profile Picture</button>
+      </div> -->
+
+      <!-- :src="user.profile_picture ? `http://localhost:8000/storage/uploads/profile_pictures/${user.profile_picture}` : Image_Unkown_user" -->
+
+      <div class="mb-6 flex items-center justify-between">
+        <h2 class="text-xl font-semibold mb-2">Profile Image</h2>
+        <div class="flex items-center">
+            <img
+                :src="user.profile_picture ? `http://localhost:8000/storage/uploads/profile_pictures/hQuyHERzI68R3eUHRfNKsQj18WLdsd0Qdl6pXDnp.png` : Image_Unkown_user"
+                width="30"
+                height="30"
+                class="crayons-avatar__image w-24 h-24 rounded-full mx-10 mt-5"
+                alt="Profile Image"
+            />
+
+            <input type="file" @change="handleProfilePictureUpload" class="p-2 border rounded-lg" />
+        </div>
+        <button 
+            @click="updateProfilePicture"
+            class="px-4 py-2 bg-blue-600 text-white font-semibold rounded-full"
+            :disabled="isLoading"
+        >
+            <span v-if="isLoading">Updating...</span>
+            <span v-else>Update Profile Picture</span>
+        </button>
       </div>
+
 
       <div class="mb-6">
         <h2 class="text-xl font-semibold mb-2">User Information</h2>
@@ -114,7 +145,8 @@
 
 <script>
 import axios from 'axios';
-import { API_BASE_URL, Image_Unkown_user } from '@/config';
+import { API_BASE_URL,  Image_Unkown_user , API_BASE_URL_WITHOUT} from '@/config';
+
 
 export default {
   data() {
@@ -127,12 +159,12 @@ export default {
         location: '',
         bio: '', // Add this line
         skills: '', // Add this line
+        profile_picture: null,
         current_password: '',
         new_password: '',  
         confirm_password: '',
-        confirmPassword: '',
-        profileImage: null,
       },
+      isLoading: false,
     };
   },
   mounted() {
@@ -148,33 +180,49 @@ export default {
           },
         });
         this.user = response.data;
+        // console.log(this.user.profile_picture);
       } catch (error) {
         console.error(error);
       }
     },
     handleProfilePictureUpload(event) {
       const file = event.target.files[0];
-      this.user.profileImage = file;
+      this.user.profile_picture = file; // Update to store file in user object
     },
     async updateProfilePicture() {
-      const formData = new FormData();
-      if (this.user.profileImage) {
-        formData.append('profile_image', this.user.profileImage);
-      }
+        if (!this.user.profile_picture) return;
+        this.isLoading = true;
+        const formData = new FormData();
+        formData.append('profile_picture', this.user.profile_picture);
 
-      try {
-        await axios.post(`${API_BASE_URL}profile/update/profile-picture`, formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-            'Authorization': `Bearer ${localStorage.getItem('user-token')}`,
-          },
-        });
-        alert('Profile picture updated successfully');
-      } catch (error) {
-        console.error(error);
-        alert('Failed to update profile picture');
-      }
-    },
+        try {
+            const response = await axios.post(`${API_BASE_URL}profile/update/profile-picture`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                    'Authorization': `Bearer ${localStorage.getItem('user-token')}`,
+                },
+            });
+
+            // Check if response contains the expected profile picture filename
+            if (response.data.profile_picture) {
+                this.user.profile_picture = response.data.profile_picture; // Set the filename
+            } else {
+                console.error('No profile picture returned in response:', response.data);
+            }
+
+            // Construct the full URL only if the filename exists
+            const fullPath = this.user.profile_picture 
+                ? `http://localhost:8000/storage/uploads/profile_pictures/${this.user.profile_picture}`
+                : Image_Unkown_user; // Use default image if undefined
+            console.log('Updated Profile Picture URL:', fullPath);
+        } catch (error) {
+            console.error('Error updating profile picture:', error);
+        } finally {
+            this.isLoading = false;
+        }
+    }
+
+,
     async updateName() {
       try {
         await axios.post(`${API_BASE_URL}profile/update/name`, { name: this.user.name }, {
@@ -182,7 +230,7 @@ export default {
             'Authorization': `Bearer ${localStorage.getItem('user-token')}`,
           },
         });
-        // alert('Name updated successfully');
+        alert('Name updated successfully');
       } catch (error) {
         console.error(error);
         alert('Failed to update name');
@@ -195,7 +243,7 @@ export default {
             'Authorization': `Bearer ${localStorage.getItem('user-token')}`,
           },
         });
-        // alert('Email updated successfully');
+        alert('Email updated successfully');
       } catch (error) {
         console.error(error);
         alert('Failed to update email');
@@ -208,14 +256,12 @@ export default {
             'Authorization': `Bearer ${localStorage.getItem('user-token')}`,
           },
         });
-        // alert('Bio updated successfully');
         console.log('Bio updated successfully');
       } catch (error) {
         console.error(error);
         alert('Failed to update bio');
       }
     },
-
     async updateSkills() {
       try {
         await axios.post(`${API_BASE_URL}profile/update/skills`, { skills: this.user.skills }, {
@@ -229,7 +275,6 @@ export default {
         alert('Failed to update skills');
       }
     },
-
     async updateWebsite() {
       try {
         await axios.post(`${API_BASE_URL}profile/update/website`, { website: this.user.website }, {
@@ -237,7 +282,7 @@ export default {
             'Authorization': `Bearer ${localStorage.getItem('user-token')}`,
           },
         });
-        // alert('Website updated successfully');
+        alert('Website updated successfully');
       } catch (error) {
         console.error(error);
         alert('Failed to update website');
@@ -250,7 +295,7 @@ export default {
             'Authorization': `Bearer ${localStorage.getItem('user-token')}`,
           },
         });
-        // alert('GitHub URL updated successfully');
+        alert('GitHub URL updated successfully');
       } catch (error) {
         console.error(error);
         alert('Failed to update GitHub URL');
@@ -263,7 +308,7 @@ export default {
             'Authorization': `Bearer ${localStorage.getItem('user-token')}`,
           },
         });
-        // alert('Location updated successfully');
+        alert('Location updated successfully');
       } catch (error) {
         console.error(error);
         alert('Failed to update location');
@@ -280,10 +325,6 @@ export default {
         return;
       }
 
-      console.log('Current Password:', this.user.current_password);
-      console.log('New Password:', this.user.new_password);
-      console.log('Confirm New Password:', this.user.confirm_password);
-
       const payload = {
         current_password: this.user.current_password,
         new_password: this.user.new_password,
@@ -291,25 +332,18 @@ export default {
       };
 
       try {
-        const response = await axios.post(`${API_BASE_URL}profile/update/password`, payload, {
+        await axios.post(`${API_BASE_URL}profile/update/password`, payload, {
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('user-token')}`,
           },
         });
         alert('Password changed successfully');
       } catch (error) {
-          console.error('Error details:', error);
-          if (error.response) {
-            console.error('Response data:', error.response.data);
-            console.error('Response status:', error.response.status);
-          }
-          const errorMessage = error.response?.data?.message || 'Failed to change password';
-          alert(errorMessage);
+        console.error('Error details:', error);
+        const errorMessage = error.response?.data?.message || 'Failed to change password';
+        alert(errorMessage);
       }
-
-    }
-,
-
+    },
     async deleteAccount() {
       const confirmDelete = confirm('Are you sure you want to delete your account?');
       if (!confirmDelete) return;
@@ -329,6 +363,7 @@ export default {
   },
 };
 </script>
+
 
 <style scoped>
 </style>

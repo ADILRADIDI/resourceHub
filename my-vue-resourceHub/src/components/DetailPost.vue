@@ -29,7 +29,7 @@
           </div>
           <div v-if="post.document" class="post-pdf mt-4">
             <iframe 
-              :src="`${API_BASE_URL_WITHOUT}storage/uploads/pdfs/${post.document}`" 
+              :src="`${API_BASE_URL_WITHOUT}storage/uploads/pdfs/${post.document}#toolbar=0`" 
               frameborder="0" 
               class="w-full h-96 rounded-lg shadow-md" 
               allowfullscreen
