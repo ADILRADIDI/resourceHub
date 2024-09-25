@@ -1,0 +1,66 @@
+-----------------------------------------
+|-----------------------------------------"Back-end and front bro just bro work hard"------------------------------------"
+
+|- authentification with google & github & gitlab
+|- copier le lien de post or click share modal socialmedia 
+|- seo <meta>
+|- write axios register okay
+|- handling no auth dont has pr like and viewpost .... and startpodcast.... (modal login or register)
+|- fetch posts by new users (seeder 10 post in laravel)
+|- view post and view profil by post
+|- fetch comments by this post
+|- work like and save and comments
+|- fetch reading list and testing
+|- work fast fix (front and backend)
+|- 
+|-
+
+
+
+- problem openai api
+- problem youtube CrashCourse api 
+- add json for data programming tech
+
+
+
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+
+
+#_Admin_#
+--> manage roles and permissions
+---> manage users 
+--> manage posts + accept posts fr publishing
+---> manage podcasts
+--> manage Events
+---> Mnagae keyword youtube api search ('CrashCourse')
+--> manage forem shop ('tshirts + books tech')
+---> manage 
+-->
+--->
+-->
+--->
+-->
+--->
+-->
+--->
+-->
+--->
+-->
+--->
+-->
+--->
+-->
+--->

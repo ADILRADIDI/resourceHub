@@ -2,7 +2,12 @@
   <div class="post-wrapper mt-14">
     <div v-for="post in posts" :key="post.id" class="post-container bg-white p-6 rounded-lg shadow-md relative mb-3">
       <div class="post-header flex items-center mb-4 justify-start">
-        <img :src="post.userProfileImage || 'default-image-url.jpg'" alt="Profile Picture" class="w-10 h-10 rounded-full mr-4">
+        <img
+          :src="post.user.profile_picture ? `${API_BASE_URL_WITHOUT}storage/uploads/profile_pictures/${post.user.profile_picture}` : Image_Unkown_user"
+          :alt="`${post.user.name} profile picture`"
+          class="rounded-full mx-3 W-10 h-10 shadow-md"
+        />
+        <!-- <img :src="post.userProfileImage || 'default-image-url.jpg'" alt="Profile Picture" class="w-10 h-10 rounded-full mr-4"> -->
         <div>
             <router-link :to="`/u/${post.user?.id}`" class="font-semibold text-gray-800 hover:text-blue-500">
               {{ post.user?.name || 'Unknown User' }}
@@ -98,7 +103,7 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
-import { API_BASE_URL, Image_Unkown_user } from '../config';
+import { API_BASE_URL, Image_Unkown_user, API_BASE_URL_WITHOUT } from '../config';
 
 const posts = ref([]);
 const showModal = ref(false);
@@ -118,7 +123,7 @@ const fetchPosts = async () => {
       liked: post.likes.some(like => like.user_id === parseInt(localStorage.getItem('user-id'))),
       saved: post.saved || false,
     }));
-    // console.log(posts.value);
+    console.log(posts.value);
     
   } catch (error) {
     console.error('Error fetching posts:', error);

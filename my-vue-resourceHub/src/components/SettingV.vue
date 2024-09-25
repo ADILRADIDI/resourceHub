@@ -18,19 +18,36 @@
       </div> -->
 
       <!-- :src="user.profile_picture ? `http://localhost:8000/storage/uploads/profile_pictures/${user.profile_picture}` : Image_Unkown_user" -->
+      <!-- :src="user.profile_picture ? `http://localhost:8000/storage/uploads/profile_pictures/` : Image_Unkown_user" -->
 
       <div class="mb-6 flex items-center justify-between">
         <h2 class="text-xl font-semibold mb-2">Profile Image</h2>
+        <!-- profile_pictures/2DFsjL8mGLU142C1tgRbTjpoCWz5edaWA8Z18wRj.jpg -->
         <div class="flex items-center">
             <img
-                :src="user.profile_picture ? `http://localhost:8000/storage/uploads/profile_pictures/hQuyHERzI68R3eUHRfNKsQj18WLdsd0Qdl6pXDnp.png` : Image_Unkown_user"
+                :src="user.profile_picture ? `http://localhost:8000/storage/uploads/profile_pictures/${user.profile_picture}` : Image_Unkown_user"
                 width="30"
                 height="30"
                 class="crayons-avatar__image w-24 h-24 rounded-full mx-10 mt-5"
                 alt="Profile Image"
             />
-
-            <input type="file" @change="handleProfilePictureUpload" class="p-2 border rounded-lg" />
+            <!-- <input type="file" @change="handleProfilePictureUpload" class="p-2 border rounded-lg" /> -->
+            <!-- Custom File Input -->
+            <div class="relative">
+              <input
+                type="file"
+                @change="handleProfilePictureUpload"
+                id="profile-picture-input"
+                class="hidden"
+              />
+              <label
+                for="profile-picture-input"
+                class="px-4 py-2 bg-blue-600 text-white font-semibold rounded-lg shadow-lg hover:bg-blue-700 cursor-pointer transition-colors duration-300"
+              >
+                Update Profile Picture
+              </label>
+              <span v-if="selectedFileName" class="ml-2 text-gray-500">{{ selectedFileName }}</span>
+            </div>
         </div>
         <button 
             @click="updateProfilePicture"
@@ -145,7 +162,8 @@
 
 <script>
 import axios from 'axios';
-import { API_BASE_URL,  Image_Unkown_user , API_BASE_URL_WITHOUT} from '@/config';
+import { API_BASE_URL,  Image_Unkown_user, API_BASE_URL_WITHOUT} from '@/config';
+
 
 
 export default {
@@ -180,7 +198,9 @@ export default {
           },
         });
         this.user = response.data;
-        // console.log(this.user.profile_picture);
+        console.log('this is image in setting', this.user.profile_picture);
+        console.log(response.data);
+        
       } catch (error) {
         console.error(error);
       }
@@ -196,7 +216,7 @@ export default {
         formData.append('profile_picture', this.user.profile_picture);
 
         try {
-            const response = await axios.post(`${API_BASE_URL}profile/update/profile-picture`, formData, {
+            const response = await axios.post(`${API_BASE_URL}profile/updatepicture`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                     'Authorization': `Bearer ${localStorage.getItem('user-token')}`,

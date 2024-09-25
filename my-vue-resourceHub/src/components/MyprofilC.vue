@@ -8,7 +8,7 @@
           :src="userProfile.profile_picture ? `${API_BASE_URL_WITHOUT}storage/uploads/${userProfile.profile_picture}` : Image_Unkown_user"
           -->
           <img
-            :src="userProfile.profile_picture ? `${API_BASE_URL_WITHOUT}storage/uploads/profile_pictures/hQuyHERzI68R3eUHRfNKsQj18WLdsd0Qdl6pXDnp.png` : Image_Unkown_user"
+            :src="userProfile.profile_picture ? `${API_BASE_URL_WITHOUT}storage/uploads/profile_pictures/${userProfile.profile_picture}` : Image_Unkown_user"
             width="128"
             height="128"
             :alt="`${userProfile.name} profile picture`"
