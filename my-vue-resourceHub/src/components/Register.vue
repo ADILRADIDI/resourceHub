@@ -91,8 +91,12 @@ export default {
         console.log(response.data)
         const token = response.data.token;
         const userId = response.data.user_id;
+        const roles = response.data.roles;
+
         localStorage.setItem('user-token', token);
         localStorage.setItem('user-id', userId);
+        localStorage.setItem('user-role', roles); 
+
 
         axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 

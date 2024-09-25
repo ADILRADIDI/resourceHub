@@ -168,7 +168,7 @@ export default {
 
         this.podcasts = response.data.map((podcast) => {
           const imageUrl = podcast.logo
-            ? `${API_BASE_URL_WITHOUT}storage/uploads/logos/${podcast.logo}`
+            ? `${API_BASE_URL_WITHOUT}storage/${podcast.logo}`
             : '/path/to/fallback-image.jpg';
 
           return { ...podcast, image: imageUrl };

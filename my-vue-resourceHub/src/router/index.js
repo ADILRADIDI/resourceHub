@@ -37,6 +37,7 @@ import chat from '@/components/Chat.vue'
 import sugYTchannels from '@/components/AdminComponents/manageSuggeted/sugYTchannels.vue'
 import FastFix from '../../src/views/FastFix.vue'
 // import managementUsers from '../views/Admin/'
+import NotFoundPage from '../components/NotFoundPage.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -217,7 +218,29 @@ const router = createRouter({
     {
       path: '/DashboardAdmin',
       name: 'DashboardAdmin',
-      component: DashboardAdmin
+      component: DashboardAdmin,
+      beforeEnter: (to, from, next) => {
+        const userRole = localStorage.getItem('user-role'); 
+    
+        if (userRole === 'super-admin') {
+          next();
+        } else {
+          next(
+            {
+              path: '/404',
+              name: 'NotFound',
+              component: NotFoundPage
+            }
+          );
+        }
+      }
+    }    
+
+    ,
+    {
+      path: '/404',
+      name: 'NotFound',
+      component: NotFoundPage
     }
     ,
     {
