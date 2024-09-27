@@ -1,11 +1,10 @@
 <template>
-    <div class="flex justify-between items-center mx-20 mt-20 bg-gray-50 rounded-full px-10 shadow-md">
+  <div>
+    <div class="flex justify-between items-center mx-20 mt-20 bg-gray-50 rounded-full px-10 shadow-md py-3">
       <h1 class="font-bold text-2xl">Manage Roles</h1>
-      <div class="mb-4">
-        <button @click="openAddRoleModal" class="bg-blue-500 text-white px-4 py-2 rounded-full mt-3 hover:bg-blue-600">Add Role</button>
-      </div>
+      <button @click="openAddRoleModal" class="bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-transparent hover:text-black">Add Role</button>
     </div>
-  
+
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg mx-20 mt-5">
       <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -19,43 +18,55 @@
           <tr v-for="role in roles" :key="role.id" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
             <td class="px-6 py-4">{{ role.name }}</td>
             <td class="px-6 py-4">
-              <ul>
-                <li v-for="permission in role.permissions" :key="permission.id">{{ permission.name }}</li>
-              </ul>
+              <button v-if="!role.showPermissions" @click="seePer(role)" class="bg-orange-500 text-white px-3 py-1 rounded-lg">See Permissions</button>
+              <button v-else @click="seePer(role)" class="bg-orange-500 text-white px-3 py-1 rounded-lg">Close Permissions</button>
+              <div v-if="role.showPermissions" class="overflow-y-auto h-32 border border-gray-300 rounded-md">
+                <label v-for="permission in role.permissions" :key="permission.id" class="flex items-center p-2">
+                  <input type="radio" :value="permission.name" v-model="role.permissions" class="mr-2" :disabled="!currentRole.permissions.includes(permission.name)" />
+                  {{ permission.name }}
+                </label>
+              </div>
             </td>
             <td class="px-6 py-4">
               <button @click="openEditRoleModal(role)" class="font-medium mr-3 text-blue-600 dark:text-blue-500 hover:underline">Edit</button>
-              <button @click="deleteRole(role)" class="font-medium mr-3 text-black hover:underline">Delete</button>
+              <button @click="deleteRole(role.id)" class="font-medium mr-3 text-black hover:underline">Delete</button>
             </td>
           </tr>
         </tbody>
       </table>
     </div>
-  
+
     <!-- Add Role Modal -->
-    <div v-if="showAddRoleModal" class="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-50">
-      <div class="bg-white p-6 rounded-lg shadow-lg w-96">
-        <h3 class="text-xl font-semibold mb-4">Add Role</h3>
-        <form @submit.prevent="addRole">
-          <div class="mb-4">
-            <label for="role-name" class="block text-gray-700">Role Name</label>
-            <input v-model="newRole.name" id="role-name" type="text" class="mt-1 block w-full h-10 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm" required>
-          </div>
-          <div class="mb-4">
-            <label class="block text-gray-700">Assign Permissions</label>
-            <div v-for="permission in permissions" :key="permission.id" class="flex items-center">
-              <input type="checkbox" :value="permission.id" v-model="newRole.permissions" class="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
-              <label :for="permission.name" class="ml-2">{{ permission.name }}</label>
-            </div>
-          </div>
-          <div class="flex justify-end">
-            <button type="button" @click="closeAddRoleModal" class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600">Cancel</button>
-            <button type="submit" class="ml-3 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">Add</button>
-          </div>
-        </form>
+     <!-- Add Role Modal -->
+<div v-if="showAddRoleModal" class="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-50">
+  <div class="bg-white p-6 rounded-lg shadow-lg w-96">
+    <h3 class="text-xl font-semibold mb-4">Add Role</h3>
+    <form @submit.prevent="addRole">
+      <div class="mb-4">
+        <label for="new-role-name" class="block text-gray-700">Role Name</label>
+        <input v-model="newRole.name" id="new-role-name" type="text" class="mt-1 block w-full h-10 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm" required>
+        <p v-if="roleNameError" class="text-red-500 text-xs mt-1">{{ roleNameError }}</p>
       </div>
-    </div>
-  
+      <div class="mb-4">
+        <label class="block text-gray-700">Assign Permissions</label>
+        <div class="overflow-y-auto h-40 border border-gray-300 rounded-md">
+          <label v-for="permission in permissions" :key="permission.id" class="flex items-center p-2">
+            <input type="checkbox" :value="permission.name" v-model="newRole.permissions" class="mr-2" />
+            {{ permission.name }}
+          </label>
+        </div>
+        <p v-if="newRole.permissions.length === 0" class="text-red-500 text-xs mt-1">Please select at least one permission.</p>
+      </div>
+      <div class="flex justify-end">
+        <button type="button" @click="closeAddRoleModal" class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600">Cancel</button>
+        <button type="submit" class="ml-3 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">Add</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+    <!-- Same as before -->
+
     <!-- Edit Role Modal -->
     <div v-if="showEditRoleModal" class="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-50">
       <div class="bg-white p-6 rounded-lg shadow-lg w-96">
@@ -64,13 +75,17 @@
           <div class="mb-4">
             <label for="edit-role-name" class="block text-gray-700">Role Name</label>
             <input v-model="currentRole.name" id="edit-role-name" type="text" class="mt-1 block w-full h-10 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm" required>
+            <p v-if="roleNameError" class="text-red-500 text-xs mt-1">{{ roleNameError }}</p>
           </div>
           <div class="mb-4">
             <label class="block text-gray-700">Assign Permissions</label>
-            <div v-for="permission in permissions" :key="permission.id" class="flex items-center">
-              <input type="checkbox" :value="permission.id" v-model="currentRole.permissions" class="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
-              <label :for="permission.name" class="ml-2">{{ permission.name }}</label>
+            <div class="overflow-y-auto h-40 border border-gray-300 rounded-md">
+              <label v-for="permission in permissions" :key="permission.id" class="flex items-center p-2">
+                <input type="checkbox" :value="permission.name" v-model="currentRole.permissions" class="mr-2" />
+                {{ permission.name }}
+              </label>
             </div>
+            <p v-if="currentRole.permissions.length === 0" class="text-red-500 text-xs mt-1">Please select at least one permission.</p>
           </div>
           <div class="flex justify-end">
             <button type="button" @click="closeEditRoleModal" class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600">Cancel</button>
@@ -79,94 +94,141 @@
         </form>
       </div>
     </div>
-  </template>
-  
-  <script>
-  export default {
-    data() {
-      return {
-        roles: [
-          {
-            id: 1,
-            name: 'Admin',
-            permissions: [{ id: 1, name: 'Create' }, { id: 2, name: 'Edit' }]
-          },
-          {
-            id: 2,
-            name: 'User',
-            permissions: [{ id: 3, name: 'View' }]
-          }
-        ],
-        permissions: [
-          { id: 1, name: 'Create' },
-          { id: 2, name: 'Edit' },
-          { id: 3, name: 'View' },
-          { id: 4, name: 'Delete' }
-        ],
-        showAddRoleModal: false,
-        showEditRoleModal: false,
-        newRole: {
-          name: '',
-          permissions: []
-        },
-        currentRole: {}
-      };
-    },
-    methods: {
-      openAddRoleModal() {
-        this.showAddRoleModal = true;
+  </div>
+</template>
+
+<script>
+import { API_BASE_URL } from '@/config';
+import axios from 'axios';
+
+const setAuthorizationToken = () => {
+  const token = localStorage.getItem("user-token");
+  if (token) {
+    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+  }
+};
+
+export default {
+  data() {
+    return {
+      roles: [],
+      permissions: [],
+      showAddRoleModal: false,
+      showEditRoleModal: false,
+      newRole: {
+        name: '',
+        permissions: [],
       },
-      closeAddRoleModal() {
-        this.showAddRoleModal = false;
-        this.resetNewRole();
+      currentRole: {
+        id: null,
+        name: '',
+        permissions: [],
       },
-      openEditRoleModal(role) {
-        this.currentRole = { ...role, permissions: role.permissions.map(p => p.id) }; // Convert permissions to IDs
-        this.showEditRoleModal = true;
-      },
-      closeEditRoleModal() {
-        this.showEditRoleModal = false;
-        this.resetCurrentRole();
-      },
-      addRole() {
-        if (this.newRole.name && this.newRole.permissions.length > 0) {
-          const newRole = {
-            ...this.newRole,
-            id: this.roles.length + 1,
-            permissions: this.permissions.filter(permission => this.newRole.permissions.includes(permission.id))
-          };
-          this.roles.push(newRole);
-          this.closeAddRoleModal();
-        }
-      },
-      updateRole() {
-        const index = this.roles.findIndex(role => role.id === this.currentRole.id);
-        if (index !== -1) {
-          const updatedRole = {
-            ...this.currentRole,
-            permissions: this.permissions.filter(permission => this.currentRole.permissions.includes(permission.id))
-          };
-          this.roles.splice(index, 1, updatedRole);
-          this.closeEditRoleModal();
-        }
-      },
-      deleteRole(role) {
-        this.roles = this.roles.filter(r => r.id !== role.id);
-      },
-      resetNewRole() {
-        this.newRole = {
-          name: '',
-          permissions: []
-        };
-      },
-      resetCurrentRole() {
-        this.currentRole = {};
+      roleNameError: '',
+      loading: false,
+    };
+  },
+  created() {
+    setAuthorizationToken();
+    this.fetchRoles();
+    this.fetchPermissions();
+  },
+  methods: {
+    async fetchRoles() {
+      this.loading = true;
+      try {
+        const response = await axios.get(`${API_BASE_URL}roles`);
+        this.roles = response.data.map(role => ({ ...role, showPermissions: false }));
+      } catch (error) {
+        console.error('Error fetching roles:', error);
+      } finally {
+        this.loading = false;
       }
-    }
-  };
-  </script>
-  
-  <style scoped>
-  /* Add additional styling here if necessary */
-  </style>
-  
+    },
+    async fetchPermissions() {
+      this.loading = true;
+      try {
+        const response = await axios.get(`${API_BASE_URL}permissions`);
+        this.permissions = response.data;
+      } catch (error) {
+        console.error('Error fetching permissions:', error);
+      } finally {
+        this.loading = false;
+      }
+    },
+    openAddRoleModal() {
+      this.showAddRoleModal = true;
+      this.newRole.name = '';
+      this.newRole.permissions = [];
+      this.roleNameError = '';
+    },
+    closeAddRoleModal() {
+      this.showAddRoleModal = false;
+    },
+    async addRole() {
+      try {
+        await axios.post(`${API_BASE_URL}roles`, this.newRole);
+        this.fetchRoles();
+        this.closeAddRoleModal();
+      } catch (error) {
+        console.error('Error adding role:', error);
+        this.roleNameError = 'Failed to add role. Please try again.';
+      }
+    },
+    openEditRoleModal(role) {
+      this.showEditRoleModal = true;
+      this.currentRole.id = role.id;
+      this.currentRole.name = role.name;
+      this.currentRole.permissions = [...role.permissions]; // Clone the permissions array
+    },
+    closeEditRoleModal() {
+      this.showEditRoleModal = false;
+    },
+    async updateRole() {
+      // Reset error message
+      this.roleNameError = '';
+
+      // Validate role name
+      if (!this.currentRole.name) {
+          this.roleNameError = 'Role name is required.';
+          return;
+      }
+
+      // Ensure permissions are strings
+      const stringPermissions = this.currentRole.permissions.map(permission => {
+          return typeof permission === 'object' ? permission.name : permission;
+      });
+
+      // Check if permissions are valid
+      if (!Array.isArray(stringPermissions) || stringPermissions.length === 0) {
+          this.roleNameError = 'Please select at least one permission.';
+          return;
+      }
+
+      try {
+          await axios.put(`${API_BASE_URL}roles/${this.currentRole.id}`, {
+              name: this.currentRole.name,
+              permissions: stringPermissions
+          });
+          this.fetchRoles();
+          this.closeEditRoleModal();
+      } catch (error) {
+          console.error('Error updating role:', error);
+          this.roleNameError = 'Failed to update role. Please try again.';
+      }
+    },
+    async deleteRole(id) {
+
+        try {
+          await axios.delete(`${API_BASE_URL}roles/${id}`);
+          this.fetchRoles();
+        } catch (error) {
+          console.error('Error deleting role:', error);
+        }
+    },
+    seePer(role) {
+      role.showPermissions = !role.showPermissions;
+    },
+  },
+};
+</script>

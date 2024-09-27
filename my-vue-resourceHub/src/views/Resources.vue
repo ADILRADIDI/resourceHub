@@ -3,7 +3,7 @@
     <Header v-if="!tokenExists" />
     <HeaderA v-else="tokenExists" />
     <div class="flex flex-col lg:flex-row">
-      <Aside class="lg:w-1/4 mt-12 ml-5" />
+      <Aside class="lg:w-1/4 mt-32 ml-5" />
       <div class="lg:w-3/4 flex-1 p-4">
         <Resources />
       </div>

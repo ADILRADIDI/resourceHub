@@ -13,7 +13,7 @@ class UserController extends Controller
     public function index()
     {
         // Retrieve all users and return as JSON
-        $users = User::all();
+        $users = User::with('roles')->get();
         return response()->json($users);
     }
 
@@ -32,7 +32,7 @@ class UserController extends Controller
             'name' => 'required|string',
             'email' => 'required|string|email|unique:users',
             'password' => 'required|string|min:8|confirmed',
-            'role' => 'required|string|exists:roles,name', // Validate that the role exists
+            'role' => 'required|string|exists:roles,name',
         ]);
 
         // Create the new user

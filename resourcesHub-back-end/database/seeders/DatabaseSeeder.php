@@ -24,8 +24,8 @@ class DatabaseSeeder extends Seeder
             UsersTableSeeder::class,
             PostsTableSeeder::class,
             EventsSeeder::class,
-            EventRegistrationsSeeder::class,
-            EventTicketsSeeder::class,
+            // EventRegistrationsSeeder::class,
+            // EventTicketsSeeder::class,
             PodcastsTableSeeder::class,
             AdsSeeder::class,
         ]);

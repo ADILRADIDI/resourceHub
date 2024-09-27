@@ -11,7 +11,7 @@
               <th scope="col" class="px-6 py-3">Status</th>
               <th scope="col" class="px-6 py-3">Actions</th>
             </tr>
-          </thead>
+          </thead> 
           <tbody>
             <tr v-for="tag in tags" :key="tag.id" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
               <td class="px-6 py-4">{{ tag.id }}</td>

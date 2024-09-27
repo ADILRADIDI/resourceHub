@@ -1,4 +1,5 @@
 <template>
+  <div>
     <div class="flex justify-between items-center mx-20 mt-20 bg-gray-50 rounded-full px-10 shadow-md">
       <h1 class="font-bold text-2xl">Manage Permissions</h1>
       <div class="mb-4">
@@ -7,7 +8,7 @@
         </button>
       </div>
     </div>
-  
+
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg mx-20 mt-5">
       <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -21,13 +22,13 @@
             <td class="px-6 py-4">{{ permission.name }}</td>
             <td class="px-6 py-4">
               <button @click="openEditPermissionModal(permission)" class="font-medium mr-3 text-blue-600 dark:text-blue-500 hover:underline">Edit</button>
-              <button @click="deletePermission(permission)" class="font-medium text-black hover:underline">Delete</button>
+              <button @click="deletePermission(permission.id)" class="font-medium text-black hover:underline">Delete</button>
             </td>
           </tr>
         </tbody>
       </table>
     </div>
-  
+
     <!-- Add Permission Modal -->
     <div v-if="showAddPermissionModal" class="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-50">
       <div class="bg-white p-6 rounded-lg shadow-lg w-96">
@@ -44,7 +45,7 @@
         </form>
       </div>
     </div>
-  
+
     <!-- Edit Permission Modal -->
     <div v-if="showEditPermissionModal" class="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-50">
       <div class="bg-white p-6 rounded-lg shadow-lg w-96">
@@ -61,17 +62,17 @@
         </form>
       </div>
     </div>
-  </template>
+  </div>
+</template>
+
 <script>
+import { API_BASE_URL } from '@/config';
+import axios from 'axios';
+
 export default {
   data() {
     return {
-      permissions: [
-        { id: 1, name: 'view posts' },
-        { id: 2, name: 'edit posts' },
-        { id: 3, name: 'delete posts' },
-        { id: 4, name: 'create posts' },
-      ],
+      permissions: [],
       showAddPermissionModal: false,
       showEditPermissionModal: false,
       newPermission: {
@@ -80,7 +81,19 @@ export default {
       currentPermission: {}
     };
   },
+  created() {
+    this.fetchPermissions();
+  },
   methods: {
+    fetchPermissions() {
+      axios.get(`${API_BASE_URL}permissions`)
+        .then(response => {
+          this.permissions = response.data;
+        })
+        .catch(error => {
+          console.error('Error fetching permissions:', error);
+        });
+    },
     openAddPermissionModal() {
       this.showAddPermissionModal = true;
     },
@@ -97,24 +110,34 @@ export default {
       this.resetCurrentPermission();
     },
     addPermission() {
-      if (this.newPermission.name) {
-        const newPermission = {
-          ...this.newPermission,
-          id: this.permissions.length + 1
-        };
-        this.permissions.push(newPermission);
-        this.closeAddPermissionModal();
-      }
+      axios.post(`${API_BASE_URL}permissions`, this.newPermission)
+        .then(response => {
+          this.permissions.push(response.data.permission);
+          this.closeAddPermissionModal();
+        })
+        .catch(error => {
+          console.error('Error adding permission:', error);
+        });
     },
     updatePermission() {
-      const index = this.permissions.findIndex(permission => permission.id === this.currentPermission.id);
-      if (index !== -1) {
-        this.permissions.splice(index, 1, this.currentPermission);
-        this.closeEditPermissionModal();
-      }
+      axios.put(`${API_BASE_URL}permissions/${this.currentPermission.id}`, this.currentPermission)
+        .then(response => {
+          const index = this.permissions.findIndex(permission => permission.id === this.currentPermission.id);
+          this.permissions.splice(index, 1, response.data.permission);
+          this.closeEditPermissionModal();
+        })
+        .catch(error => {
+          console.error('Error updating permission:', error);
+        });
     },
-    deletePermission(permission) {
-      this.permissions = this.permissions.filter(p => p.id !== permission.id);
+    deletePermission(id) {
+      axios.delete(`${API_BASE_URL}permissions/${id}`)
+        .then(response => {
+          this.permissions = this.permissions.filter(permission => permission.id !== id);
+        })
+        .catch(error => {
+          console.error('Error deleting permission:', error);
+        });
     },
     resetNewPermission() {
       this.newPermission = {
@@ -127,4 +150,7 @@ export default {
   }
 };
 </script>
-  
+
+<style scoped>
+/* Add any additional styles if necessary */
+</style>

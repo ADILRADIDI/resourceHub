@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col md:flex-row">
+  <div class="flex flex-col md:flex-row bg-gray-100">
     <!-- Sidebar component with responsive margin -->
     <Sidebar class="md:mt-10 flex-shrink-0" />
     <main class="flex flex-col w-full ml-0 md:ml-64 xl:ml-80 p-4">

@@ -32,9 +32,7 @@
                 </a>
               </td>
               <td class="px-6 py-4">
-                <span :class="getStatusColor(channel.status)">
-                  {{ channel.status }}
-                </span>
+                <p>Published</p>
               </td>
               <td class="px-6 py-4 flex space-x-4">
                 <button @click="openEditChannelModal(channel)" class="text-blue-600 hover:underline">Edit</button>
@@ -58,14 +56,14 @@
               <label for="channel-url" class="block text-gray-700">Channel URL</label>
               <input v-model="newChannel.channel_url" id="channel-url" type="url" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm" required>
             </div>
-            <div class="mb-4">
+            <!-- <div class="mb-4">
               <label for="status" class="block text-gray-700">Status</label>
               <select v-model="newChannel.status" id="status" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm" required>
                 <option value="draft">Draft</option>
                 <option value="published">Published</option>
                 <option value="archived">Archived</option>
               </select>
-            </div>
+            </div> -->
             <div class="flex justify-end">
               <button type="button" @click="closeAddChannelModal" class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600">Cancel</button>
               <button type="submit" class="ml-3 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">Add</button>
@@ -87,14 +85,14 @@
               <label for="edit-channel-url" class="block text-gray-700">Channel URL</label>
               <input v-model="currentChannel.channel_url" id="edit-channel-url" type="url" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm" required>
             </div>
-            <div class="mb-4">
+            <!-- <div class="mb-4">
               <label for="edit-status" class="block text-gray-700">Status</label>
               <select v-model="currentChannel.status" id="edit-status" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm" required>
                 <option value="draft">Draft</option>
                 <option value="published">Published</option>
                 <option value="archived">Archived</option>
               </select>
-            </div>
+            </div> -->
             <div class="flex justify-end">
               <button type="button" @click="closeEditChannelModal" class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600">Cancel</button>
               <button type="submit" class="ml-3 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">Update</button>
@@ -119,7 +117,9 @@
 </template>
 
 <script>
+import { API_BASE_URL } from '@/config';
 import Sidebar from './Sidebar.vue'; // Import Sidebar component
+import axios from 'axios'; // Import Axios for HTTP requests
 
 export default {
   components: {
@@ -134,73 +134,96 @@ export default {
       newChannel: {
         channel_name: '',
         channel_url: '',
-        status: 'draft',
+        status: 'published'
       },
       currentChannel: null,
       channelToDelete: null,
     };
   },
+  mounted() {
+    this.fetchChannels(); // Fetch channels when component is mounted
+  },
   methods: {
+    // i
+    async fetchChannels() {
+      try {
+        const response = await axios.get(`${API_BASE_URL}youtubeChannels`); // Adjust the API endpoint as needed
+        this.channels = response.data; // Assuming the response contains the channel data
+      } catch (error) {
+        console.error('Error fetching channels:', error);
+      }
+    },
     openAddChannelModal() {
       this.showAddChannelModal = true;
     },
     closeAddChannelModal() {
       this.showAddChannelModal = false;
+      this.resetNewChannel(); // Reset the new channel form
     },
+    resetNewChannel() {
+      this.newChannel = {
+        channel_name: '',
+        channel_url: '',
+        status: 'published',
+      };
+    },
+    async addChannel() {
+        try {
+            await axios.post(`${API_BASE_URL}youtubeChannelsAdmin`, this.newChannel);
+            this.fetchChannels();
+            this.closeAddChannelModal();
+            console.log(this.newChannel);
+            
+        } catch (error) {
+            console.error('Error adding channel:', error);
+        }
+    },
+
     openEditChannelModal(channel) {
       this.currentChannel = { ...channel };
       this.showEditChannelModal = true;
     },
     closeEditChannelModal() {
       this.showEditChannelModal = false;
+      this.currentChannel = null;
+    },
+    async updateChannel() {
+      try {
+        await axios.put(`${API_BASE_URL}youtubeChannels/${this.currentChannel.id}`, this.currentChannel); // Adjust the API endpoint as needed
+        this.fetchChannels();
+        this.closeEditChannelModal();
+      } catch (error) {
+        console.error('Error updating channel:', error);
+      }
     },
     confirmDeleteChannel(channel) {
-      this.channelToDelete = channel;
+      this.channelToDelete = channel; // Set the channel to delete
       this.showDeleteConfirmation = true;
     },
     closeDeleteConfirmation() {
       this.showDeleteConfirmation = false;
+      this.channelToDelete = null; // Clear the channel to delete
     },
-    addChannel() {
-      // Logic to add channel
-      this.closeAddChannelModal();
-    },
-    updateChannel() {
-      // Logic to update channel
-      this.closeEditChannelModal();
-    },
-    deleteChannel() {
-      // Logic to delete channel
-      this.closeDeleteConfirmation();
+    async deleteChannel() {
+      try {
+        await axios.delete(`${API_BASE_URL}youtubeChannels/${this.channelToDelete.id}`); // Adjust the API endpoint as needed
+        this.fetchChannels(); // Refresh the channel list
+        this.closeDeleteConfirmation();
+      } catch (error) {
+        console.error('Error deleting channel:', error);
+      }
     },
     getStatusColor(status) {
-      switch (status) {
-        case 'published':
-          return 'text-green-500';
-        case 'draft':
-          return 'text-yellow-500';
-        case 'archived':
-          return 'text-gray-500';
-        default:
-          return 'text-red-500';
-      }
-    }
+      return {
+        'text-green-500': status === 'published',
+        'text-yellow-500': status === 'draft',
+        'text-red-500': status === 'archived',
+      };
+    },
   },
 };
 </script>
 
 <style scoped>
-/* Media query for responsive layout adjustments */
-@media (max-width: 1024px) {
-  .lg\:w-1\/4 {
-    width: 100%;
-  }
-  .lg\:sticky {
-    position: relative;
-    top: auto;
-  }
-  .lg\:h-screen {
-    height: auto;
-  }
-}
+/* You can add additional styles here if necessary */
 </style>

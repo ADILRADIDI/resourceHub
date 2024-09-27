@@ -110,6 +110,8 @@ Route::get('/comments/post/{postId}', [CommentController::class, 'getCommentsByP
 
 // managment YT-channelss (i can change search to buttons).
 Route::apiResource('youtubeChannels', YouTubeChannelController::class)->middleware('auth:sanctum');
+// Route::post('adminStore', YouTubeChannelController::class)->middleware('auth:sanctum');
+Route::post('youtubeChannelsAdmin', [YouTubeChannelController::class, 'adminStore'])->middleware('auth:sanctum');
 // search youtube Channels
 Route::get('youtube-channels/search', [YouTubeChannelController::class, 'search'])->middleware('auth:sanctum');
 
@@ -191,8 +193,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/users', [UserController::class, 'store']);
     // get all
     Route::get('/users', [UserController::class, 'index']);
+    Route::get('/users/{id}', [UserController::class, 'show']);
     });
-Route::get('/users/{id}', [UserController::class, 'show']);
 
 // managment ResourceDev
 use App\Http\Controllers\CategoryController;

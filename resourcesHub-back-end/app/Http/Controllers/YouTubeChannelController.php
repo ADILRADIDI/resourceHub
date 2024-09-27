@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\YouTubeChannel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
- 
+
 class YouTubeChannelController extends Controller
 {
     /**
@@ -43,6 +43,32 @@ class YouTubeChannelController extends Controller
         // return channel json and status 201 is created
         return response()->json($channel, 201);
     }
+
+    public function adminStore(Request $request)
+    {
+        $user = Auth::user();
+
+        // Check if the user has the 'create YouTubeChannel' permission
+        if (!$user->can('create yt channels')) {
+            return response()->json(['error' => 'Unauthorized'], 403);
+        }
+
+        // Validate the request
+        $request->validate([
+            'channel_name' => 'required',
+            'channel_url' => 'required',
+        ]);
+
+        // Set the status to 'published' for admin
+        $status = 'published';
+
+        // Create the YouTube channel with the published status
+        $channel = YouTubeChannel::create(array_merge($request->all(), ['status' => $status]));
+
+        // Return channel JSON and status 201 (created)
+        return response()->json($channel, 201);
+    }
+
 
     /**
      * Display the specified resource.

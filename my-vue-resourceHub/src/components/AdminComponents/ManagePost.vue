@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-col lg:flex-row">
-    <Sidebar class="lg:w-56 w-full" /> <!-- Adjust width for Sidebar -->
+    <Sidebar class="lg:w-56 w-full" />
 
     <div class="flex-1 ml-0 lg:ml-44 mt-8">
       <h1 class="mx-4 lg:mx-20 mt-20 mb-5 font-bold text-2xl">Manage Posts</h1>

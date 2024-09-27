@@ -2,7 +2,7 @@
   <!-- Sidebar with responsive behavior -->
   <aside
     :class="{'block': isSidebarOpen, 'hidden': !isSidebarOpen, 'md:block': true}"
-    class="fixed inset-y-0 left-0 z-40 w-64 bg-gray-50 dark:bg-gray-800 transition-transform transform lg:w-56 h-screen shadow-xl  text-white p-4"
+    class="fixed inset-y-0 left-0 z-40 w-64 bg-gray-50 dark:bg-gray-800 transition-transform transform lg:w-56 h-screen  text-white p-4"
   >
     <div class="flex flex-col h-full p-4">
       <!-- Close button for mobile view -->

@@ -10,7 +10,7 @@ class RoleController extends Controller
 {
     /**
      * Retrieve all roles with their associated permissions.
-     * 
+     *
      * @return \Illuminate\Http\JsonResponse
      */
     public function index()
@@ -21,7 +21,7 @@ class RoleController extends Controller
 
     /**
      * Create a new role.
-     * 
+     *
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\JsonResponse
      */
@@ -55,7 +55,7 @@ class RoleController extends Controller
 
     /**
      * Retrieve a specific role.
-     * 
+     *
      * @param \App\Models\Role $role
      * @return \Illuminate\Http\JsonResponse
      */
@@ -66,13 +66,14 @@ class RoleController extends Controller
 
     /**
      * Update a specific role.
-     * 
+     *
      * @param \Illuminate\Http\Request $request
      * @param \App\Models\Role $role
      * @return \Illuminate\Http\JsonResponse
      */
     public function update(Request $request, Role $role)
     {
+        \Log::info($request->all());
         $request->validate([
             'name' => 'required|string|unique:roles,name,' . $role->id,
             'permissions' => 'array',
@@ -101,7 +102,7 @@ class RoleController extends Controller
 
     /**
      * Delete a specific role.
-     * 
+     *
      * @param \App\Models\Role $role
      * @return \Illuminate\Http\JsonResponse
      */

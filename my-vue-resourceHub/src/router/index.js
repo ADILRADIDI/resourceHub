@@ -27,16 +27,15 @@ import Mtags from '@/components/AdminComponents/Mtags.vue'
 import Mytchannels from '@/components/AdminComponents/Mytchannels.vue'
 import Mpodcasts from '@/components/AdminComponents/Mpodcasts.vue'
 import Mevents from '@/components/AdminComponents/Mevents.vue'
-import Musers from '@/components/AdminComponents/manageUsers.vue/Musers.vue'
-import Mroles from '@/components/AdminComponents/manageUsers.vue/Mroles.vue'
-import Mpermissions from '@/components/AdminComponents/manageUsers.vue/Mpermissions.vue'
-import sugPost from '@/components/AdminComponents/manageSuggeted/sugPost.vue'
-import sugPodcast from '@/components/AdminComponents/manageSuggeted/sugPodcast.vue'
-import sugTags from '@/components/AdminComponents/manageSuggeted/sugTags.vue'
+import Musers from '@/views/Admin/Musers.vue'
+import Mroles from '@/views/Admin/Mroles.vue'
+import Mpermissions from '@/views/Admin/Mpermissions.vue'
+import SPost from '@/views/Admin/Suggested/Spost.vue'
+import Spodcasts from '@/views/Admin/Suggested/Spodcasts.vue'
+import sugYTchannels from '@/views/Admin/Suggested/sugYTchannels.vue'
+import sugTags from '@/views/Admin/Suggested/sugTags.vue'
 import chat from '@/components/Chat.vue'
-import sugYTchannels from '@/components/AdminComponents/manageSuggeted/sugYTchannels.vue'
 import FastFix from '../../src/views/FastFix.vue'
-// import managementUsers from '../views/Admin/'
 import NotFoundPage from '../components/NotFoundPage.vue'
 
 const router = createRouter({
@@ -100,7 +99,7 @@ const router = createRouter({
     {
       path: '/sugPodcast',
       name: 'sugPodcast',
-      component: sugPodcast
+      component: Spodcasts
     },
     {
       path: '/Mevents',
@@ -120,7 +119,7 @@ const router = createRouter({
     {
       path: '/sugPost',
       name: 'sugPost',
-      component: sugPost
+      component: SPost
     },
     {
       path: '/register',
