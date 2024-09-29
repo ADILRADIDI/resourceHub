@@ -11,6 +11,15 @@ class YouTubeChannelController extends Controller
     /**
      * Display a listing of the resource.
      */
+    public function getAllYt(){
+        $user = Auth::user();
+        // Check if the user has the 'view YouTubeChannel' permission
+        if (!$user->can('view yt channels')) {
+            return response()->json(['error' => 'Unauthorized'], 403);
+        }
+        $ytChannels = YouTubeChannel::all();
+        return response()->json($ytChannels);
+    }
     public function index()
     {
         $user = Auth::user();
@@ -44,30 +53,30 @@ class YouTubeChannelController extends Controller
         return response()->json($channel, 201);
     }
 
-    public function adminStore(Request $request)
-    {
-        $user = Auth::user();
+    public function publishChannel($id)
+{
+    $user = Auth::user();
 
-        // Check if the user has the 'create YouTubeChannel' permission
-        if (!$user->can('create yt channels')) {
-            return response()->json(['error' => 'Unauthorized'], 403);
-        }
-
-        // Validate the request
-        $request->validate([
-            'channel_name' => 'required',
-            'channel_url' => 'required',
-        ]);
-
-        // Set the status to 'published' for admin
-        $status = 'published';
-
-        // Create the YouTube channel with the published status
-        $channel = YouTubeChannel::create(array_merge($request->all(), ['status' => $status]));
-
-        // Return channel JSON and status 201 (created)
-        return response()->json($channel, 201);
+    // Check if the user has the 'super-admin' role
+    if (!$user->hasRole('super-admin')) {
+        return response()->json(['error' => 'Unauthorized'], 403);
     }
+
+    // Find the YouTube channel by its ID
+    $channel = YouTubeChannel::find($id);
+
+    // Check if the channel exists
+    if (!$channel) {
+        return response()->json(['error' => 'Channel not found'], 404);
+    }
+
+    // Update the status to 'published'
+    $channel->status = 'published';
+    $channel->save();
+
+    return response()->json(['message' => 'Channel published successfully', 'channel' => $channel], 200);
+}
+
 
 
     /**

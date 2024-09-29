@@ -20,11 +20,12 @@
           v-for="(podcast, index) in podcasts"
           :key="index"
           class="relative w-[20%] min-w-[300px] bg-white rounded-lg shadow-lg overflow-hidden group"
-        >
+          >
+          <!-- :src="podcast.image || '/path/to/fallback-image.jpg'" -->
           <img
-            :src="podcast.image || '/path/to/fallback-image.jpg'"
+          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTfxb_7hjSM1Icn16P9Ew72fJZ18BZL5nzXznjAR2S6dCl7faTLaxIEFl2wrIbTozq_Y8w&usqp=CAU"
             alt="Podcast Image"
-            class="w-full h-50 object-cover"
+            class="w-full h-50 object-cover rounded-lg"
           />
           <div class="p-4">
             <h2 class="text-lg font-semibold truncate">{{ podcast.title }}</h2>

@@ -110,8 +110,9 @@ Route::get('/comments/post/{postId}', [CommentController::class, 'getCommentsByP
 
 // managment YT-channelss (i can change search to buttons).
 Route::apiResource('youtubeChannels', YouTubeChannelController::class)->middleware('auth:sanctum');
-// Route::post('adminStore', YouTubeChannelController::class)->middleware('auth:sanctum');
-Route::post('youtubeChannelsAdmin', [YouTubeChannelController::class, 'adminStore'])->middleware('auth:sanctum');
+// Route::post('publishChannel', YouTubeChannelController::class)->middleware('auth:sanctum');
+Route::Get('getAllYt', [YouTubeChannelController::class, 'getAllYt'])->middleware('auth:sanctum');
+Route::post('youtubeChannelsAdmin/{id}', [YouTubeChannelController::class, 'publishChannel'])->middleware('auth:sanctum');
 // search youtube Channels
 Route::get('youtube-channels/search', [YouTubeChannelController::class, 'search'])->middleware('auth:sanctum');
 

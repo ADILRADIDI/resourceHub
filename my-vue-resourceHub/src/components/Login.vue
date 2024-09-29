@@ -1,12 +1,13 @@
 <template>
   <div id="container" class="flex h-screen">
-    <div id="partieLeft" class="flex flex-col justify-center items-center w-full md:w-1/2 p-8 bg-gray-100">
-      <img src="../../public/img/logoWithoutBackground.png" alt="logo" class="w-96">
-      <h1 class="text-3xl font-bold mb-6">Welcome Back!</h1>
-      <h5 class="text-gray-600 mb-6">Please enter your details</h5>
+    <div id="partieLeft" class="flex flex-col justify-center items-center w-full md:w-1/2 p-8 bg-white">
+      <!-- <img src="../../public/img/logoWithoutBackground.png" alt="logo" class="w-96"> -->
+      <h1 class="font-bold text-3xl items-center justify-center">RDEV</h1> 
+      <h1 class="text-5xl font-bold mb-20 mt-5">Welcome Back!</h1>
+      <!-- <h5 class="text-gray-600 mb-6">Please enter your details</h5> -->
 
       <!-- Authentication Buttons -->
-      <div class="flex justify-center space-x-4 mt-6">
+      <!-- <div class="flex justify-center space-x-4 mt-6">
         <button class="w-32 py-2 px-4 bg-white border border-gray-300 rounded-lg hover:bg-gray-100">
           <img src="../../public/img/githubIcon.png" alt="GitHub" class="mx-auto h-6">
         </button>
@@ -16,20 +17,20 @@
         <button class="w-32 py-2 px-4 bg-white border border-gray-300 rounded-lg hover:bg-gray-100">
           <img src="../../public/img/googleIcon.png" alt="Google" class="mx-auto h-8">
         </button>
-      </div>
+      </div> -->
 
       <!-- Or Divider -->
-      <div class="flex items-center justify-center w-full mt-6">
+      <!-- <div class="flex items-center justify-center w-full mt-6">
         <hr class="w-full border-gray-300">
         <span class="mx-3">or</span>
         <hr class="w-full border-gray-300">
-      </div>
+      </div> -->
 
       <!-- Login Form -->
       <form @submit.prevent="login" class="w-full max-w-sm">
         <div class="mb-4">
           <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
-          <input v-model="email" type="email" id="email" placeholder="Email" class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-[#EDF2F4] focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <input v-model="email" type="email" id="email" placeholder="youremail@exemple.com" class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-[#EDF2F4] focus:outline-none focus:ring-2 focus:ring-blue-500">
         </div>
         <div class="mb-4">
           <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
@@ -40,7 +41,7 @@
         <div class="flex items-center justify-between mb-4">
           <div class="flex items-center">
             <input type="checkbox" id="remember" class="mr-2 h-4 w-4 text-blue-500 focus:ring-blue-400 border-gray-300 rounded">
-            <label for="remember" class="text-sm text-gray-600">Remember me</label>
+            <label for="remember" class="text-sm text-gray-600 font-bold" >Remember me</label>
           </div>
           <!-- <a href="#" class="text-sm text-blue-500 hover:underline">Forgot password?</a> -->
         </div>

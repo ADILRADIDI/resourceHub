@@ -32,9 +32,10 @@
                 </a>
               </td>
               <td class="px-6 py-4">
-                <p>Published</p>
+                <p>{{ channel.status }}</p>
               </td>
               <td class="px-6 py-4 flex space-x-4">
+                <button @click="publishChannel(channel)" class="text-blue-600 hover:underline">Publish</button>
                 <button @click="openEditChannelModal(channel)" class="text-blue-600 hover:underline">Edit</button>
                 <button @click="confirmDeleteChannel(channel)" class="text-red-600 hover:underline">Delete</button>
               </td>
@@ -147,7 +148,7 @@ export default {
     // i
     async fetchChannels() {
       try {
-        const response = await axios.get(`${API_BASE_URL}youtubeChannels`); // Adjust the API endpoint as needed
+        const response = await axios.get(`${API_BASE_URL}getAllYt`); // Adjust the API endpoint as needed
         this.channels = response.data; // Assuming the response contains the channel data
       } catch (error) {
         console.error('Error fetching channels:', error);
@@ -169,7 +170,7 @@ export default {
     },
     async addChannel() {
         try {
-            await axios.post(`${API_BASE_URL}youtubeChannelsAdmin`, this.newChannel);
+            await axios.post(`${API_BASE_URL}youtubeChannels`, this.newChannel);
             this.fetchChannels();
             this.closeAddChannelModal();
             console.log(this.newChannel);
@@ -177,6 +178,14 @@ export default {
         } catch (error) {
             console.error('Error adding channel:', error);
         }
+    },
+    async publishChannel(channel) {
+      try {
+        await axios.post(`${API_BASE_URL}youtubeChannelsAdmin/${channel.id}`, {});
+        this.fetchChannels(); // Refresh the channel list after publishing
+      } catch (error) {
+        console.error('Error publishing channel:', error);
+      }
     },
 
     openEditChannelModal(channel) {
