@@ -82,15 +82,15 @@ paths:
                 name:
                   type: string
                   description: 'Must not be greater than 255 characters.'
-                  example: fzdqykfpcsjmwsacdfo
+                  example: nbsf
                 email:
                   type: string
                   description: 'Must be a valid email address. Must not be greater than 255 characters.'
-                  example: viva.bashirian@example.org
+                  example: camille39@example.net
                 password:
                   type: string
                   description: 'Must be at least 8 characters.'
-                  example: ',jrD^f'
+                  example: c\u+;|<yj
               required:
                 - name
                 - email
@@ -115,11 +115,11 @@ paths:
                 email:
                   type: string
                   description: 'Must be a valid email address.'
-                  example: walter.christy@example.org
+                  example: zharris@example.com
                 password:
                   type: string
                   description: ''
-                  example: 'Q-Vs:*l:.['
+                  example: lZiu$TL
               required:
                 - email
                 - password
@@ -167,39 +167,51 @@ paths:
       requestBody:
         required: true
         content:
-          application/json:
+          multipart/form-data:
             schema:
               type: object
               properties:
                 title:
                   type: string
                   description: 'Must not be greater than 255 characters.'
-                  example: chmhigglf
+                  example: xuvrqthiifiamohslag
                 body:
                   type: string
                   description: ''
-                  example: velit
+                  example: sint
                 image:
                   type: string
-                  description: ''
-                  example: id
-                user_id:
+                  format: binary
+                  description: 'Must be a file. Must not be greater than 2048 kilobytes.'
+                video:
                   type: string
+                  format: binary
+                  description: 'Must be a file. Must not be greater than 50000 kilobytes.'
+                document:
+                  type: string
+                  format: binary
+                  description: 'Must be a file. Must not be greater than 10000 kilobytes.'
+                pdf:
+                  type: string
+                  format: binary
+                  description: 'Must be a file. Must not be greater than 10000 kilobytes.'
+                tags:
+                  type: array
                   description: ''
-                  example: fugit
+                  example: null
+                  items:
+                    type: string
                 status:
                   type: string
                   description: ''
-                  example: non-accept
+                  example: published
                   enum:
-                    - active
-                    - non-active
-                    - non-accept
+                    - draft
+                    - published
+                    - archived
               required:
                 - title
                 - body
-                - user_id
-                - status
       security: []
   '/api/posts/{id}':
     get:
@@ -241,27 +253,41 @@ paths:
                 title:
                   type: string
                   description: 'Must not be greater than 255 characters.'
-                  example: nuqkupnxonxzjroqfjsrx
+                  example: jthj
                 body:
                   type: string
                   description: ''
-                  example: inventore
+                  example: expedita
                 image:
                   type: string
                   description: ''
-                  example: nostrum
-                user_id:
+                  example: corporis
+                video:
                   type: string
                   description: ''
-                  example: null
+                  example: quas
+                document:
+                  type: string
+                  description: ''
+                  example: quisquam
+                pdf:
+                  type: string
+                  description: ''
+                  example: atque
                 status:
                   type: string
                   description: ''
-                  example: non-accept
+                  example: draft
                   enum:
-                    - active
-                    - non-active
-                    - non-accept
+                    - draft
+                    - published
+                    - archived
+                tags:
+                  type: array
+                  description: ''
+                  example: null
+                  items:
+                    type: string
       security: []
     delete:
       summary: ''
@@ -277,10 +303,43 @@ paths:
         in: path
         name: id
         description: 'The ID of the post.'
-        example: rerum
+        example: error
         required: true
         schema:
           type: string
+  /api/posts/search:
+    post:
+      summary: ''
+      operationId: postApiPostsSearch
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                keyword:
+                  type: string
+                  description: ''
+                  example: sint
+              required:
+                - keyword
+      security: []
+  /api/posts/by-tag:
+    post:
+      summary: ''
+      operationId: postApiPostsByTag
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
   /api/podcasts:
     get:
       summary: ''
@@ -314,26 +373,26 @@ paths:
       requestBody:
         required: true
         content:
-          application/json:
+          multipart/form-data:
             schema:
               type: object
               properties:
                 title:
                   type: string
                   description: 'Must not be greater than 255 characters.'
-                  example: elqwcooqyi
+                  example: trpewpcmtmuzimvtha
                 description:
                   type: string
                   description: ''
-                  example: 'Similique repellendus voluptatum inventore sit.'
+                  example: 'Ratione eligendi occaecati quos necessitatibus.'
                 logo:
                   type: string
-                  description: ''
-                  example: fuga
+                  format: binary
+                  description: 'Must be a file. Must not be greater than 2048 kilobytes.'
                 audio_url:
                   type: string
-                  description: ''
-                  example: 'http://www.mante.info/tenetur-sed-sed-quia-minima'
+                  description: "'audio_url' => 'nullable|file|mimes:mp3,wav|max:50000',. Must not be greater than 255 characters."
+                  example: 'https://doyle.com/qui-expedita-nihil-doloribus.html'
               required:
                 - title
                 - description
@@ -378,19 +437,19 @@ paths:
                 title:
                   type: string
                   description: 'Must not be greater than 255 characters.'
-                  example: ookfpbqcsgbxkdkn
+                  example: zfetiaovvklxtzyhu
                 description:
                   type: string
                   description: ''
-                  example: 'Dolorem maxime repellendus magni quis natus quia.'
+                  example: 'Provident neque quia dolorum dolores.'
                 logo:
                   type: string
                   description: ''
-                  example: ducimus
+                  example: porro
                 audio_url:
                   type: string
                   description: ''
-                  example: 'http://www.schoen.com/fugiat-ipsam-veniam-eaque.html'
+                  example: 'http://beahan.biz/'
       security: []
     delete:
       summary: ''
@@ -406,10 +465,33 @@ paths:
         in: path
         name: id
         description: 'The ID of the podcast.'
-        example: incidunt
+        example: accusantium
         required: true
         schema:
           type: string
+  /api/podcasts/search:
+    post:
+      summary: ''
+      operationId: postApiPodcastsSearch
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  description: 'Must not be greater than 255 characters.'
+                  example: ldokupuz
+              required:
+                - title
+      security: []
   /api/tags:
     get:
       summary: 'Display a listing of the resource.'
@@ -450,7 +532,7 @@ paths:
                 name:
                   type: string
                   description: 'Must not be greater than 255 characters.'
-                  example: ycgfctjxntkegfqsrseyvfn
+                  example: ebaurozpnc
               required:
                 - name
       security: []
@@ -494,7 +576,7 @@ paths:
                 name:
                   type: string
                   description: 'Must not be greater than 255 characters.'
-                  example: wajxkwwyfa
+                  example: vazvqwrwqgnlvynxsdpgmikk
       security: []
     delete:
       summary: 'Remove the specified resource from storage.'
@@ -510,10 +592,63 @@ paths:
         in: path
         name: id
         description: 'The ID of the tag.'
-        example: 1
+        example: 2
         required: true
         schema:
           type: integer
+  '/api/tags/by-name/{name}':
+    get:
+      summary: ''
+      operationId: getApiTagsByNameName
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: name
+        description: ''
+        example: ab
+        required: true
+        schema:
+          type: string
+  /api/tag/popular:
+    get:
+      summary: ''
+      operationId: getApiTagPopular
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Endpoints
+      security: []
   /api/postTags:
     get:
       summary: 'Display a listing of the resource.'
@@ -554,11 +689,11 @@ paths:
                 post_id:
                   type: string
                   description: ''
-                  example: illo
+                  example: vel
                 tag_id:
                   type: string
                   description: ''
-                  example: quia
+                  example: temporibus
               required:
                 - post_id
                 - tag_id
@@ -667,14 +802,9 @@ paths:
                 post_id:
                   type: string
                   description: ''
-                  example: hic
-                user_id:
-                  type: string
-                  description: ''
-                  example: reprehenderit
+                  example: voluptatem
               required:
                 - post_id
-                - user_id
       security: []
   '/api/bookmarks/{id}':
     get:
@@ -698,30 +828,6 @@ paths:
       tags:
         - Endpoints
       security: []
-    put:
-      summary: 'Update the specified resource in storage.'
-      operationId: updateTheSpecifiedResourceInStorage
-      description: ''
-      parameters: []
-      responses: {  }
-      tags:
-        - Endpoints
-      requestBody:
-        required: false
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                post_id:
-                  type: string
-                  description: ''
-                  example: null
-                user_id:
-                  type: string
-                  description: ''
-                  example: null
-      security: []
     delete:
       summary: 'Remove the specified resource from storage.'
       operationId: removeTheSpecifiedResourceFromStorage
@@ -736,7 +842,26 @@ paths:
         in: path
         name: id
         description: 'The ID of the bookmark.'
-        example: at
+        example: iure
+        required: true
+        schema:
+          type: string
+  '/api/bookmarks/{id}/archive':
+    post:
+      summary: ''
+      operationId: postApiBookmarksIdArchive
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the bookmark.'
+        example: delectus
         required: true
         schema:
           type: string
@@ -780,11 +905,11 @@ paths:
                 post_id:
                   type: string
                   description: ''
-                  example: magni
+                  example: ea
                 body:
                   type: string
                   description: ''
-                  example: ipsam
+                  example: error
               required:
                 - post_id
                 - body
@@ -829,7 +954,7 @@ paths:
                 body:
                   type: string
                   description: ''
-                  example: recusandae
+                  example: nam
       security: []
     delete:
       summary: 'Remove the specified resource from storage.'
@@ -845,14 +970,45 @@ paths:
         in: path
         name: id
         description: 'The ID of the comment.'
-        example: 1
+        example: 10
         required: true
         schema:
           type: integer
+  '/api/comments/post/{postId}':
+    get:
+      summary: ''
+      operationId: getApiCommentsPostPostId
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: postId
+        description: ''
+        example: vero
+        required: true
+        schema:
+          type: string
   /api/youtubeChannels:
     get:
-      summary: 'Display a listing of the resource.'
-      operationId: displayAListingOfTheResource
+      summary: ''
+      operationId: getApiYoutubeChannels
       description: ''
       parameters: []
       responses:
@@ -879,6 +1035,24 @@ paths:
       responses: {  }
       tags:
         - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                channel_name:
+                  type: string
+                  description: ''
+                  example: rerum
+                channel_url:
+                  type: string
+                  description: ''
+                  example: ut
+              required:
+                - channel_name
+                - channel_url
       security: []
   '/api/youtubeChannels/{id}':
     get:
@@ -910,6 +1084,24 @@ paths:
       responses: {  }
       tags:
         - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                channel_name:
+                  type: string
+                  description: 'Must not be greater than 255 characters.'
+                  example: julxpagm
+                channel_url:
+                  type: string
+                  description: ''
+                  example: 'http://upton.com/'
+              required:
+                - channel_name
+                - channel_url
       security: []
     delete:
       summary: 'Remove the specified resource from storage.'
@@ -929,6 +1121,4876 @@ paths:
         required: true
         schema:
           type: integer
+  /api/getAllYt:
+    get:
+      summary: 'Display a listing of the resource.'
+      operationId: displayAListingOfTheResource
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Endpoints
+      security: []
+  '/api/youtubeChannelsAdmin/{id}':
+    post:
+      summary: ''
+      operationId: postApiYoutubeChannelsAdminId
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the youtubeChannelsAdmin.'
+        example: consequuntur
+        required: true
+        schema:
+          type: string
+  /api/youtube-channels/search:
+    get:
+      summary: ''
+      operationId: getApiYoutubeChannelsSearch
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: 'Must not be greater than 255 characters.'
+                  example: iggzpedmknobf
+              required:
+                - name
+      security: []
+  /api/events:
+    get:
+      summary: ''
+      operationId: getApiEvents
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Endpoints
+      security: []
+    post:
+      summary: ''
+      operationId: postApiEvents
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  description: 'Must not be greater than 255 characters.'
+                  example: xsxvffsec
+                description:
+                  type: string
+                  description: ''
+                  example: 'Aut vitae tempore est mollitia unde dolorem quidem.'
+                city:
+                  type: string
+                  description: 'Must not be greater than 255 characters.'
+                  example: tuqdgvdrierx
+                location:
+                  type: string
+                  description: 'Must not be greater than 255 characters.'
+                  example: rywknjamvrgkpxipskwtaspf
+                start_time:
+                  type: string
+                  description: 'Must be a valid date.'
+                  example: '2024-09-29T13:10:12'
+                end_time:
+                  type: string
+                  description: 'Must be a valid date. Must be a date after or equal to <code>start_time</code>.'
+                  example: '2105-01-06'
+                status:
+                  type: string
+                  description: ''
+                  example: planned
+                  enum:
+                    - planned
+                    - ongoing
+                    - completed
+              required:
+                - title
+                - description
+                - city
+                - location
+                - start_time
+                - end_time
+                - status
+      security: []
+  '/api/events/{id}':
+    get:
+      summary: ''
+      operationId: getApiEventsId
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Endpoints
+      security: []
+    put:
+      summary: ''
+      operationId: putApiEventsId
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  description: 'Must not be greater than 255 characters.'
+                  example: sojgwzwfslibysuzkumuwyriy
+                description:
+                  type: string
+                  description: ''
+                  example: 'Numquam atque optio voluptatem aut.'
+                city:
+                  type: string
+                  description: 'Must not be greater than 255 characters.'
+                  example: cehxbeyrrcjfaxcb
+                location:
+                  type: string
+                  description: 'Must not be greater than 255 characters.'
+                  example: fovutljanlsjharv
+                start_time:
+                  type: string
+                  description: 'Must be a valid date.'
+                  example: '2024-09-29T13:10:12'
+                end_time:
+                  type: string
+                  description: 'Must be a valid date. Must be a date after or equal to <code>start_time</code>.'
+                  example: '2115-12-17'
+                status:
+                  type: string
+                  description: ''
+                  example: completed
+                  enum:
+                    - planned
+                    - ongoing
+                    - completed
+              required:
+                - title
+                - description
+                - city
+                - location
+                - start_time
+                - end_time
+                - status
+      security: []
+    delete:
+      summary: ''
+      operationId: deleteApiEventsId
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the event.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+  /api/events/search:
+    post:
+      summary: ''
+      operationId: postApiEventsSearch
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  description: 'Must not be greater than 255 characters.'
+                  example: tnxhgbfgmgnqtehqnke
+              required:
+                - title
+      security: []
+  '/api/events/{event_id}/register':
+    post:
+      summary: ''
+      operationId: postApiEventsEvent_idRegister
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: event_id
+        description: 'The ID of the event.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+  /api/stackexchange/questions:
+    get:
+      summary: ''
+      operationId: getApiStackexchangeQuestions
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                example:
+                  -
+                    tags:
+                      - php
+                    owner:
+                      account_id: 1039267
+                      reputation: 19117
+                      user_id: 1045704
+                      user_type: registered
+                      accept_rate: 78
+                      profile_image: 'https://i.sstatic.net/B1UhK.jpg?s=256'
+                      display_name: pheromix
+                      link: 'https://stackoverflow.com/users/1045704/pheromix'
+                    is_answered: true
+                    view_count: 5798
+                    accepted_answer_id: 13620729
+                    answer_count: 3
+                    score: 13
+                    last_activity_date: 1727610021
+                    creation_date: 1354173635
+                    question_id: 13620705
+                    content_license: 'CC BY-SA 3.0'
+                    link: 'https://stackoverflow.com/questions/13620705/does-trigger-error-interrupt-script'
+                    title: 'Does trigger_error interrupt script?'
+                  -
+                    tags:
+                      - php
+                      - laravel
+                      - laravel-artisan
+                      - artisan-migrate
+                    owner:
+                      account_id: 7001036
+                      reputation: 561
+                      user_id: 5367071
+                      user_type: registered
+                      accept_rate: 78
+                      profile_image: 'https://i.sstatic.net/eclwo.jpg?s=256'
+                      display_name: 'Prabin Parajuli'
+                      link: 'https://stackoverflow.com/users/5367071/prabin-parajuli'
+                    is_answered: true
+                    view_count: 40836
+                    accepted_answer_id: 36492961
+                    answer_count: 11
+                    score: 14
+                    last_activity_date: 1727606107
+                    creation_date: 1460096655
+                    question_id: 36492917
+                    content_license: 'CC BY-SA 3.0'
+                    link: 'https://stackoverflow.com/questions/36492917/php-artisan-migrate-not-creating-new-table'
+                    title: 'PHP artisan migrate not creating new table'
+                  -
+                    tags:
+                      - php
+                      - arrays
+                      - multidimensional-array
+                      - string-parsing
+                      - delimited
+                    owner:
+                      account_id: 2506089
+                      reputation: 115
+                      user_id: 2179784
+                      user_type: registered
+                      profile_image: 'https://www.gravatar.com/avatar/6d6bd98feb3bc82e5b5de12598dc8734?s=256&d=identicon&r=PG'
+                      display_name: tomprouvost
+                      link: 'https://stackoverflow.com/users/2179784/tomprouvost'
+                    is_answered: true
+                    view_count: 1974
+                    closed_date: 1727603694
+                    accepted_answer_id: 39209769
+                    answer_count: 1
+                    score: 1
+                    last_activity_date: 1727604127
+                    creation_date: 1472480855
+                    last_edit_date: 1727604127
+                    question_id: 39208686
+                    link: 'https://stackoverflow.com/questions/39208686/parse-array-of-strings-composed-of-dot-separated-keys-into-a-multidimensional-ar'
+                    closed_reason: Duplicate
+                    title: 'Parse array of strings composed of dot.separated.keys into a multidimensional array'
+                  -
+                    tags:
+                      - php
+                      - arrays
+                      - string
+                      - multidimensional-array
+                      - explode
+                    owner:
+                      account_id: 2411929
+                      reputation: 3
+                      user_id: 2106816
+                      user_type: registered
+                      profile_image: 'https://www.gravatar.com/avatar/6af72e808b52062e2fe8a83dbf2a6a79?s=256&d=identicon&r=PG'
+                      display_name: 'Jacob Martin'
+                      link: 'https://stackoverflow.com/users/2106816/jacob-martin'
+                    is_answered: true
+                    view_count: 149
+                    accepted_answer_id: 15586433
+                    answer_count: 3
+                    score: 0
+                    last_activity_date: 1727603526
+                    creation_date: 1364039302
+                    last_edit_date: 1727603526
+                    question_id: 15586408
+                    content_license: 'CC BY-SA 4.0'
+                    link: 'https://stackoverflow.com/questions/15586408/explode-each-string-in-a-flat-array'
+                    title: 'Explode each string in a flat array'
+                  -
+                    tags:
+                      - php
+                    owner:
+                      account_id: 18498462
+                      reputation: 43
+                      user_id: 13476335
+                      user_type: registered
+                      profile_image: 'https://www.gravatar.com/avatar/bde4bd8d439c709c0911c984cbe7055e?s=256&d=identicon&r=PG&f=y&so-version=2'
+                      display_name: '64 bit'
+                      link: 'https://stackoverflow.com/users/13476335/64-bit'
+                    is_answered: true
+                    view_count: 36
+                    accepted_answer_id: 76059255
+                    answer_count: 1
+                    score: 0
+                    last_activity_date: 1727603095
+                    creation_date: 1681942963
+                    last_edit_date: 1727603095
+                    question_id: 76059230
+                    content_license: 'CC BY-SA 4.0'
+                    link: 'https://stackoverflow.com/questions/76059230/api-code-error-400-when-trying-to-call-api-in-php'
+                    title: 'API code error 400 - when trying to call API in php'
+                  -
+                    tags:
+                      - php
+                      - arrays
+                      - csv
+                      - multidimensional-array
+                      - html-table
+                    owner:
+                      account_id: 1656272
+                      reputation: 615
+                      user_id: 1578513
+                      user_type: registered
+                      profile_image: 'https://i.sstatic.net/EA3ui.jpg?s=256'
+                      display_name: Bren
+                      link: 'https://stackoverflow.com/users/1578513/bren'
+                    is_answered: true
+                    view_count: 4741
+                    answer_count: 3
+                    score: 0
+                    last_activity_date: 1727602792
+                    creation_date: 1344237782
+                    last_edit_date: 1727602792
+                    question_id: 11824033
+                    content_license: 'CC BY-SA 4.0'
+                    link: 'https://stackoverflow.com/questions/11824033/convert-a-text-file-containing-lines-of-comma-separated-values-into-an-hmtl-tabl'
+                    title: 'Convert a text file containing lines of comma-separated values into an HMTL table'
+                  -
+                    tags:
+                      - php
+                      - craftcms
+                    owner:
+                      account_id: 207148
+                      reputation: 12223
+                      user_id: 456850
+                      user_type: registered
+                      accept_rate: 48
+                      profile_image: 'https://www.gravatar.com/avatar/cb15af790f2b2df4dd38f1cc989f99a2?s=256&d=identicon&r=PG'
+                      display_name: 'Devin Dixon'
+                      link: 'https://stackoverflow.com/users/456850/devin-dixon'
+                    is_answered: true
+                    view_count: 5983
+                    answer_count: 3
+                    score: 7
+                    last_activity_date: 1727602752
+                    creation_date: 1606145450
+                    question_id: 64971376
+                    content_license: 'CC BY-SA 4.0'
+                    link: 'https://stackoverflow.com/questions/64971376/craftcms-cookievalidationkey-must-be-configured-with-a-secret-key'
+                    title: 'CraftCMS cookieValidationKey must be configured with a secret key'
+                  -
+                    tags:
+                      - php
+                      - arrays
+                      - multidimensional-array
+                      - text-parsing
+                      - delimited
+                    owner:
+                      account_id: 79428
+                      reputation: 1475
+                      user_id: 225228
+                      user_type: registered
+                      accept_rate: 63
+                      profile_image: 'https://www.gravatar.com/avatar/1ddac4a34218b9b36e3935bd74643038?s=256&d=identicon&r=PG'
+                      display_name: Sylph
+                      link: 'https://stackoverflow.com/users/225228/sylph'
+                    is_answered: true
+                    view_count: 6046
+                    accepted_answer_id: 4018059
+                    answer_count: 3
+                    score: 5
+                    last_activity_date: 1727602494
+                    creation_date: 1288033235
+                    last_edit_date: 1727602432
+                    question_id: 4017880
+                    content_license: 'CC BY-SA 4.0'
+                    link: 'https://stackoverflow.com/questions/4017880/parse-a-string-with-three-delimiters-into-an-associative-array-of-indexed-arrays'
+                    title: 'Parse a string with three delimiters into an associative array of indexed arrays'
+                  -
+                    tags:
+                      - php
+                      - wordpress
+                      - multisite
+                    owner:
+                      account_id: 196312
+                      reputation: 11048
+                      user_id: 439688
+                      user_type: registered
+                      accept_rate: 98
+                      profile_image: 'https://i.sstatic.net/zNcDQ.jpg?s=256'
+                      display_name: LondonGuy
+                      link: 'https://stackoverflow.com/users/439688/londonguy'
+                    is_answered: true
+                    view_count: 440
+                    accepted_answer_id: 56657400
+                    answer_count: 2
+                    score: -1
+                    last_activity_date: 1727599931
+                    creation_date: 1560893099
+                    last_edit_date: 1560924449
+                    question_id: 56657263
+                    content_license: 'CC BY-SA 4.0'
+                    link: 'https://stackoverflow.com/questions/56657263/how-do-i-host-a-static-website-inside-a-wordpress-multisite-installation'
+                    title: 'How do I host a static website inside a Wordpress multisite installation?'
+                  -
+                    tags:
+                      - php
+                      - laravel
+                      - laravel-blade
+                    owner:
+                      account_id: 12201221
+                      reputation: 173
+                      user_id: 8905440
+                      user_type: registered
+                      profile_image: 'https://i.sstatic.net/kV5HQ.jpg?s=256'
+                      display_name: FranRP
+                      link: 'https://stackoverflow.com/users/8905440/franrp'
+                    is_answered: true
+                    view_count: 29227
+                    answer_count: 5
+                    score: 11
+                    last_activity_date: 1727599199
+                    creation_date: 1528270724
+                    last_edit_date: 1528270900
+                    question_id: 50714770
+                    content_license: 'CC BY-SA 4.0'
+                    link: 'https://stackoverflow.com/questions/50714770/respect-line-breaks-in-laravel-blade'
+                    title: 'Respect line breaks in Laravel blade'
+                  -
+                    tags:
+                      - php
+                      - laravel
+                      - laravel-blade
+                    owner:
+                      account_id: 12578238
+                      reputation: 33
+                      user_id: 9149900
+                      user_type: registered
+                      profile_image: 'https://i.sstatic.net/u4aHR.gif?s=256'
+                      display_name: Colem
+                      link: 'https://stackoverflow.com/users/9149900/colem'
+                    is_answered: true
+                    view_count: 50
+                    answer_count: 2
+                    score: 2
+                    last_activity_date: 1727597226
+                    creation_date: 1727527112
+                    question_id: 79034202
+                    content_license: 'CC BY-SA 4.0'
+                    link: 'https://stackoverflow.com/questions/79034202/laravel-419-page-expired-works-on-local'
+                    title: 'Laravel 419 Page Expired, works on local'
+                  -
+                    tags:
+                      - php
+                      - laravel
+                      - json-api
+                    owner:
+                      account_id: 6484140
+                      reputation: 113
+                      user_id: 5020261
+                      user_type: registered
+                      profile_image: 'https://graph.facebook.com/10153381552803209/picture?type=large'
+                      display_name: EmilBogumil
+                      link: 'https://stackoverflow.com/users/5020261/emilbogumil'
+                    is_answered: true
+                    view_count: 4070
+                    answer_count: 5
+                    score: 5
+                    last_activity_date: 1727593177
+                    creation_date: 1552315070
+                    question_id: 55104290
+                    content_license: 'CC BY-SA 4.0'
+                    link: 'https://stackoverflow.com/questions/55104290/checking-formrequests-validation-rules-before-authorization-in-laravel'
+                    title: 'Checking FormRequest&#39;s validation rules before authorization in Laravel'
+                  -
+                    tags:
+                      - php
+                      - wordpress
+                      - pagination
+                    owner:
+                      account_id: 18852213
+                      reputation: 103
+                      user_id: 13751093
+                      user_type: registered
+                      profile_image: 'https://lh3.googleusercontent.com/a-/AOh14Gg9DVWvvmkOx-0PJbkqOPtOajGBVX4eamSV7H-5=k-s256'
+                      display_name: Alipvd
+                      link: 'https://stackoverflow.com/users/13751093/alipvd'
+                    is_answered: true
+                    view_count: 28
+                    accepted_answer_id: 79030812
+                    answer_count: 1
+                    score: 1
+                    last_activity_date: 1727590250
+                    creation_date: 1727383410
+                    question_id: 79029067
+                    content_license: 'CC BY-SA 4.0'
+                    link: 'https://stackoverflow.com/questions/79029067/wordpress-media-image-showing-in-front-page-pagination-issue'
+                    title: 'wordpress media image showing in front page - pagination issue'
+                  -
+                    tags:
+                      - php
+                      - diskspace
+                    owner:
+                      account_id: 716297
+                      reputation: 575
+                      user_id: 641975
+                      user_type: unregistered
+                      profile_image: 'https://www.gravatar.com/avatar/7e3f8c6eca02b83645404a50112225f4?s=256&d=identicon&r=PG'
+                      display_name: Michael
+                      link: 'https://stackoverflow.com/users/641975/michael'
+                    is_answered: true
+                    view_count: 137705
+                    accepted_answer_id: 5412448
+                    answer_count: 6
+                    score: 30
+                    last_activity_date: 1727588560
+                    creation_date: 1300919233
+                    last_edit_date: 1411807797
+                    question_id: 5412435
+                    content_license: 'CC BY-SA 3.0'
+                    link: 'https://stackoverflow.com/questions/5412435/what-does-write-failed-no-space-left-on-device-mean'
+                    title: 'What does &quot;write failed: No space left on device&quot; mean?'
+                  -
+                    tags:
+                      - php
+                      - symfony
+                      - csv
+                      - vendor
+                      - vendors
+                    owner:
+                      account_id: 7606942
+                      reputation: 65
+                      user_id: 5769288
+                      user_type: registered
+                      profile_image: 'https://i.sstatic.net/CseLn.png?s=256'
+                      display_name: SwingingTom
+                      link: 'https://stackoverflow.com/users/5769288/swingingtom'
+                    is_answered: true
+                    view_count: 3060
+                    accepted_answer_id: 37813118
+                    answer_count: 2
+                    score: 1
+                    last_activity_date: 1727586617
+                    creation_date: 1464006413
+                    last_edit_date: 1464017326
+                    question_id: 37391018
+                    content_license: 'CC BY-SA 3.0'
+                    link: 'https://stackoverflow.com/questions/37391018/php-league-csv-reader-how-to-know-which-delimiter-was-used'
+                    title: 'PHP league/csv Reader How to know which delimiter was used?'
+                  -
+                    tags:
+                      - php
+                      - datasource
+                      - cakephp-2.7
+                    owner:
+                      account_id: 982572
+                      reputation: 83
+                      user_id: 1001924
+                      user_type: registered
+                      accept_rate: 75
+                      profile_image: 'https://www.gravatar.com/avatar/ea3f8a216ecfaa14ce2cbc266385dc12?s=256&d=identicon&r=PG'
+                      display_name: Fliggerty
+                      link: 'https://stackoverflow.com/users/1001924/fliggerty'
+                    is_answered: true
+                    view_count: 642
+                    accepted_answer_id: 41881916
+                    answer_count: 3
+                    score: 2
+                    last_activity_date: 1727586062
+                    creation_date: 1485460523
+                    question_id: 41881842
+                    content_license: 'CC BY-SA 3.0'
+                    link: 'https://stackoverflow.com/questions/41881842/adding-to-or-overriding-a-core-class-method-in-cakephp'
+                    title: 'Adding to (or overriding) a core class method in cakePHP'
+      tags:
+        - Endpoints
+      security: []
+  '/api/stackexchange/questions/{id}/answers':
+    get:
+      summary: ''
+      operationId: getApiStackexchangeQuestionsIdAnswers
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                example: []
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the question.'
+        example: debitis
+        required: true
+        schema:
+          type: string
+  /api/reactions:
+    get:
+      summary: 'Display a listing of all reactions.'
+      operationId: displayAListingOfAllReactions
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Endpoints
+      security: []
+    post:
+      summary: 'Store a newly created reaction in storage.'
+      operationId: storeANewlyCreatedReactionInStorage
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                post_id:
+                  type: string
+                  description: ''
+                  example: in
+                reaction_type:
+                  type: boolean
+                  description: 'Accepts true or false.'
+                  example: false
+              required:
+                - post_id
+                - reaction_type
+      security: []
+  '/api/reactions/{id}':
+    get:
+      summary: 'Display the specified reaction.'
+      operationId: displayTheSpecifiedReaction
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Endpoints
+      security: []
+    delete:
+      summary: 'Remove the specified reaction from storage.'
+      operationId: removeTheSpecifiedReactionFromStorage
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the reaction.'
+        example: 19
+        required: true
+        schema:
+          type: integer
+  /api/youtube:
+    get:
+      summary: ''
+      operationId: getApiYoutube
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                language:
+                  type: string
+                  description: 'Must not be greater than 50 characters.'
+                  example: bujoaltnjittdl
+              required:
+                - language
+      security: []
+  /api/programming-data:
+    get:
+      summary: ''
+      operationId: getApiProgrammingData
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  programming_languages:
+                    - JavaScript
+                    - Python
+                    - Java
+                    - 'C#'
+                    - C++
+                    - Ruby
+                    - Go
+                    - PHP
+                    - Swift
+                    - Rust
+                    - Kotlin
+                    - TypeScript
+                    - Scala
+                    - Haskell
+                    - MATLAB
+                    - Julia
+                    - R
+                    - SQL
+                    - Lua
+                    - Perl
+                    - Tcl
+                    - Scheme
+                    - 'Common Lisp'
+                    - Erlang
+                    - OCaml
+                    - 'F#'
+                    - Delphi
+                    - PowerShell
+                    - VB.NET
+                    - 'Visual Basic'
+                    - Assembly
+                    - Pascal
+                    - Ada
+                    - COBOL
+                    - Fortran
+                    - PL/I
+                    - ALGOL
+                  frameworks_and_libraries:
+                    - React
+                    - Angular
+                    - Vue.js
+                    - Django
+                    - Flask
+                    - Spring
+                    - Laravel
+                    - 'Ruby on Rails'
+                    - Node.js
+                    - Express.js
+                    - TensorFlow
+                    - PyTorch
+                    - Bootstrap
+                    - 'Tailwind CSS'
+                properties:
+                  programming_languages:
+                    type: array
+                    example:
+                      - JavaScript
+                      - Python
+                      - Java
+                      - 'C#'
+                      - C++
+                      - Ruby
+                      - Go
+                      - PHP
+                      - Swift
+                      - Rust
+                      - Kotlin
+                      - TypeScript
+                      - Scala
+                      - Haskell
+                      - MATLAB
+                      - Julia
+                      - R
+                      - SQL
+                      - Lua
+                      - Perl
+                      - Tcl
+                      - Scheme
+                      - 'Common Lisp'
+                      - Erlang
+                      - OCaml
+                      - 'F#'
+                      - Delphi
+                      - PowerShell
+                      - VB.NET
+                      - 'Visual Basic'
+                      - Assembly
+                      - Pascal
+                      - Ada
+                      - COBOL
+                      - Fortran
+                      - PL/I
+                      - ALGOL
+                    items:
+                      type: string
+                  frameworks_and_libraries:
+                    type: array
+                    example:
+                      - React
+                      - Angular
+                      - Vue.js
+                      - Django
+                      - Flask
+                      - Spring
+                      - Laravel
+                      - 'Ruby on Rails'
+                      - Node.js
+                      - Express.js
+                      - TensorFlow
+                      - PyTorch
+                      - Bootstrap
+                      - 'Tailwind CSS'
+                    items:
+                      type: string
+      tags:
+        - Endpoints
+      security: []
+  '/api/profile/{userId}':
+    get:
+      summary: ''
+      operationId: getApiProfileUserId
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: userId
+        description: ''
+        example: vitae
+        required: true
+        schema:
+          type: string
+  /api/profile/update/name:
+    post:
+      summary: ''
+      operationId: postApiProfileUpdateName
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: 'Must not be greater than 255 characters.'
+                  example: ecigixehseeclfu
+              required:
+                - name
+      security: []
+  /api/profile/update/email:
+    post:
+      summary: ''
+      operationId: postApiProfileUpdateEmail
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  description: ''
+                  example: null
+      security: []
+  /api/profile/update/password:
+    post:
+      summary: ''
+      operationId: postApiProfileUpdatePassword
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                current_password:
+                  type: string
+                  description: ''
+                  example: earum
+                new_password:
+                  type: string
+                  description: 'Must be at least 8 characters.'
+                  example: zslfhasqqsvpqznzlhiyuflbsbkenxmouazjhzbjotreqpidisopqhcwqbyephkuiaczzkhwmztccq
+              required:
+                - current_password
+                - new_password
+      security: []
+  /api/profile/update/bio:
+    post:
+      summary: ''
+      operationId: postApiProfileUpdateBio
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                bio:
+                  type: string
+                  description: 'Must not be greater than 500 characters.'
+                  example: bbqvgofudyszh
+      security: []
+  /api/profile/update/skills:
+    post:
+      summary: ''
+      operationId: postApiProfileUpdateSkills
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                skills:
+                  type: string
+                  description: 'Must not be greater than 500 characters.'
+                  example: afwpguuvailryxxsbyblu
+      security: []
+  /api/profile/update/github:
+    post:
+      summary: ''
+      operationId: postApiProfileUpdateGithub
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                github:
+                  type: string
+                  description: 'Must be a valid URL. Must not be greater than 255 characters.'
+                  example: agbaqpaem
+      security: []
+  /api/profile/updatepicture:
+    post:
+      summary: ''
+      operationId: postApiProfileUpdatepicture
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: false
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                profile_picture:
+                  type: string
+                  format: binary
+                  description: 'Must be an image. Must not be greater than 2048 kilobytes.'
+      security: []
+  /api/profile/update/website:
+    post:
+      summary: ''
+      operationId: postApiProfileUpdateWebsite
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                website:
+                  type: string
+                  description: 'Must be a valid URL. Must not be greater than 255 characters.'
+                  example: cnunzibazxzjsid
+      security: []
+  /api/profile/update/location:
+    post:
+      summary: ''
+      operationId: postApiProfileUpdateLocation
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                location:
+                  type: string
+                  description: 'Must not be greater than 255 characters.'
+                  example: hsizuqoaooebyzfsshbfqrkh
+      security: []
+  /api/profile/update/position:
+    post:
+      summary: ''
+      operationId: postApiProfileUpdatePosition
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                position:
+                  type: string
+                  description: 'Must not be greater than 255 characters.'
+                  example: ghdkyjfpsjllbqslvrqju
+      security: []
+  /api/profile/update/brand-color:
+    post:
+      summary: ''
+      operationId: postApiProfileUpdateBrandColor
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                brand_color:
+                  type: string
+                  description: 'Must not be greater than 7 characters.'
+                  example: wfp
+      security: []
+  /api/profile/update/birthday:
+    post:
+      summary: ''
+      operationId: postApiProfileUpdateBirthday
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                birthday:
+                  type: string
+                  description: 'Must be a valid date.'
+                  example: '2024-09-29T13:10:14'
+      security: []
+  '/api/tags/{id}/follow':
+    post:
+      summary: ''
+      operationId: postApiTagsIdFollow
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the tag.'
+        example: 2
+        required: true
+        schema:
+          type: integer
+  '/api/tags/{id}/unfollow':
+    delete:
+      summary: ''
+      operationId: deleteApiTagsIdUnfollow
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the tag.'
+        example: 2
+        required: true
+        schema:
+          type: integer
+  '/api/tags/{id}/is-following':
+    get:
+      summary: ''
+      operationId: getApiTagsIdIsFollowing
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the tag.'
+        example: 2
+        required: true
+        schema:
+          type: integer
+  '/api/follow/{id}':
+    post:
+      summary: ''
+      operationId: postApiFollowId
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the follow.'
+        example: est
+        required: true
+        schema:
+          type: string
+  '/api/unfollow/{id}':
+    post:
+      summary: ''
+      operationId: postApiUnfollowId
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the unfollow.'
+        example: non
+        required: true
+        schema:
+          type: string
+  '/api/followers/{id}':
+    get:
+      summary: ''
+      operationId: getApiFollowersId
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the follower.'
+        example: eos
+        required: true
+        schema:
+          type: string
+  '/api/following/{id}':
+    get:
+      summary: ''
+      operationId: getApiFollowingId
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the following.'
+        example: ea
+        required: true
+        schema:
+          type: string
+  '/api/isf/{id}':
+    get:
+      summary: ''
+      operationId: getApiIsfId
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the isf.'
+        example: necessitatibus
+        required: true
+        schema:
+          type: string
+  /api/permissions:
+    get:
+      summary: 'Retrieve all permissions.'
+      operationId: retrieveAllPermissions
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                example:
+                  -
+                    id: 1
+                    name: 'view posts'
+                    guard_name: web
+                    created_at: '2024-09-03T21:37:02.000000Z'
+                    updated_at: '2024-09-03T21:37:02.000000Z'
+                  -
+                    id: 2
+                    name: 'edit posts'
+                    guard_name: web
+                    created_at: '2024-09-03T21:37:02.000000Z'
+                    updated_at: '2024-09-03T21:37:02.000000Z'
+                  -
+                    id: 3
+                    name: 'delete posts'
+                    guard_name: web
+                    created_at: '2024-09-03T21:37:02.000000Z'
+                    updated_at: '2024-09-03T21:37:02.000000Z'
+                  -
+                    id: 4
+                    name: 'create posts'
+                    guard_name: web
+                    created_at: '2024-09-03T21:37:02.000000Z'
+                    updated_at: '2024-09-03T21:37:02.000000Z'
+                  -
+                    id: 5
+                    name: 'view comments'
+                    guard_name: web
+                    created_at: '2024-09-03T21:37:02.000000Z'
+                    updated_at: '2024-09-03T21:37:02.000000Z'
+                  -
+                    id: 6
+                    name: 'create comments'
+                    guard_name: web
+                    created_at: '2024-09-03T21:37:02.000000Z'
+                    updated_at: '2024-09-03T21:37:02.000000Z'
+                  -
+                    id: 7
+                    name: 'edit comments'
+                    guard_name: web
+                    created_at: '2024-09-03T21:37:02.000000Z'
+                    updated_at: '2024-09-03T21:37:02.000000Z'
+                  -
+                    id: 8
+                    name: 'delete comments'
+                    guard_name: web
+                    created_at: '2024-09-03T21:37:02.000000Z'
+                    updated_at: '2024-09-03T21:37:02.000000Z'
+                  -
+                    id: 9
+                    name: 'view podcasts'
+                    guard_name: web
+                    created_at: '2024-09-03T21:37:02.000000Z'
+                    updated_at: '2024-09-03T21:37:02.000000Z'
+                  -
+                    id: 10
+                    name: 'create podcasts'
+                    guard_name: web
+                    created_at: '2024-09-03T21:37:02.000000Z'
+                    updated_at: '2024-09-03T21:37:02.000000Z'
+                  -
+                    id: 11
+                    name: 'edit podcasts'
+                    guard_name: web
+                    created_at: '2024-09-03T21:37:02.000000Z'
+                    updated_at: '2024-09-03T21:37:02.000000Z'
+                  -
+                    id: 12
+                    name: 'delete podcasts'
+                    guard_name: web
+                    created_at: '2024-09-03T21:37:02.000000Z'
+                    updated_at: '2024-09-03T21:37:02.000000Z'
+                  -
+                    id: 13
+                    name: 'view yt channels'
+                    guard_name: web
+                    created_at: '2024-09-03T21:37:02.000000Z'
+                    updated_at: '2024-09-03T21:37:02.000000Z'
+                  -
+                    id: 14
+                    name: 'create yt channels'
+                    guard_name: web
+                    created_at: '2024-09-03T21:37:02.000000Z'
+                    updated_at: '2024-09-03T21:37:02.000000Z'
+                  -
+                    id: 15
+                    name: 'edit yt channels'
+                    guard_name: web
+                    created_at: '2024-09-03T21:37:02.000000Z'
+                    updated_at: '2024-09-03T21:37:02.000000Z'
+                  -
+                    id: 16
+                    name: 'delete yt channels'
+                    guard_name: web
+                    created_at: '2024-09-03T21:37:02.000000Z'
+                    updated_at: '2024-09-03T21:37:02.000000Z'
+                  -
+                    id: 17
+                    name: 'view events'
+                    guard_name: web
+                    created_at: '2024-09-03T21:37:02.000000Z'
+                    updated_at: '2024-09-03T21:37:02.000000Z'
+                  -
+                    id: 18
+                    name: 'create events'
+                    guard_name: web
+                    created_at: '2024-09-03T21:37:02.000000Z'
+                    updated_at: '2024-09-03T21:37:02.000000Z'
+                  -
+                    id: 19
+                    name: 'edit events'
+                    guard_name: web
+                    created_at: '2024-09-03T21:37:02.000000Z'
+                    updated_at: '2024-09-03T21:37:02.000000Z'
+                  -
+                    id: 20
+                    name: 'delete events'
+                    guard_name: web
+                    created_at: '2024-09-03T21:37:02.000000Z'
+                    updated_at: '2024-09-03T21:37:02.000000Z'
+                  -
+                    id: 21
+                    name: 'register events'
+                    guard_name: web
+                    created_at: '2024-09-03T21:37:02.000000Z'
+                    updated_at: '2024-09-03T21:37:02.000000Z'
+                  -
+                    id: 22
+                    name: 'search in yt'
+                    guard_name: web
+                    created_at: '2024-09-03T21:37:02.000000Z'
+                    updated_at: '2024-09-03T21:37:02.000000Z'
+                  -
+                    id: 23
+                    name: 'watch yt videos'
+                    guard_name: web
+                    created_at: '2024-09-03T21:37:02.000000Z'
+                    updated_at: '2024-09-03T21:37:02.000000Z'
+                  -
+                    id: 24
+                    name: 'view bookmarks'
+                    guard_name: web
+                    created_at: '2024-09-03T21:37:02.000000Z'
+                    updated_at: '2024-09-03T21:37:02.000000Z'
+                  -
+                    id: 25
+                    name: 'create bookmarks'
+                    guard_name: web
+                    created_at: '2024-09-03T21:37:02.000000Z'
+                    updated_at: '2024-09-03T21:37:02.000000Z'
+                  -
+                    id: 26
+                    name: 'delete bookmarks'
+                    guard_name: web
+                    created_at: '2024-09-03T21:37:02.000000Z'
+                    updated_at: '2024-09-03T21:37:02.000000Z'
+                  -
+                    id: 27
+                    name: 'manage users'
+                    guard_name: web
+                    created_at: '2024-09-03T21:37:02.000000Z'
+                    updated_at: '2024-09-03T21:37:02.000000Z'
+                  -
+                    id: 28
+                    name: 'manage ads'
+                    guard_name: web
+                    created_at: '2024-09-03T21:37:02.000000Z'
+                    updated_at: '2024-09-03T21:37:02.000000Z'
+                  -
+                    id: 29
+                    name: 'view analytics'
+                    guard_name: web
+                    created_at: '2024-09-03T21:37:02.000000Z'
+                    updated_at: '2024-09-03T21:37:02.000000Z'
+                  -
+                    id: 30
+                    name: 'view settings'
+                    guard_name: web
+                    created_at: '2024-09-03T21:37:02.000000Z'
+                    updated_at: '2024-09-03T21:37:02.000000Z'
+                  -
+                    id: 31
+                    name: 'manage tags'
+                    guard_name: web
+                    created_at: '2024-09-03T21:37:02.000000Z'
+                    updated_at: '2024-09-03T21:37:02.000000Z'
+                  -
+                    id: 32
+                    name: 'manage reactions'
+                    guard_name: web
+                    created_at: '2024-09-03T21:37:02.000000Z'
+                    updated_at: '2024-09-03T21:37:02.000000Z'
+                  -
+                    id: 33
+                    name: 'add users'
+                    guard_name: web
+                    created_at: '2024-09-03T21:37:02.000000Z'
+                    updated_at: '2024-09-03T21:37:02.000000Z'
+                  -
+                    id: 34
+                    name: 'view users'
+                    guard_name: web
+                    created_at: '2024-09-03T21:37:02.000000Z'
+                    updated_at: '2024-09-03T21:37:02.000000Z'
+                  -
+                    id: 35
+                    name: 'edit users'
+                    guard_name: web
+                    created_at: '2024-09-03T21:37:02.000000Z'
+                    updated_at: '2024-09-03T21:37:02.000000Z'
+                  -
+                    id: 36
+                    name: 'delete users'
+                    guard_name: web
+                    created_at: '2024-09-03T21:37:02.000000Z'
+                    updated_at: '2024-09-03T21:37:02.000000Z'
+                  -
+                    id: 37
+                    name: 'suggest podcasts'
+                    guard_name: web
+                    created_at: '2024-09-09T21:57:50.000000Z'
+                    updated_at: '2024-09-09T21:57:50.000000Z'
+                  -
+                    id: 38
+                    name: 'manage podcasts'
+                    guard_name: web
+                    created_at: '2024-09-09T21:57:50.000000Z'
+                    updated_at: '2024-09-09T21:57:50.000000Z'
+                  -
+                    id: 39
+                    name: 'manage suggested tags'
+                    guard_name: web
+                    created_at: '2024-09-09T21:57:50.000000Z'
+                    updated_at: '2024-09-09T21:57:50.000000Z'
+                  -
+                    id: 40
+                    name: 'view Ad'
+                    guard_name: web
+                    created_at: '2024-09-21T12:12:35.000000Z'
+                    updated_at: '2024-09-21T12:12:35.000000Z'
+                  -
+                    id: 42
+                    name: 'Peter Lester'
+                    guard_name: web
+                    created_at: '2024-09-27T03:22:04.000000Z'
+                    updated_at: '2024-09-27T03:22:04.000000Z'
+      tags:
+        - Endpoints
+      security: []
+    post:
+      summary: 'Create a new permission.'
+      operationId: createANewPermission
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: ''
+                  example: et
+              required:
+                - name
+      security: []
+  '/api/permissions/{id}':
+    get:
+      summary: 'Retrieve a specific permission.'
+      operationId: retrieveASpecificPermission
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  id: 1
+                  name: 'view posts'
+                  guard_name: web
+                  created_at: '2024-09-03T21:37:02.000000Z'
+                  updated_at: '2024-09-03T21:37:02.000000Z'
+                properties:
+                  id:
+                    type: integer
+                    example: 1
+                  name:
+                    type: string
+                    example: 'view posts'
+                  guard_name:
+                    type: string
+                    example: web
+                  created_at:
+                    type: string
+                    example: '2024-09-03T21:37:02.000000Z'
+                  updated_at:
+                    type: string
+                    example: '2024-09-03T21:37:02.000000Z'
+      tags:
+        - Endpoints
+      security: []
+    put:
+      summary: 'Update a specific permission.'
+      operationId: updateASpecificPermission
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: ''
+                  example: null
+      security: []
+    delete:
+      summary: 'Delete a specific permission.'
+      operationId: deleteASpecificPermission
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the permission.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+  /api/roles:
+    get:
+      summary: 'Retrieve all roles with their associated permissions.'
+      operationId: retrieveAllRolesWithTheirAssociatedPermissions
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                example:
+                  -
+                    id: 1
+                    name: user
+                    guard_name: web
+                    created_at: '2024-09-03T21:37:02.000000Z'
+                    updated_at: '2024-09-03T21:37:02.000000Z'
+                    permissions:
+                      -
+                        id: 1
+                        name: 'view posts'
+                        guard_name: web
+                        created_at: '2024-09-03T21:37:02.000000Z'
+                        updated_at: '2024-09-03T21:37:02.000000Z'
+                        pivot:
+                          role_id: 1
+                          permission_id: 1
+                      -
+                        id: 2
+                        name: 'edit posts'
+                        guard_name: web
+                        created_at: '2024-09-03T21:37:02.000000Z'
+                        updated_at: '2024-09-03T21:37:02.000000Z'
+                        pivot:
+                          role_id: 1
+                          permission_id: 2
+                      -
+                        id: 3
+                        name: 'delete posts'
+                        guard_name: web
+                        created_at: '2024-09-03T21:37:02.000000Z'
+                        updated_at: '2024-09-03T21:37:02.000000Z'
+                        pivot:
+                          role_id: 1
+                          permission_id: 3
+                      -
+                        id: 4
+                        name: 'create posts'
+                        guard_name: web
+                        created_at: '2024-09-03T21:37:02.000000Z'
+                        updated_at: '2024-09-03T21:37:02.000000Z'
+                        pivot:
+                          role_id: 1
+                          permission_id: 4
+                      -
+                        id: 5
+                        name: 'view comments'
+                        guard_name: web
+                        created_at: '2024-09-03T21:37:02.000000Z'
+                        updated_at: '2024-09-03T21:37:02.000000Z'
+                        pivot:
+                          role_id: 1
+                          permission_id: 5
+                      -
+                        id: 6
+                        name: 'create comments'
+                        guard_name: web
+                        created_at: '2024-09-03T21:37:02.000000Z'
+                        updated_at: '2024-09-03T21:37:02.000000Z'
+                        pivot:
+                          role_id: 1
+                          permission_id: 6
+                      -
+                        id: 8
+                        name: 'delete comments'
+                        guard_name: web
+                        created_at: '2024-09-03T21:37:02.000000Z'
+                        updated_at: '2024-09-03T21:37:02.000000Z'
+                        pivot:
+                          role_id: 1
+                          permission_id: 8
+                      -
+                        id: 9
+                        name: 'view podcasts'
+                        guard_name: web
+                        created_at: '2024-09-03T21:37:02.000000Z'
+                        updated_at: '2024-09-03T21:37:02.000000Z'
+                        pivot:
+                          role_id: 1
+                          permission_id: 9
+                      -
+                        id: 10
+                        name: 'create podcasts'
+                        guard_name: web
+                        created_at: '2024-09-03T21:37:02.000000Z'
+                        updated_at: '2024-09-03T21:37:02.000000Z'
+                        pivot:
+                          role_id: 1
+                          permission_id: 10
+                      -
+                        id: 13
+                        name: 'view yt channels'
+                        guard_name: web
+                        created_at: '2024-09-03T21:37:02.000000Z'
+                        updated_at: '2024-09-03T21:37:02.000000Z'
+                        pivot:
+                          role_id: 1
+                          permission_id: 13
+                      -
+                        id: 14
+                        name: 'create yt channels'
+                        guard_name: web
+                        created_at: '2024-09-03T21:37:02.000000Z'
+                        updated_at: '2024-09-03T21:37:02.000000Z'
+                        pivot:
+                          role_id: 1
+                          permission_id: 14
+                      -
+                        id: 17
+                        name: 'view events'
+                        guard_name: web
+                        created_at: '2024-09-03T21:37:02.000000Z'
+                        updated_at: '2024-09-03T21:37:02.000000Z'
+                        pivot:
+                          role_id: 1
+                          permission_id: 17
+                      -
+                        id: 21
+                        name: 'register events'
+                        guard_name: web
+                        created_at: '2024-09-03T21:37:02.000000Z'
+                        updated_at: '2024-09-03T21:37:02.000000Z'
+                        pivot:
+                          role_id: 1
+                          permission_id: 21
+                      -
+                        id: 24
+                        name: 'view bookmarks'
+                        guard_name: web
+                        created_at: '2024-09-03T21:37:02.000000Z'
+                        updated_at: '2024-09-03T21:37:02.000000Z'
+                        pivot:
+                          role_id: 1
+                          permission_id: 24
+                      -
+                        id: 25
+                        name: 'create bookmarks'
+                        guard_name: web
+                        created_at: '2024-09-03T21:37:02.000000Z'
+                        updated_at: '2024-09-03T21:37:02.000000Z'
+                        pivot:
+                          role_id: 1
+                          permission_id: 25
+                      -
+                        id: 26
+                        name: 'delete bookmarks'
+                        guard_name: web
+                        created_at: '2024-09-03T21:37:02.000000Z'
+                        updated_at: '2024-09-03T21:37:02.000000Z'
+                        pivot:
+                          role_id: 1
+                          permission_id: 26
+                      -
+                        id: 28
+                        name: 'manage ads'
+                        guard_name: web
+                        created_at: '2024-09-03T21:37:02.000000Z'
+                        updated_at: '2024-09-03T21:37:02.000000Z'
+                        pivot:
+                          role_id: 1
+                          permission_id: 28
+                      -
+                        id: 31
+                        name: 'manage tags'
+                        guard_name: web
+                        created_at: '2024-09-03T21:37:02.000000Z'
+                        updated_at: '2024-09-03T21:37:02.000000Z'
+                        pivot:
+                          role_id: 1
+                          permission_id: 31
+                      -
+                        id: 33
+                        name: 'add users'
+                        guard_name: web
+                        created_at: '2024-09-03T21:37:02.000000Z'
+                        updated_at: '2024-09-03T21:37:02.000000Z'
+                        pivot:
+                          role_id: 1
+                          permission_id: 33
+                      -
+                        id: 34
+                        name: 'view users'
+                        guard_name: web
+                        created_at: '2024-09-03T21:37:02.000000Z'
+                        updated_at: '2024-09-03T21:37:02.000000Z'
+                        pivot:
+                          role_id: 1
+                          permission_id: 34
+                      -
+                        id: 35
+                        name: 'edit users'
+                        guard_name: web
+                        created_at: '2024-09-03T21:37:02.000000Z'
+                        updated_at: '2024-09-03T21:37:02.000000Z'
+                        pivot:
+                          role_id: 1
+                          permission_id: 35
+                      -
+                        id: 36
+                        name: 'delete users'
+                        guard_name: web
+                        created_at: '2024-09-03T21:37:02.000000Z'
+                        updated_at: '2024-09-03T21:37:02.000000Z'
+                        pivot:
+                          role_id: 1
+                          permission_id: 36
+                      -
+                        id: 37
+                        name: 'suggest podcasts'
+                        guard_name: web
+                        created_at: '2024-09-09T21:57:50.000000Z'
+                        updated_at: '2024-09-09T21:57:50.000000Z'
+                        pivot:
+                          role_id: 1
+                          permission_id: 37
+                      -
+                        id: 39
+                        name: 'manage suggested tags'
+                        guard_name: web
+                        created_at: '2024-09-09T21:57:50.000000Z'
+                        updated_at: '2024-09-09T21:57:50.000000Z'
+                        pivot:
+                          role_id: 1
+                          permission_id: 39
+                      -
+                        id: 40
+                        name: 'view Ad'
+                        guard_name: web
+                        created_at: '2024-09-21T12:12:35.000000Z'
+                        updated_at: '2024-09-21T12:12:35.000000Z'
+                        pivot:
+                          role_id: 1
+                          permission_id: 40
+                  -
+                    id: 2
+                    name: super-admin
+                    guard_name: web
+                    created_at: '2024-09-03T21:37:02.000000Z'
+                    updated_at: '2024-09-03T21:37:02.000000Z'
+                    permissions:
+                      -
+                        id: 1
+                        name: 'view posts'
+                        guard_name: web
+                        created_at: '2024-09-03T21:37:02.000000Z'
+                        updated_at: '2024-09-03T21:37:02.000000Z'
+                        pivot:
+                          role_id: 2
+                          permission_id: 1
+                      -
+                        id: 2
+                        name: 'edit posts'
+                        guard_name: web
+                        created_at: '2024-09-03T21:37:02.000000Z'
+                        updated_at: '2024-09-03T21:37:02.000000Z'
+                        pivot:
+                          role_id: 2
+                          permission_id: 2
+                      -
+                        id: 3
+                        name: 'delete posts'
+                        guard_name: web
+                        created_at: '2024-09-03T21:37:02.000000Z'
+                        updated_at: '2024-09-03T21:37:02.000000Z'
+                        pivot:
+                          role_id: 2
+                          permission_id: 3
+                      -
+                        id: 4
+                        name: 'create posts'
+                        guard_name: web
+                        created_at: '2024-09-03T21:37:02.000000Z'
+                        updated_at: '2024-09-03T21:37:02.000000Z'
+                        pivot:
+                          role_id: 2
+                          permission_id: 4
+                      -
+                        id: 5
+                        name: 'view comments'
+                        guard_name: web
+                        created_at: '2024-09-03T21:37:02.000000Z'
+                        updated_at: '2024-09-03T21:37:02.000000Z'
+                        pivot:
+                          role_id: 2
+                          permission_id: 5
+                      -
+                        id: 6
+                        name: 'create comments'
+                        guard_name: web
+                        created_at: '2024-09-03T21:37:02.000000Z'
+                        updated_at: '2024-09-03T21:37:02.000000Z'
+                        pivot:
+                          role_id: 2
+                          permission_id: 6
+                      -
+                        id: 7
+                        name: 'edit comments'
+                        guard_name: web
+                        created_at: '2024-09-03T21:37:02.000000Z'
+                        updated_at: '2024-09-03T21:37:02.000000Z'
+                        pivot:
+                          role_id: 2
+                          permission_id: 7
+                      -
+                        id: 8
+                        name: 'delete comments'
+                        guard_name: web
+                        created_at: '2024-09-03T21:37:02.000000Z'
+                        updated_at: '2024-09-03T21:37:02.000000Z'
+                        pivot:
+                          role_id: 2
+                          permission_id: 8
+                      -
+                        id: 9
+                        name: 'view podcasts'
+                        guard_name: web
+                        created_at: '2024-09-03T21:37:02.000000Z'
+                        updated_at: '2024-09-03T21:37:02.000000Z'
+                        pivot:
+                          role_id: 2
+                          permission_id: 9
+                      -
+                        id: 10
+                        name: 'create podcasts'
+                        guard_name: web
+                        created_at: '2024-09-03T21:37:02.000000Z'
+                        updated_at: '2024-09-03T21:37:02.000000Z'
+                        pivot:
+                          role_id: 2
+                          permission_id: 10
+                      -
+                        id: 11
+                        name: 'edit podcasts'
+                        guard_name: web
+                        created_at: '2024-09-03T21:37:02.000000Z'
+                        updated_at: '2024-09-03T21:37:02.000000Z'
+                        pivot:
+                          role_id: 2
+                          permission_id: 11
+                      -
+                        id: 12
+                        name: 'delete podcasts'
+                        guard_name: web
+                        created_at: '2024-09-03T21:37:02.000000Z'
+                        updated_at: '2024-09-03T21:37:02.000000Z'
+                        pivot:
+                          role_id: 2
+                          permission_id: 12
+                      -
+                        id: 13
+                        name: 'view yt channels'
+                        guard_name: web
+                        created_at: '2024-09-03T21:37:02.000000Z'
+                        updated_at: '2024-09-03T21:37:02.000000Z'
+                        pivot:
+                          role_id: 2
+                          permission_id: 13
+                      -
+                        id: 14
+                        name: 'create yt channels'
+                        guard_name: web
+                        created_at: '2024-09-03T21:37:02.000000Z'
+                        updated_at: '2024-09-03T21:37:02.000000Z'
+                        pivot:
+                          role_id: 2
+                          permission_id: 14
+                      -
+                        id: 15
+                        name: 'edit yt channels'
+                        guard_name: web
+                        created_at: '2024-09-03T21:37:02.000000Z'
+                        updated_at: '2024-09-03T21:37:02.000000Z'
+                        pivot:
+                          role_id: 2
+                          permission_id: 15
+                      -
+                        id: 16
+                        name: 'delete yt channels'
+                        guard_name: web
+                        created_at: '2024-09-03T21:37:02.000000Z'
+                        updated_at: '2024-09-03T21:37:02.000000Z'
+                        pivot:
+                          role_id: 2
+                          permission_id: 16
+                      -
+                        id: 17
+                        name: 'view events'
+                        guard_name: web
+                        created_at: '2024-09-03T21:37:02.000000Z'
+                        updated_at: '2024-09-03T21:37:02.000000Z'
+                        pivot:
+                          role_id: 2
+                          permission_id: 17
+                      -
+                        id: 18
+                        name: 'create events'
+                        guard_name: web
+                        created_at: '2024-09-03T21:37:02.000000Z'
+                        updated_at: '2024-09-03T21:37:02.000000Z'
+                        pivot:
+                          role_id: 2
+                          permission_id: 18
+                      -
+                        id: 19
+                        name: 'edit events'
+                        guard_name: web
+                        created_at: '2024-09-03T21:37:02.000000Z'
+                        updated_at: '2024-09-03T21:37:02.000000Z'
+                        pivot:
+                          role_id: 2
+                          permission_id: 19
+                      -
+                        id: 20
+                        name: 'delete events'
+                        guard_name: web
+                        created_at: '2024-09-03T21:37:02.000000Z'
+                        updated_at: '2024-09-03T21:37:02.000000Z'
+                        pivot:
+                          role_id: 2
+                          permission_id: 20
+                      -
+                        id: 21
+                        name: 'register events'
+                        guard_name: web
+                        created_at: '2024-09-03T21:37:02.000000Z'
+                        updated_at: '2024-09-03T21:37:02.000000Z'
+                        pivot:
+                          role_id: 2
+                          permission_id: 21
+                      -
+                        id: 22
+                        name: 'search in yt'
+                        guard_name: web
+                        created_at: '2024-09-03T21:37:02.000000Z'
+                        updated_at: '2024-09-03T21:37:02.000000Z'
+                        pivot:
+                          role_id: 2
+                          permission_id: 22
+                      -
+                        id: 23
+                        name: 'watch yt videos'
+                        guard_name: web
+                        created_at: '2024-09-03T21:37:02.000000Z'
+                        updated_at: '2024-09-03T21:37:02.000000Z'
+                        pivot:
+                          role_id: 2
+                          permission_id: 23
+                      -
+                        id: 24
+                        name: 'view bookmarks'
+                        guard_name: web
+                        created_at: '2024-09-03T21:37:02.000000Z'
+                        updated_at: '2024-09-03T21:37:02.000000Z'
+                        pivot:
+                          role_id: 2
+                          permission_id: 24
+                      -
+                        id: 25
+                        name: 'create bookmarks'
+                        guard_name: web
+                        created_at: '2024-09-03T21:37:02.000000Z'
+                        updated_at: '2024-09-03T21:37:02.000000Z'
+                        pivot:
+                          role_id: 2
+                          permission_id: 25
+                      -
+                        id: 26
+                        name: 'delete bookmarks'
+                        guard_name: web
+                        created_at: '2024-09-03T21:37:02.000000Z'
+                        updated_at: '2024-09-03T21:37:02.000000Z'
+                        pivot:
+                          role_id: 2
+                          permission_id: 26
+                      -
+                        id: 27
+                        name: 'manage users'
+                        guard_name: web
+                        created_at: '2024-09-03T21:37:02.000000Z'
+                        updated_at: '2024-09-03T21:37:02.000000Z'
+                        pivot:
+                          role_id: 2
+                          permission_id: 27
+                      -
+                        id: 28
+                        name: 'manage ads'
+                        guard_name: web
+                        created_at: '2024-09-03T21:37:02.000000Z'
+                        updated_at: '2024-09-03T21:37:02.000000Z'
+                        pivot:
+                          role_id: 2
+                          permission_id: 28
+                      -
+                        id: 29
+                        name: 'view analytics'
+                        guard_name: web
+                        created_at: '2024-09-03T21:37:02.000000Z'
+                        updated_at: '2024-09-03T21:37:02.000000Z'
+                        pivot:
+                          role_id: 2
+                          permission_id: 29
+                      -
+                        id: 30
+                        name: 'view settings'
+                        guard_name: web
+                        created_at: '2024-09-03T21:37:02.000000Z'
+                        updated_at: '2024-09-03T21:37:02.000000Z'
+                        pivot:
+                          role_id: 2
+                          permission_id: 30
+                      -
+                        id: 31
+                        name: 'manage tags'
+                        guard_name: web
+                        created_at: '2024-09-03T21:37:02.000000Z'
+                        updated_at: '2024-09-03T21:37:02.000000Z'
+                        pivot:
+                          role_id: 2
+                          permission_id: 31
+                      -
+                        id: 32
+                        name: 'manage reactions'
+                        guard_name: web
+                        created_at: '2024-09-03T21:37:02.000000Z'
+                        updated_at: '2024-09-03T21:37:02.000000Z'
+                        pivot:
+                          role_id: 2
+                          permission_id: 32
+                      -
+                        id: 33
+                        name: 'add users'
+                        guard_name: web
+                        created_at: '2024-09-03T21:37:02.000000Z'
+                        updated_at: '2024-09-03T21:37:02.000000Z'
+                        pivot:
+                          role_id: 2
+                          permission_id: 33
+                      -
+                        id: 34
+                        name: 'view users'
+                        guard_name: web
+                        created_at: '2024-09-03T21:37:02.000000Z'
+                        updated_at: '2024-09-03T21:37:02.000000Z'
+                        pivot:
+                          role_id: 2
+                          permission_id: 34
+                      -
+                        id: 35
+                        name: 'edit users'
+                        guard_name: web
+                        created_at: '2024-09-03T21:37:02.000000Z'
+                        updated_at: '2024-09-03T21:37:02.000000Z'
+                        pivot:
+                          role_id: 2
+                          permission_id: 35
+                      -
+                        id: 36
+                        name: 'delete users'
+                        guard_name: web
+                        created_at: '2024-09-03T21:37:02.000000Z'
+                        updated_at: '2024-09-03T21:37:02.000000Z'
+                        pivot:
+                          role_id: 2
+                          permission_id: 36
+                      -
+                        id: 37
+                        name: 'suggest podcasts'
+                        guard_name: web
+                        created_at: '2024-09-09T21:57:50.000000Z'
+                        updated_at: '2024-09-09T21:57:50.000000Z'
+                        pivot:
+                          role_id: 2
+                          permission_id: 37
+                      -
+                        id: 38
+                        name: 'manage podcasts'
+                        guard_name: web
+                        created_at: '2024-09-09T21:57:50.000000Z'
+                        updated_at: '2024-09-09T21:57:50.000000Z'
+                        pivot:
+                          role_id: 2
+                          permission_id: 38
+                      -
+                        id: 39
+                        name: 'manage suggested tags'
+                        guard_name: web
+                        created_at: '2024-09-09T21:57:50.000000Z'
+                        updated_at: '2024-09-09T21:57:50.000000Z'
+                        pivot:
+                          role_id: 2
+                          permission_id: 39
+                      -
+                        id: 40
+                        name: 'view Ad'
+                        guard_name: web
+                        created_at: '2024-09-21T12:12:35.000000Z'
+                        updated_at: '2024-09-21T12:12:35.000000Z'
+                        pivot:
+                          role_id: 2
+                          permission_id: 40
+                  -
+                    id: 21
+                    name: Helper_one
+                    guard_name: web
+                    created_at: '2024-09-27T03:15:05.000000Z'
+                    updated_at: '2024-09-27T03:15:26.000000Z'
+                    permissions:
+                      -
+                        id: 1
+                        name: 'view posts'
+                        guard_name: web
+                        created_at: '2024-09-03T21:37:02.000000Z'
+                        updated_at: '2024-09-03T21:37:02.000000Z'
+                        pivot:
+                          role_id: 21
+                          permission_id: 1
+                      -
+                        id: 2
+                        name: 'edit posts'
+                        guard_name: web
+                        created_at: '2024-09-03T21:37:02.000000Z'
+                        updated_at: '2024-09-03T21:37:02.000000Z'
+                        pivot:
+                          role_id: 21
+                          permission_id: 2
+                      -
+                        id: 3
+                        name: 'delete posts'
+                        guard_name: web
+                        created_at: '2024-09-03T21:37:02.000000Z'
+                        updated_at: '2024-09-03T21:37:02.000000Z'
+                        pivot:
+                          role_id: 21
+                          permission_id: 3
+                      -
+                        id: 38
+                        name: 'manage podcasts'
+                        guard_name: web
+                        created_at: '2024-09-09T21:57:50.000000Z'
+                        updated_at: '2024-09-09T21:57:50.000000Z'
+                        pivot:
+                          role_id: 21
+                          permission_id: 38
+      tags:
+        - Endpoints
+      security: []
+    post:
+      summary: 'Create a new role.'
+      operationId: createANewRole
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: ''
+                  example: dolorum
+                permissions:
+                  type: array
+                  description: ''
+                  example:
+                    - nostrum
+                  items:
+                    type: string
+              required:
+                - name
+      security: []
+  '/api/roles/{id}':
+    get:
+      summary: 'Retrieve a specific role.'
+      operationId: retrieveASpecificRole
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  id: 1
+                  name: user
+                  guard_name: web
+                  created_at: '2024-09-03T21:37:02.000000Z'
+                  updated_at: '2024-09-03T21:37:02.000000Z'
+                  permissions:
+                    -
+                      id: 1
+                      name: 'view posts'
+                      guard_name: web
+                      created_at: '2024-09-03T21:37:02.000000Z'
+                      updated_at: '2024-09-03T21:37:02.000000Z'
+                      pivot:
+                        role_id: 1
+                        permission_id: 1
+                    -
+                      id: 2
+                      name: 'edit posts'
+                      guard_name: web
+                      created_at: '2024-09-03T21:37:02.000000Z'
+                      updated_at: '2024-09-03T21:37:02.000000Z'
+                      pivot:
+                        role_id: 1
+                        permission_id: 2
+                    -
+                      id: 3
+                      name: 'delete posts'
+                      guard_name: web
+                      created_at: '2024-09-03T21:37:02.000000Z'
+                      updated_at: '2024-09-03T21:37:02.000000Z'
+                      pivot:
+                        role_id: 1
+                        permission_id: 3
+                    -
+                      id: 4
+                      name: 'create posts'
+                      guard_name: web
+                      created_at: '2024-09-03T21:37:02.000000Z'
+                      updated_at: '2024-09-03T21:37:02.000000Z'
+                      pivot:
+                        role_id: 1
+                        permission_id: 4
+                    -
+                      id: 5
+                      name: 'view comments'
+                      guard_name: web
+                      created_at: '2024-09-03T21:37:02.000000Z'
+                      updated_at: '2024-09-03T21:37:02.000000Z'
+                      pivot:
+                        role_id: 1
+                        permission_id: 5
+                    -
+                      id: 6
+                      name: 'create comments'
+                      guard_name: web
+                      created_at: '2024-09-03T21:37:02.000000Z'
+                      updated_at: '2024-09-03T21:37:02.000000Z'
+                      pivot:
+                        role_id: 1
+                        permission_id: 6
+                    -
+                      id: 8
+                      name: 'delete comments'
+                      guard_name: web
+                      created_at: '2024-09-03T21:37:02.000000Z'
+                      updated_at: '2024-09-03T21:37:02.000000Z'
+                      pivot:
+                        role_id: 1
+                        permission_id: 8
+                    -
+                      id: 9
+                      name: 'view podcasts'
+                      guard_name: web
+                      created_at: '2024-09-03T21:37:02.000000Z'
+                      updated_at: '2024-09-03T21:37:02.000000Z'
+                      pivot:
+                        role_id: 1
+                        permission_id: 9
+                    -
+                      id: 10
+                      name: 'create podcasts'
+                      guard_name: web
+                      created_at: '2024-09-03T21:37:02.000000Z'
+                      updated_at: '2024-09-03T21:37:02.000000Z'
+                      pivot:
+                        role_id: 1
+                        permission_id: 10
+                    -
+                      id: 13
+                      name: 'view yt channels'
+                      guard_name: web
+                      created_at: '2024-09-03T21:37:02.000000Z'
+                      updated_at: '2024-09-03T21:37:02.000000Z'
+                      pivot:
+                        role_id: 1
+                        permission_id: 13
+                    -
+                      id: 14
+                      name: 'create yt channels'
+                      guard_name: web
+                      created_at: '2024-09-03T21:37:02.000000Z'
+                      updated_at: '2024-09-03T21:37:02.000000Z'
+                      pivot:
+                        role_id: 1
+                        permission_id: 14
+                    -
+                      id: 17
+                      name: 'view events'
+                      guard_name: web
+                      created_at: '2024-09-03T21:37:02.000000Z'
+                      updated_at: '2024-09-03T21:37:02.000000Z'
+                      pivot:
+                        role_id: 1
+                        permission_id: 17
+                    -
+                      id: 21
+                      name: 'register events'
+                      guard_name: web
+                      created_at: '2024-09-03T21:37:02.000000Z'
+                      updated_at: '2024-09-03T21:37:02.000000Z'
+                      pivot:
+                        role_id: 1
+                        permission_id: 21
+                    -
+                      id: 24
+                      name: 'view bookmarks'
+                      guard_name: web
+                      created_at: '2024-09-03T21:37:02.000000Z'
+                      updated_at: '2024-09-03T21:37:02.000000Z'
+                      pivot:
+                        role_id: 1
+                        permission_id: 24
+                    -
+                      id: 25
+                      name: 'create bookmarks'
+                      guard_name: web
+                      created_at: '2024-09-03T21:37:02.000000Z'
+                      updated_at: '2024-09-03T21:37:02.000000Z'
+                      pivot:
+                        role_id: 1
+                        permission_id: 25
+                    -
+                      id: 26
+                      name: 'delete bookmarks'
+                      guard_name: web
+                      created_at: '2024-09-03T21:37:02.000000Z'
+                      updated_at: '2024-09-03T21:37:02.000000Z'
+                      pivot:
+                        role_id: 1
+                        permission_id: 26
+                    -
+                      id: 28
+                      name: 'manage ads'
+                      guard_name: web
+                      created_at: '2024-09-03T21:37:02.000000Z'
+                      updated_at: '2024-09-03T21:37:02.000000Z'
+                      pivot:
+                        role_id: 1
+                        permission_id: 28
+                    -
+                      id: 31
+                      name: 'manage tags'
+                      guard_name: web
+                      created_at: '2024-09-03T21:37:02.000000Z'
+                      updated_at: '2024-09-03T21:37:02.000000Z'
+                      pivot:
+                        role_id: 1
+                        permission_id: 31
+                    -
+                      id: 33
+                      name: 'add users'
+                      guard_name: web
+                      created_at: '2024-09-03T21:37:02.000000Z'
+                      updated_at: '2024-09-03T21:37:02.000000Z'
+                      pivot:
+                        role_id: 1
+                        permission_id: 33
+                    -
+                      id: 34
+                      name: 'view users'
+                      guard_name: web
+                      created_at: '2024-09-03T21:37:02.000000Z'
+                      updated_at: '2024-09-03T21:37:02.000000Z'
+                      pivot:
+                        role_id: 1
+                        permission_id: 34
+                    -
+                      id: 35
+                      name: 'edit users'
+                      guard_name: web
+                      created_at: '2024-09-03T21:37:02.000000Z'
+                      updated_at: '2024-09-03T21:37:02.000000Z'
+                      pivot:
+                        role_id: 1
+                        permission_id: 35
+                    -
+                      id: 36
+                      name: 'delete users'
+                      guard_name: web
+                      created_at: '2024-09-03T21:37:02.000000Z'
+                      updated_at: '2024-09-03T21:37:02.000000Z'
+                      pivot:
+                        role_id: 1
+                        permission_id: 36
+                    -
+                      id: 37
+                      name: 'suggest podcasts'
+                      guard_name: web
+                      created_at: '2024-09-09T21:57:50.000000Z'
+                      updated_at: '2024-09-09T21:57:50.000000Z'
+                      pivot:
+                        role_id: 1
+                        permission_id: 37
+                    -
+                      id: 39
+                      name: 'manage suggested tags'
+                      guard_name: web
+                      created_at: '2024-09-09T21:57:50.000000Z'
+                      updated_at: '2024-09-09T21:57:50.000000Z'
+                      pivot:
+                        role_id: 1
+                        permission_id: 39
+                    -
+                      id: 40
+                      name: 'view Ad'
+                      guard_name: web
+                      created_at: '2024-09-21T12:12:35.000000Z'
+                      updated_at: '2024-09-21T12:12:35.000000Z'
+                      pivot:
+                        role_id: 1
+                        permission_id: 40
+                properties:
+                  id:
+                    type: integer
+                    example: 1
+                  name:
+                    type: string
+                    example: user
+                  guard_name:
+                    type: string
+                    example: web
+                  created_at:
+                    type: string
+                    example: '2024-09-03T21:37:02.000000Z'
+                  updated_at:
+                    type: string
+                    example: '2024-09-03T21:37:02.000000Z'
+                  permissions:
+                    type: array
+                    example:
+                      -
+                        id: 1
+                        name: 'view posts'
+                        guard_name: web
+                        created_at: '2024-09-03T21:37:02.000000Z'
+                        updated_at: '2024-09-03T21:37:02.000000Z'
+                        pivot:
+                          role_id: 1
+                          permission_id: 1
+                      -
+                        id: 2
+                        name: 'edit posts'
+                        guard_name: web
+                        created_at: '2024-09-03T21:37:02.000000Z'
+                        updated_at: '2024-09-03T21:37:02.000000Z'
+                        pivot:
+                          role_id: 1
+                          permission_id: 2
+                      -
+                        id: 3
+                        name: 'delete posts'
+                        guard_name: web
+                        created_at: '2024-09-03T21:37:02.000000Z'
+                        updated_at: '2024-09-03T21:37:02.000000Z'
+                        pivot:
+                          role_id: 1
+                          permission_id: 3
+                      -
+                        id: 4
+                        name: 'create posts'
+                        guard_name: web
+                        created_at: '2024-09-03T21:37:02.000000Z'
+                        updated_at: '2024-09-03T21:37:02.000000Z'
+                        pivot:
+                          role_id: 1
+                          permission_id: 4
+                      -
+                        id: 5
+                        name: 'view comments'
+                        guard_name: web
+                        created_at: '2024-09-03T21:37:02.000000Z'
+                        updated_at: '2024-09-03T21:37:02.000000Z'
+                        pivot:
+                          role_id: 1
+                          permission_id: 5
+                      -
+                        id: 6
+                        name: 'create comments'
+                        guard_name: web
+                        created_at: '2024-09-03T21:37:02.000000Z'
+                        updated_at: '2024-09-03T21:37:02.000000Z'
+                        pivot:
+                          role_id: 1
+                          permission_id: 6
+                      -
+                        id: 8
+                        name: 'delete comments'
+                        guard_name: web
+                        created_at: '2024-09-03T21:37:02.000000Z'
+                        updated_at: '2024-09-03T21:37:02.000000Z'
+                        pivot:
+                          role_id: 1
+                          permission_id: 8
+                      -
+                        id: 9
+                        name: 'view podcasts'
+                        guard_name: web
+                        created_at: '2024-09-03T21:37:02.000000Z'
+                        updated_at: '2024-09-03T21:37:02.000000Z'
+                        pivot:
+                          role_id: 1
+                          permission_id: 9
+                      -
+                        id: 10
+                        name: 'create podcasts'
+                        guard_name: web
+                        created_at: '2024-09-03T21:37:02.000000Z'
+                        updated_at: '2024-09-03T21:37:02.000000Z'
+                        pivot:
+                          role_id: 1
+                          permission_id: 10
+                      -
+                        id: 13
+                        name: 'view yt channels'
+                        guard_name: web
+                        created_at: '2024-09-03T21:37:02.000000Z'
+                        updated_at: '2024-09-03T21:37:02.000000Z'
+                        pivot:
+                          role_id: 1
+                          permission_id: 13
+                      -
+                        id: 14
+                        name: 'create yt channels'
+                        guard_name: web
+                        created_at: '2024-09-03T21:37:02.000000Z'
+                        updated_at: '2024-09-03T21:37:02.000000Z'
+                        pivot:
+                          role_id: 1
+                          permission_id: 14
+                      -
+                        id: 17
+                        name: 'view events'
+                        guard_name: web
+                        created_at: '2024-09-03T21:37:02.000000Z'
+                        updated_at: '2024-09-03T21:37:02.000000Z'
+                        pivot:
+                          role_id: 1
+                          permission_id: 17
+                      -
+                        id: 21
+                        name: 'register events'
+                        guard_name: web
+                        created_at: '2024-09-03T21:37:02.000000Z'
+                        updated_at: '2024-09-03T21:37:02.000000Z'
+                        pivot:
+                          role_id: 1
+                          permission_id: 21
+                      -
+                        id: 24
+                        name: 'view bookmarks'
+                        guard_name: web
+                        created_at: '2024-09-03T21:37:02.000000Z'
+                        updated_at: '2024-09-03T21:37:02.000000Z'
+                        pivot:
+                          role_id: 1
+                          permission_id: 24
+                      -
+                        id: 25
+                        name: 'create bookmarks'
+                        guard_name: web
+                        created_at: '2024-09-03T21:37:02.000000Z'
+                        updated_at: '2024-09-03T21:37:02.000000Z'
+                        pivot:
+                          role_id: 1
+                          permission_id: 25
+                      -
+                        id: 26
+                        name: 'delete bookmarks'
+                        guard_name: web
+                        created_at: '2024-09-03T21:37:02.000000Z'
+                        updated_at: '2024-09-03T21:37:02.000000Z'
+                        pivot:
+                          role_id: 1
+                          permission_id: 26
+                      -
+                        id: 28
+                        name: 'manage ads'
+                        guard_name: web
+                        created_at: '2024-09-03T21:37:02.000000Z'
+                        updated_at: '2024-09-03T21:37:02.000000Z'
+                        pivot:
+                          role_id: 1
+                          permission_id: 28
+                      -
+                        id: 31
+                        name: 'manage tags'
+                        guard_name: web
+                        created_at: '2024-09-03T21:37:02.000000Z'
+                        updated_at: '2024-09-03T21:37:02.000000Z'
+                        pivot:
+                          role_id: 1
+                          permission_id: 31
+                      -
+                        id: 33
+                        name: 'add users'
+                        guard_name: web
+                        created_at: '2024-09-03T21:37:02.000000Z'
+                        updated_at: '2024-09-03T21:37:02.000000Z'
+                        pivot:
+                          role_id: 1
+                          permission_id: 33
+                      -
+                        id: 34
+                        name: 'view users'
+                        guard_name: web
+                        created_at: '2024-09-03T21:37:02.000000Z'
+                        updated_at: '2024-09-03T21:37:02.000000Z'
+                        pivot:
+                          role_id: 1
+                          permission_id: 34
+                      -
+                        id: 35
+                        name: 'edit users'
+                        guard_name: web
+                        created_at: '2024-09-03T21:37:02.000000Z'
+                        updated_at: '2024-09-03T21:37:02.000000Z'
+                        pivot:
+                          role_id: 1
+                          permission_id: 35
+                      -
+                        id: 36
+                        name: 'delete users'
+                        guard_name: web
+                        created_at: '2024-09-03T21:37:02.000000Z'
+                        updated_at: '2024-09-03T21:37:02.000000Z'
+                        pivot:
+                          role_id: 1
+                          permission_id: 36
+                      -
+                        id: 37
+                        name: 'suggest podcasts'
+                        guard_name: web
+                        created_at: '2024-09-09T21:57:50.000000Z'
+                        updated_at: '2024-09-09T21:57:50.000000Z'
+                        pivot:
+                          role_id: 1
+                          permission_id: 37
+                      -
+                        id: 39
+                        name: 'manage suggested tags'
+                        guard_name: web
+                        created_at: '2024-09-09T21:57:50.000000Z'
+                        updated_at: '2024-09-09T21:57:50.000000Z'
+                        pivot:
+                          role_id: 1
+                          permission_id: 39
+                      -
+                        id: 40
+                        name: 'view Ad'
+                        guard_name: web
+                        created_at: '2024-09-21T12:12:35.000000Z'
+                        updated_at: '2024-09-21T12:12:35.000000Z'
+                        pivot:
+                          role_id: 1
+                          permission_id: 40
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 1
+                        name:
+                          type: string
+                          example: 'view posts'
+                        guard_name:
+                          type: string
+                          example: web
+                        created_at:
+                          type: string
+                          example: '2024-09-03T21:37:02.000000Z'
+                        updated_at:
+                          type: string
+                          example: '2024-09-03T21:37:02.000000Z'
+                        pivot:
+                          type: object
+                          properties:
+                            role_id:
+                              type: integer
+                              example: 1
+                            permission_id:
+                              type: integer
+                              example: 1
+      tags:
+        - Endpoints
+      security: []
+    put:
+      summary: 'Update a specific role.'
+      operationId: updateASpecificRole
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: ''
+                  example: null
+                permissions:
+                  type: array
+                  description: ''
+                  example:
+                    - accusantium
+                  items:
+                    type: string
+      security: []
+    delete:
+      summary: 'Delete a specific role.'
+      operationId: deleteASpecificRole
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the role.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+  '/api/users/{id}':
+    get:
+      summary: ''
+      operationId: getApiUsersId
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Endpoints
+      security: []
+    put:
+      summary: ''
+      operationId: putApiUsersId
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: ''
+                  example: consequatur
+                email:
+                  type: string
+                  description: 'Must be a valid email address.'
+                  example: floyd.gleichner@example.net
+                role:
+                  type: string
+                  description: ''
+                  example: cupiditate
+      security: []
+    delete:
+      summary: ''
+      operationId: deleteApiUsersId
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the user.'
+        example: voluptatem
+        required: true
+        schema:
+          type: string
+  /api/users:
+    post:
+      summary: ''
+      operationId: postApiUsers
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: ''
+                  example: veniam
+                email:
+                  type: string
+                  description: 'Must be a valid email address.'
+                  example: konopelski.king@example.com
+                password:
+                  type: string
+                  description: 'Must be at least 8 characters.'
+                  example: "OqP&Q:J'7{VS"
+                role:
+                  type: string
+                  description: ''
+                  example: quae
+              required:
+                - name
+                - email
+                - password
+                - role
+      security: []
+    get:
+      summary: ''
+      operationId: getApiUsers
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Endpoints
+      security: []
+  /api/categories:
+    get:
+      summary: 'Display a listing of the resource.'
+      operationId: displayAListingOfTheResource
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                example:
+                  -
+                    id: 4
+                    name: Accessibility
+                    slug: accessibility
+                    created_at: '2024-09-21T01:43:00.000000Z'
+                    updated_at: '2024-09-21T01:43:00.000000Z'
+                  -
+                    id: 5
+                    name: AI
+                    slug: ai
+                    created_at: '2024-09-21T01:43:00.000000Z'
+                    updated_at: '2024-09-21T01:43:00.000000Z'
+                  -
+                    id: 6
+                    name: Analytics
+                    slug: analytics
+                    created_at: '2024-09-21T01:43:00.000000Z'
+                    updated_at: '2024-09-21T01:43:00.000000Z'
+                  -
+                    id: 7
+                    name: Animation
+                    slug: animation
+                    created_at: '2024-09-21T01:43:00.000000Z'
+                    updated_at: '2024-09-21T01:43:00.000000Z'
+                  -
+                    id: 8
+                    name: 'API Building'
+                    slug: api-building
+                    created_at: '2024-09-21T01:43:00.000000Z'
+                    updated_at: '2024-09-21T01:43:00.000000Z'
+                  -
+                    id: 9
+                    name: Audio
+                    slug: audio
+                    created_at: '2024-09-21T01:43:00.000000Z'
+                    updated_at: '2024-09-21T01:43:00.000000Z'
+                  -
+                    id: 10
+                    name: Authentication
+                    slug: authentication
+                    created_at: '2024-09-21T01:43:00.000000Z'
+                    updated_at: '2024-09-21T01:43:00.000000Z'
+                  -
+                    id: 11
+                    name: Blog
+                    slug: blog
+                    created_at: '2024-09-21T01:43:00.000000Z'
+                    updated_at: '2024-09-21T01:43:00.000000Z'
+                  -
+                    id: 12
+                    name: Book
+                    slug: book
+                    created_at: '2024-09-21T01:43:00.000000Z'
+                    updated_at: '2024-09-21T01:43:00.000000Z'
+                  -
+                    id: 13
+                    name: Browser
+                    slug: browser
+                    created_at: '2024-09-21T01:43:00.000000Z'
+                    updated_at: '2024-09-21T01:43:00.000000Z'
+                  -
+                    id: 14
+                    name: CDN
+                    slug: cdn
+                    created_at: '2024-09-21T01:43:00.000000Z'
+                    updated_at: '2024-09-21T01:43:00.000000Z'
+                  -
+                    id: 15
+                    name: Cheatsheet
+                    slug: cheatsheet
+                    created_at: '2024-09-21T01:43:00.000000Z'
+                    updated_at: '2024-09-21T01:43:00.000000Z'
+                  -
+                    id: 16
+                    name: 'Cloud Computing'
+                    slug: cloud-computing
+                    created_at: '2024-09-21T01:43:00.000000Z'
+                    updated_at: '2024-09-21T01:43:00.000000Z'
+                  -
+                    id: 17
+                    name: 'Code Challenge'
+                    slug: code-challenge
+                    created_at: '2024-09-21T01:43:00.000000Z'
+                    updated_at: '2024-09-21T01:43:00.000000Z'
+                  -
+                    id: 18
+                    name: 'Code Generator'
+                    slug: code-generator
+                    created_at: '2024-09-21T01:43:00.000000Z'
+                    updated_at: '2024-09-21T01:43:00.000000Z'
+                  -
+                    id: 19
+                    name: 'Code Snippet'
+                    slug: code-snippet
+                    created_at: '2024-09-21T01:43:00.000000Z'
+                    updated_at: '2024-09-21T01:43:00.000000Z'
+                  -
+                    id: 20
+                    name: Color
+                    slug: color
+                    created_at: '2024-09-21T01:43:00.000000Z'
+                    updated_at: '2024-09-21T01:43:00.000000Z'
+                  -
+                    id: 21
+                    name: Conference
+                    slug: conference
+                    created_at: '2024-09-21T01:43:00.000000Z'
+                    updated_at: '2024-09-21T01:43:00.000000Z'
+                  -
+                    id: 22
+                    name: Database
+                    slug: database
+                    created_at: '2024-09-21T01:43:00.000000Z'
+                    updated_at: '2024-09-21T01:43:00.000000Z'
+                  -
+                    id: 23
+                    name: Design
+                    slug: design
+                    created_at: '2024-09-21T01:43:00.000000Z'
+                    updated_at: '2024-09-21T01:43:00.000000Z'
+                  -
+                    id: 24
+                    name: Documentation
+                    slug: documentation
+                    created_at: '2024-09-21T01:43:00.000000Z'
+                    updated_at: '2024-09-21T01:43:00.000000Z'
+      tags:
+        - Endpoints
+      security: []
+    post:
+      summary: 'Store a newly created resource in storage.'
+      operationId: storeANewlyCreatedResourceInStorage
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: 'Must not be greater than 255 characters.'
+                  example: ciadgihn
+                slug:
+                  type: string
+                  description: 'Must not be greater than 255 characters.'
+                  example: hptpjedzjrdgrfzriagspbg
+              required:
+                - name
+                - slug
+      security: []
+  /api/categories/create:
+    get:
+      summary: 'Show the form for creating a new resource.'
+      operationId: showTheFormForCreatingANewResource
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: ''
+      tags:
+        - Endpoints
+      security: []
+  '/api/categories/{id}':
+    get:
+      summary: 'Display the specified resource.'
+      operationId: displayTheSpecifiedResource
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  id: 4
+                  name: Accessibility
+                  slug: accessibility
+                  created_at: '2024-09-21T01:43:00.000000Z'
+                  updated_at: '2024-09-21T01:43:00.000000Z'
+                properties:
+                  id:
+                    type: integer
+                    example: 4
+                  name:
+                    type: string
+                    example: Accessibility
+                  slug:
+                    type: string
+                    example: accessibility
+                  created_at:
+                    type: string
+                    example: '2024-09-21T01:43:00.000000Z'
+                  updated_at:
+                    type: string
+                    example: '2024-09-21T01:43:00.000000Z'
+      tags:
+        - Endpoints
+      security: []
+    put:
+      summary: 'Update the specified resource in storage.'
+      operationId: updateTheSpecifiedResourceInStorage
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: 'Must not be greater than 255 characters.'
+                  example: xzutfieqbedqyjnetcxzgn
+                slug:
+                  type: string
+                  description: ''
+                  example: null
+              required:
+                - name
+      security: []
+    delete:
+      summary: 'Remove the specified resource from storage.'
+      operationId: removeTheSpecifiedResourceFromStorage
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the category.'
+        example: 4
+        required: true
+        schema:
+          type: integer
+  '/api/categories/{category_id}/edit':
+    get:
+      summary: 'Show the form for editing the specified resource.'
+      operationId: showTheFormForEditingTheSpecifiedResource
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: ''
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: category_id
+        description: 'The ID of the category.'
+        example: 4
+        required: true
+        schema:
+          type: integer
+  /api/resources:
+    get:
+      summary: 'Display a listing of the resources.'
+      operationId: displayAListingOfTheResources
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                example:
+                  -
+                    id: 3
+                    title: 'Toools design'
+                    description: "A growing archive of 1,500+ design resources,\r\nfrequently updated for the community."
+                    url: 'https://www.toools.design/?ref=dev_resources'
+                    image_url: 'https://devresourc.es/_next/image?url=https%3A%2F%2Fres.cloudinary.com%2Fdev-resources%2Fimage%2Fupload%2Fresources%2Fscreenshots%2F245e07b1-b1b5-4c4f-a619-04126f2cea9f.png&w=1200&q=75'
+                    category_id: 4
+                    created_at: null
+                    updated_at: null
+                    category:
+                      id: 4
+                      name: Accessibility
+                      slug: accessibility
+                      created_at: '2024-09-21T01:43:00.000000Z'
+                      updated_at: '2024-09-21T01:43:00.000000Z'
+                  -
+                    id: 4
+                    title: Stark
+                    description: "The suite of integrated accessibility tools for your\r\nproduct design and development team • Making\r\nthe world's products accessible."
+                    url: 'https://www.getstark.co/?ref=dev_resources'
+                    image_url: 'https://devresourc.es/_next/image?url=https%3A%2F%2Fres.cloudinary.com%2Fdev-resources%2Fimage%2Fupload%2Fresources%2Fscreenshots%2F22e15b48-d1ac-432a-aaa7-638f4ab0abec.png&w=1200&q=75'
+                    category_id: 4
+                    created_at: null
+                    updated_at: null
+                    category:
+                      id: 4
+                      name: Accessibility
+                      slug: accessibility
+                      created_at: '2024-09-21T01:43:00.000000Z'
+                      updated_at: '2024-09-21T01:43:00.000000Z'
+                  -
+                    id: 5
+                    title: Techstarta
+                    description: "Empower your tech career with Techstarta! Gain\r\nhands-on project experience and mentorship to\r\nconnect with industry experts."
+                    url: 'https://techstarta.com/?ref=dev_resources'
+                    image_url: 'https://devresourc.es/_next/image?url=https%3A%2F%2Fres.cloudinary.com%2Fdev-resources%2Fimage%2Fupload%2Fresources%2Fscreenshots%2F2cbaaf14-585f-4d49-8a61-f7c06e10c718.png&w=1200&q=75'
+                    category_id: 5
+                    created_at: null
+                    updated_at: null
+                    category:
+                      id: 5
+                      name: AI
+                      slug: ai
+                      created_at: '2024-09-21T01:43:00.000000Z'
+                      updated_at: '2024-09-21T01:43:00.000000Z'
+                  -
+                    id: 6
+                    title: Soundstripe
+                    description: "Every creator's one-stop shop for the best\r\nroyalty free music, SFX, and stock video.\r\nPurchase a license for one file, or subscribe for\r\nunlimited access."
+                    url: 'https://www.soundstripe.com/?ref=dev_resources'
+                    image_url: 'https://devresourc.es/_next/image?url=https%3A%2F%2Fres.cloudinary.com%2Fdev-resources%2Fimage%2Fupload%2Fresources%2Fscreenshots%2Fdea225af-8092-4811-b30b-f544b2bbae70.png&w=1200&q=75'
+                    category_id: 9
+                    created_at: null
+                    updated_at: null
+                    category:
+                      id: 9
+                      name: Audio
+                      slug: audio
+                      created_at: '2024-09-21T01:43:00.000000Z'
+                      updated_at: '2024-09-21T01:43:00.000000Z'
+                  -
+                    id: 7
+                    title: "Gore Image Stack\r\n"
+                    description: "An image CDN for convenient transformation,\r\ncompression, and delivery of website images on\r\nthe fly."
+                    url: 'https://gcore.com/image-stack?ref=dev_resources'
+                    image_url: 'https://devresourc.es/_next/image?url=https%3A%2F%2Fres.cloudinary.com%2Fdev-resources%2Fimage%2Fupload%2Fresources%2Fscreenshots%2F486fea6a-9d05-4242-80fb-759e6242fde8.png&w=1200&q=75'
+                    category_id: 14
+                    created_at: null
+                    updated_at: null
+                    category:
+                      id: 14
+                      name: CDN
+                      slug: cdn
+                      created_at: '2024-09-21T01:43:00.000000Z'
+                      updated_at: '2024-09-21T01:43:00.000000Z'
+                  -
+                    id: 8
+                    title: 'A11y Coffee'
+                    description: 'The introduction on web accessibility for every single web developer.'
+                    url: 'https://a11y.coffee/?ref=dev_resources'
+                    image_url: 'https://devresourc.es/_next/image?url=https%3A%2F%2Fres.cloudinary.com%2Fdev-resources%2Fimage%2Fupload%2Fresources%2Fscreenshots%2Fa6580eed-173f-44f1-9e21-a84c27ed97e9.png&w=1200&q=75'
+                    category_id: 4
+                    created_at: '2024-09-25T04:32:56.000000Z'
+                    updated_at: '2024-09-25T04:32:56.000000Z'
+                    category:
+                      id: 4
+                      name: Accessibility
+                      slug: accessibility
+                      created_at: '2024-09-21T01:43:00.000000Z'
+                      updated_at: '2024-09-21T01:43:00.000000Z'
+                  -
+                    id: 9
+                    title: 'Testing Accessibility'
+                    description: 'A self-paced workshop designed to teach you the principles and effective patterns of accessibility, from design to deployment.'
+                    url: 'https://testingaccessibility.com/?ref=dev_resources'
+                    image_url: 'https://devresourc.es/_next/image?url=https%3A%2F%2Fres.cloudinary.com%2Fdev-resources%2Fimage%2Fupload%2Fresources%2Fscreenshots%2Fcf7f7779-ead1-46fd-bcad-be67bbd795a9.png&w=1200&q=75'
+                    category_id: 4
+                    created_at: '2024-09-25T04:32:56.000000Z'
+                    updated_at: '2024-09-25T04:32:56.000000Z'
+                    category:
+                      id: 4
+                      name: Accessibility
+                      slug: accessibility
+                      created_at: '2024-09-21T01:43:00.000000Z'
+                      updated_at: '2024-09-21T01:43:00.000000Z'
+                  -
+                    id: 10
+                    title: WAVE
+                    description: 'WAVE is a suite of evaluation tools that helps authors make their web content more accessible to individuals with disabilities.'
+                    url: 'https://wave.webaim.org/?ref=dev_resources'
+                    image_url: 'https://devresourc.es/_next/image?url=https%3A%2F%2Fres.cloudinary.com%2Fdev-resources%2Fimage%2Fupload%2Fresources%2Fscreenshots%2Ffb230183-e7f7-48df-83ca-a75e55dc089b.png&w=1200&q=75'
+                    category_id: 4
+                    created_at: '2024-09-25T04:32:56.000000Z'
+                    updated_at: '2024-09-25T04:32:56.000000Z'
+                    category:
+                      id: 4
+                      name: Accessibility
+                      slug: accessibility
+                      created_at: '2024-09-21T01:43:00.000000Z'
+                      updated_at: '2024-09-21T01:43:00.000000Z'
+                  -
+                    id: 11
+                    title: 'The A11Y Project'
+                    description: 'The A11Y Project is a community-driven effort to make digital accessibility easier.'
+                    url: 'https://www.a11yproject.com/?ref=dev_resources/'
+                    image_url: 'https://devresourc.es/_next/image?url=https%3A%2F%2Fres.cloudinary.com%2Fdev-resources%2Fimage%2Fupload%2Fresources%2Fscreenshots%2Fff1a4d16-6847-4013-8726-935710a60577.png&w=1200&q=75'
+                    category_id: 4
+                    created_at: '2024-09-25T04:32:56.000000Z'
+                    updated_at: '2024-09-25T04:32:56.000000Z'
+                    category:
+                      id: 4
+                      name: Accessibility
+                      slug: accessibility
+                      created_at: '2024-09-21T01:43:00.000000Z'
+                      updated_at: '2024-09-21T01:43:00.000000Z'
+                  -
+                    id: 12
+                    title: Tenon
+                    description: 'Accessibility as a Service.'
+                    url: 'https://www.levelaccess.com/tenon-retiring-faqs/'
+                    image_url: 'https://devresourc.es/_next/image?url=https%3A%2F%2Fres.cloudinary.com%2Fdev-resources%2Fimage%2Fupload%2Fresources%2Fscreenshots%2F065d36a8-6d66-4bdc-9626-42e4c8630e64.png&w=1200&q=75'
+                    category_id: 4
+                    created_at: '2024-09-25T04:32:56.000000Z'
+                    updated_at: '2024-09-25T04:32:56.000000Z'
+                    category:
+                      id: 4
+                      name: Accessibility
+                      slug: accessibility
+                      created_at: '2024-09-21T01:43:00.000000Z'
+                      updated_at: '2024-09-21T01:43:00.000000Z'
+                  -
+                    id: 13
+                    title: 'Inclusive Components'
+                    description: 'A blog trying to be a pattern library. All about designing inclusive web interfaces, piece by piece.'
+                    url: 'https://inclusive-components.design/?ref=dev_resources'
+                    image_url: 'https://devresourc.es/_next/image?url=https%3A%2F%2Fres.cloudinary.com%2Fdev-resources%2Fimage%2Fupload%2Fresources%2Fscreenshots%2F3ce63b67-7f67-4bcb-bc7e-13205a79c9f4.png&w=1200&q=75'
+                    category_id: 4
+                    created_at: '2024-09-25T04:32:56.000000Z'
+                    updated_at: '2024-09-25T04:32:56.000000Z'
+                    category:
+                      id: 4
+                      name: Accessibility
+                      slug: accessibility
+                      created_at: '2024-09-21T01:43:00.000000Z'
+                      updated_at: '2024-09-21T01:43:00.000000Z'
+                  -
+                    id: 14
+                    title: 'HTML5 Accessibility'
+                    description: 'Get the current accessibility support status of HTML5 features across major browsers.'
+                    url: 'https://www.html5accessibility.com/?ref=dev_resources'
+                    image_url: 'https://devresourc.es/_next/image?url=https%3A%2F%2Fres.cloudinary.com%2Fdev-resources%2Fimage%2Fupload%2Fresources%2Fscreenshots%2Fa82150a9-3503-4764-afb9-722f088f4488.png&w=1200&q=75'
+                    category_id: 4
+                    created_at: '2024-09-25T04:32:56.000000Z'
+                    updated_at: '2024-09-25T04:32:56.000000Z'
+                    category:
+                      id: 4
+                      name: Accessibility
+                      slug: accessibility
+                      created_at: '2024-09-21T01:43:00.000000Z'
+                      updated_at: '2024-09-21T01:43:00.000000Z'
+                  -
+                    id: 15
+                    title: 'Contrast Ratio'
+                    description: 'Easily calculate color contrast ratios.'
+                    url: 'https://www.siegemedia.com/contrast-ratio?ref=dev_resources'
+                    image_url: 'https://devresourc.es/_next/image?url=https%3A%2F%2Fres.cloudinary.com%2Fdev-resources%2Fimage%2Fupload%2Fresources%2Fscreenshots%2F23a4ce7a-4a24-4e41-87e2-0f8cc095a3f9.png&w=1200&q=75'
+                    category_id: 4
+                    created_at: '2024-09-25T04:32:56.000000Z'
+                    updated_at: '2024-09-25T04:32:56.000000Z'
+                    category:
+                      id: 4
+                      name: Accessibility
+                      slug: accessibility
+                      created_at: '2024-09-21T01:43:00.000000Z'
+                      updated_at: '2024-09-21T01:43:00.000000Z'
+                  -
+                    id: 16
+                    title: Color.review
+                    description: 'A modern tool for exploring and finding accessible colors. Make sure that everyone can see your creations.'
+                    url: 'https://color.review/?ref=dev_resources'
+                    image_url: 'https://devresourc.es/_next/image?url=https%3A%2F%2Fres.cloudinary.com%2Fdev-resources%2Fimage%2Fupload%2Fresources%2Fscreenshots%2Fdded2533-2e96-4576-a821-ba68269e9ed6.png&w=1200&q=75'
+                    category_id: 4
+                    created_at: '2024-09-25T04:32:56.000000Z'
+                    updated_at: '2024-09-25T04:32:56.000000Z'
+                    category:
+                      id: 4
+                      name: Accessibility
+                      slug: accessibility
+                      created_at: '2024-09-21T01:43:00.000000Z'
+                      updated_at: '2024-09-21T01:43:00.000000Z'
+                  -
+                    id: 17
+                    title: 'Color Contrast Checker'
+                    description: 'Make sure your website has accessible colors.'
+                    url: 'https://zarhasan.github.io/color-contrast-checker/?ref=dev_resources'
+                    image_url: 'https://devresourc.es/_next/image?url=https%3A%2F%2Fres.cloudinary.com%2Fdev-resources%2Fimage%2Fupload%2Fresources%2Fscreenshots%2Ff0b9ff46-a75d-488a-b8bd-94638c43f9a2.png&w=1200&q=75'
+                    category_id: 4
+                    created_at: '2024-09-25T04:32:56.000000Z'
+                    updated_at: '2024-09-25T04:32:56.000000Z'
+                    category:
+                      id: 4
+                      name: Accessibility
+                      slug: accessibility
+                      created_at: '2024-09-21T01:43:00.000000Z'
+                      updated_at: '2024-09-21T01:43:00.000000Z'
+                  -
+                    id: 18
+                    title: Checka11y.css
+                    description: 'A CSS stylesheet to quickly highlight a11y concerns.'
+                    url: 'https://github.com/jackdomleo7/Checka11y.css?ref=dev_resources'
+                    image_url: 'https://devresourc.es/_next/image?url=https%3A%2F%2Fres.cloudinary.com%2Fdev-resources%2Fimage%2Fupload%2Fresources%2Fscreenshots%2F4c4d0513-e6bd-4d2a-9720-d0c795a368aa.png&w=1200&q=75'
+                    category_id: 4
+                    created_at: '2024-09-25T04:32:56.000000Z'
+                    updated_at: '2024-09-25T04:32:56.000000Z'
+                    category:
+                      id: 4
+                      name: Accessibility
+                      slug: accessibility
+                      created_at: '2024-09-21T01:43:00.000000Z'
+                      updated_at: '2024-09-21T01:43:00.000000Z'
+                  -
+                    id: 19
+                    title: 'Awesome a11y'
+                    description: 'A curate list about A11Y. Contribute to brunopulis/awesome-a11y development by creating an account on GitHub.'
+                    url: 'https://github.com/brunopulis/awesome-a11y?ref=dev_resources'
+                    image_url: 'https://devresourc.es/_next/image?url=https%3A%2F%2Fres.cloudinary.com%2Fdev-resources%2Fimage%2Fupload%2Fresources%2Fscreenshots%2Fd2b4d271-f056-4dce-a1cb-fbfea2ec061a.png&w=1200&q=75'
+                    category_id: 4
+                    created_at: '2024-09-25T04:32:56.000000Z'
+                    updated_at: '2024-09-25T04:32:56.000000Z'
+                    category:
+                      id: 4
+                      name: Accessibility
+                      slug: accessibility
+                      created_at: '2024-09-21T01:43:00.000000Z'
+                      updated_at: '2024-09-21T01:43:00.000000Z'
+                  -
+                    id: 20
+                    title: ally.js
+                    description: 'JavaScript library to help modern web applications with accessibility concerns by making accessibility simpler.'
+                    url: 'https://allyjs.io/?ref=dev_resources'
+                    image_url: 'https://devresourc.es/_next/image?url=https%3A%2F%2Fres.cloudinary.com%2Fdev-resources%2Fimage%2Fupload%2Fresources%2Fscreenshots%2F736f96f7-fd8f-4143-adc5-a7e30a06406a.png&w=1200&q=75'
+                    category_id: 4
+                    created_at: '2024-09-25T04:32:56.000000Z'
+                    updated_at: '2024-09-25T04:32:56.000000Z'
+                    category:
+                      id: 4
+                      name: Accessibility
+                      slug: accessibility
+                      created_at: '2024-09-21T01:43:00.000000Z'
+                      updated_at: '2024-09-21T01:43:00.000000Z'
+                  -
+                    id: 21
+                    title: 'Accessible Color Generator'
+                    description: 'A tool for creating color variations on a base color to meet WCAG AA or AAA color contrast ratio guidelines.'
+                    url: 'https://www.learnui.design/tools/accessible-color-generator.html?ref=dev_resources'
+                    image_url: 'https://devresourc.es/_next/image?url=https%3A%2F%2Fres.cloudinary.com%2Fdev-resources%2Fimage%2Fupload%2Fresources%2Fscreenshots%2Fa3c6890f-110d-4c89-ae68-4152f62b7518.png&w=1200&q=75'
+                    category_id: 4
+                    created_at: '2024-09-25T04:32:56.000000Z'
+                    updated_at: '2024-09-25T04:32:56.000000Z'
+                    category:
+                      id: 4
+                      name: Accessibility
+                      slug: accessibility
+                      created_at: '2024-09-21T01:43:00.000000Z'
+                      updated_at: '2024-09-21T01:43:00.000000Z'
+                  -
+                    id: 22
+                    title: A11yWeekly
+                    description: 'A weekly dose of web accessibility to help you bring it into your everyday work.'
+                    url: 'https://a11yweekly.com/?ref=dev_resources'
+                    image_url: 'https://devresourc.es/_next/image?url=https%3A%2F%2Fres.cloudinary.com%2Fdev-resources%2Fimage%2Fupload%2Fresources%2Fscreenshots%2Fc0c7d45f-6688-4db6-b780-0bed453cb230.png&w=1200&q=75'
+                    category_id: 4
+                    created_at: '2024-09-25T04:32:56.000000Z'
+                    updated_at: '2024-09-25T04:32:56.000000Z'
+                    category:
+                      id: 4
+                      name: Accessibility
+                      slug: accessibility
+                      created_at: '2024-09-21T01:43:00.000000Z'
+                      updated_at: '2024-09-21T01:43:00.000000Z'
+                  -
+                    id: 23
+                    title: A11ygator
+                    description: 'An application, a Twitter bot, and a browser extension that bites websites to taste their accessibility.'
+                    url: 'https://a11ygator.chialab.io/?ref=dev_resources'
+                    image_url: 'https://devresourc.es/_next/image?url=https%3A%2F%2Fres.cloudinary.com%2Fdev-resources%2Fimage%2Fupload%2Fresources%2Fscreenshots%2F11893cda-060a-44ad-9f04-f46cc71af91f.png&w=1200&q=75'
+                    category_id: 4
+                    created_at: '2024-09-25T04:32:56.000000Z'
+                    updated_at: '2024-09-25T04:32:56.000000Z'
+                    category:
+                      id: 4
+                      name: Accessibility
+                      slug: accessibility
+                      created_at: '2024-09-21T01:43:00.000000Z'
+                      updated_at: '2024-09-21T01:43:00.000000Z'
+                  -
+                    id: 24
+                    title: '18F Accessibility Guide'
+                    description: 'A simple checklist for determining if your site is accessible.'
+                    url: 'https://guides.18f.gov/accessibility/checklist/'
+                    image_url: 'https://devresourc.es/_next/image?url=https%3A%2F%2Fres.cloudinary.com%2Fdev-resources%2Fimage%2Fupload%2Fresources%2Fscreenshots%2F242c68da-f5db-4fb7-97a1-f91717161987.png&w=1200&q=75'
+                    category_id: 4
+                    created_at: '2024-09-25T04:32:56.000000Z'
+                    updated_at: '2024-09-25T04:32:56.000000Z'
+                    category:
+                      id: 4
+                      name: Accessibility
+                      slug: accessibility
+                      created_at: '2024-09-21T01:43:00.000000Z'
+                      updated_at: '2024-09-21T01:43:00.000000Z'
+      tags:
+        - Endpoints
+      security: []
+    post:
+      summary: 'Store a newly created resource in storage.'
+      operationId: storeANewlyCreatedResourceInStorage
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  description: 'Must not be greater than 255 characters.'
+                  example: lljvichqiugriyihln
+                description:
+                  type: string
+                  description: ''
+                  example: 'Est suscipit illum quisquam reprehenderit.'
+                url:
+                  type: string
+                  description: 'Must be a valid URL.'
+                  example: 'https://www.runolfsdottir.com/enim-autem-saepe-alias-commodi-totam-non-quia-voluptates'
+                category_id:
+                  type: string
+                  description: ''
+                  example: distinctio
+              required:
+                - title
+                - url
+                - category_id
+      security: []
+  '/api/resources/{id}':
+    get:
+      summary: 'Display the specified resource.'
+      operationId: displayTheSpecifiedResource
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  id: 3
+                  title: 'Toools design'
+                  description: "A growing archive of 1,500+ design resources,\r\nfrequently updated for the community."
+                  url: 'https://www.toools.design/?ref=dev_resources'
+                  image_url: 'https://devresourc.es/_next/image?url=https%3A%2F%2Fres.cloudinary.com%2Fdev-resources%2Fimage%2Fupload%2Fresources%2Fscreenshots%2F245e07b1-b1b5-4c4f-a619-04126f2cea9f.png&w=1200&q=75'
+                  category_id: 4
+                  created_at: null
+                  updated_at: null
+                  category:
+                    id: 4
+                    name: Accessibility
+                    slug: accessibility
+                    created_at: '2024-09-21T01:43:00.000000Z'
+                    updated_at: '2024-09-21T01:43:00.000000Z'
+                properties:
+                  id:
+                    type: integer
+                    example: 3
+                  title:
+                    type: string
+                    example: 'Toools design'
+                  description:
+                    type: string
+                    example: "A growing archive of 1,500+ design resources,\r\nfrequently updated for the community."
+                  url:
+                    type: string
+                    example: 'https://www.toools.design/?ref=dev_resources'
+                  image_url:
+                    type: string
+                    example: 'https://devresourc.es/_next/image?url=https%3A%2F%2Fres.cloudinary.com%2Fdev-resources%2Fimage%2Fupload%2Fresources%2Fscreenshots%2F245e07b1-b1b5-4c4f-a619-04126f2cea9f.png&w=1200&q=75'
+                  category_id:
+                    type: integer
+                    example: 4
+                  created_at:
+                    type: string
+                    example: null
+                  updated_at:
+                    type: string
+                    example: null
+                  category:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 4
+                      name:
+                        type: string
+                        example: Accessibility
+                      slug:
+                        type: string
+                        example: accessibility
+                      created_at:
+                        type: string
+                        example: '2024-09-21T01:43:00.000000Z'
+                      updated_at:
+                        type: string
+                        example: '2024-09-21T01:43:00.000000Z'
+      tags:
+        - Endpoints
+      security: []
+    put:
+      summary: 'Update the specified resource in storage.'
+      operationId: updateTheSpecifiedResourceInStorage
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  description: 'Must not be greater than 255 characters.'
+                  example: jedakpfox
+                description:
+                  type: string
+                  description: ''
+                  example: 'Qui nostrum dolor impedit earum fuga sed ad.'
+                url:
+                  type: string
+                  description: 'Must be a valid URL.'
+                  example: 'http://www.schultz.info/laboriosam-quis-vel-occaecati-cum.html'
+                category_id:
+                  type: string
+                  description: ''
+                  example: eveniet
+              required:
+                - title
+                - url
+                - category_id
+      security: []
+    delete:
+      summary: 'Remove the specified resource from storage.'
+      operationId: removeTheSpecifiedResourceFromStorage
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the resource.'
+        example: 3
+        required: true
+        schema:
+          type: integer
+  /api/suggested-tags:
+    get:
+      summary: 'Display a listing of the resource.'
+      operationId: displayAListingOfTheResource
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Endpoints
+      security: []
+    post:
+      summary: 'Store a newly created resource in storage.'
+      operationId: storeANewlyCreatedResourceInStorage
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: 'Must not be greater than 255 characters.'
+                  example: vnkibzcmnfbnsetugoy
+                status:
+                  type: string
+                  description: ''
+                  example: draft
+                  enum:
+                    - draft
+                    - published
+                    - archived
+              required:
+                - name
+      security: []
+  '/api/suggested-tags/{id}':
+    get:
+      summary: 'Display the specified resource.'
+      operationId: displayTheSpecifiedResource
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Endpoints
+      security: []
+    put:
+      summary: 'Update the specified resource in storage.'
+      operationId: updateTheSpecifiedResourceInStorage
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: 'Must not be greater than 255 characters.'
+                  example: gap
+                status:
+                  type: string
+                  description: ''
+                  example: draft
+                  enum:
+                    - draft
+                    - published
+                    - archived
+      security: []
+    delete:
+      summary: 'Remove the specified resource from storage.'
+      operationId: removeTheSpecifiedResourceFromStorage
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the suggested tag.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+  /api/ads:
+    get:
+      summary: ''
+      operationId: getApiAds
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Endpoints
+      security: []
+    post:
+      summary: ''
+      operationId: postApiAds
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  description: 'Must not be greater than 255 characters.'
+                  example: h
+                description:
+                  type: string
+                  description: ''
+                  example: 'Aperiam molestiae eum molestiae.'
+                url:
+                  type: string
+                  description: 'Must be a valid URL.'
+                  example: 'http://www.dickens.biz/pariatur-consequatur-dolorem-in-fugit-dolores-architecto-quaerat'
+                image_url:
+                  type: string
+                  description: 'Must be a valid URL.'
+                  example: 'http://ferry.biz/'
+              required:
+                - title
+                - description
+                - url
+                - image_url
+      security: []
+  /api/ads/create:
+    get:
+      summary: ''
+      operationId: getApiAdsCreate
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Endpoints
+      security: []
+  '/api/ads/{id}':
+    get:
+      summary: ''
+      operationId: getApiAdsId
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Endpoints
+      security: []
+    put:
+      summary: ''
+      operationId: putApiAdsId
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  description: 'Must not be greater than 255 characters.'
+                  example: kajsneuntixumlbrwwyoowg
+                description:
+                  type: string
+                  description: ''
+                  example: 'Iste porro quasi qui libero error non.'
+                url:
+                  type: string
+                  description: 'Must be a valid URL.'
+                  example: 'http://www.schaden.com/'
+                image_url:
+                  type: string
+                  description: 'Must be a valid URL.'
+                  example: 'http://stark.com/aut-repellendus-expedita-laudantium-repellat-placeat'
+              required:
+                - title
+                - description
+                - url
+                - image_url
+      security: []
+    delete:
+      summary: ''
+      operationId: deleteApiAdsId
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the ad.'
+        example: quam
+        required: true
+        schema:
+          type: string
+  '/api/ads/{ad}/edit':
+    get:
+      summary: ''
+      operationId: getApiAdsAdEdit
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: ad
+        description: 'The ad.'
+        example: ullam
+        required: true
+        schema:
+          type: string
+  /api/suggested-yt-channels:
+    get:
+      summary: 'Display a listing of the resource.'
+      operationId: displayAListingOfTheResource
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Endpoints
+      security: []
+    post:
+      summary: 'Store a newly created resource in storage.'
+      operationId: storeANewlyCreatedResourceInStorage
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                channel_name:
+                  type: string
+                  description: 'Must not be greater than 255 characters.'
+                  example: dfzqjdjhnugahro
+                channel_url:
+                  type: string
+                  description: 'Must be a valid URL. Must not be greater than 255 characters.'
+                  example: 'http://pagac.com/'
+                status:
+                  type: string
+                  description: ''
+                  example: archived
+                  enum:
+                    - draft
+                    - published
+                    - archived
+              required:
+                - channel_name
+                - channel_url
+      security: []
+  '/api/suggested-yt-channels/{id}':
+    get:
+      summary: 'Display the specified resource.'
+      operationId: displayTheSpecifiedResource
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Endpoints
+      security: []
+    put:
+      summary: 'Update the specified resource in storage.'
+      operationId: updateTheSpecifiedResourceInStorage
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                channel_name:
+                  type: string
+                  description: 'Must not be greater than 255 characters.'
+                  example: gunkmfsxwafl
+                channel_url:
+                  type: string
+                  description: 'Must be a valid URL. Must not be greater than 255 characters.'
+                  example: 'http://wisoky.biz/esse-odit-corporis-aliquam.html'
+                status:
+                  type: string
+                  description: ''
+                  example: archived
+                  enum:
+                    - draft
+                    - published
+                    - archived
+      security: []
+    delete:
+      summary: 'Remove the specified resource from storage.'
+      operationId: removeTheSpecifiedResourceFromStorage
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the suggested yt channel.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+  '/api/accept-suggested-channel/{id}':
+    post:
+      summary: 'Accept a suggested channel and create a new channel.'
+      operationId: acceptASuggestedChannelAndCreateANewChannel
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the accept suggested channel.'
+        example: maxime
+        required: true
+        schema:
+          type: string
+  /api/suggested-podcasts:
+    get:
+      summary: 'Display a listing of the resource.'
+      operationId: displayAListingOfTheResource
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Endpoints
+      security: []
+    post:
+      summary: 'Store a newly created resource in storage.'
+      operationId: storeANewlyCreatedResourceInStorage
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  description: 'Must not be greater than 255 characters.'
+                  example: aoww
+              required:
+                - title
+      security: []
+  '/api/suggested-podcasts/{id}/accept':
+    post:
+      summary: 'Accept a suggested podcast and create the actual podcast.'
+      operationId: acceptASuggestedPodcastAndCreateTheActualPodcast
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the suggested podcast.'
+        example: asperiores
+        required: true
+        schema:
+          type: string
+  '/api/suggested-podcasts/{id}/reject':
+    post:
+      summary: 'Reject a suggested podcast.'
+      operationId: rejectASuggestedPodcast
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the suggested podcast.'
+        example: rerum
+        required: true
+        schema:
+          type: string
+  /api/notifications:
+    get:
+      summary: ''
+      operationId: getApiNotifications
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Endpoints
+      security: []
+    delete:
+      summary: ''
+      operationId: deleteApiNotifications
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  '/api/notifications/{id}/mark-as-read':
+    post:
+      summary: ''
+      operationId: postApiNotificationsIdMarkAsRead
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the notification.'
+        example: dolorem
+        required: true
+        schema:
+          type: string
+  /api/notifications/mark-all-as-read:
+    post:
+      summary: ''
+      operationId: postApiNotificationsMarkAllAsRead
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/like:
+    post:
+      summary: ''
+      operationId: postApiLike
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    delete:
+      summary: ''
+      operationId: deleteApiLike
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/ask:
+    post:
+      summary: ''
+      operationId: postApiAsk
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                question:
+                  type: string
+                  description: 'Must not be greater than 255 characters.'
+                  example: ymaitfdhjmspjkweuwi
+              required:
+                - question
+      security: []
+  /api/auth/github:
+    get:
+      summary: ''
+      operationId: getApiAuthGithub
+      description: ''
+      parameters: []
+      responses:
+        500:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Server Error'
+                properties:
+                  message:
+                    type: string
+                    example: 'Server Error'
+      tags:
+        - Endpoints
+      security: []
+  /api/auth/github/callback:
+    get:
+      summary: ''
+      operationId: getApiAuthGithubCallback
+      description: ''
+      parameters: []
+      responses:
+        500:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Server Error'
+                properties:
+                  message:
+                    type: string
+                    example: 'Server Error'
+      tags:
+        - Endpoints
+      security: []
+  /api/auth/google:
+    get:
+      summary: ''
+      operationId: getApiAuthGoogle
+      description: ''
+      parameters: []
+      responses:
+        500:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Server Error'
+                properties:
+                  message:
+                    type: string
+                    example: 'Server Error'
+      tags:
+        - Endpoints
+      security: []
+  /api/auth/google/callback:
+    get:
+      summary: ''
+      operationId: getApiAuthGoogleCallback
+      description: ''
+      parameters: []
+      responses:
+        500:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Server Error'
+                properties:
+                  message:
+                    type: string
+                    example: 'Server Error'
+      tags:
+        - Endpoints
+      security: []
+  /api/auth/gitlab:
+    get:
+      summary: ''
+      operationId: getApiAuthGitlab
+      description: ''
+      parameters: []
+      responses:
+        500:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Server Error'
+                properties:
+                  message:
+                    type: string
+                    example: 'Server Error'
+      tags:
+        - Endpoints
+      security: []
+  /api/auth/gitlab/callback:
+    get:
+      summary: ''
+      operationId: getApiAuthGitlabCallback
+      description: ''
+      parameters: []
+      responses:
+        500:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Server Error'
+                properties:
+                  message:
+                    type: string
+                    example: 'Server Error'
+      tags:
+        - Endpoints
+      security: []
+  /api/password/email:
+    post:
+      summary: ''
+      operationId: postApiPasswordEmail
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  description: 'Must be a valid email address.'
+                  example: feest.meghan@example.com
+              required:
+                - email
+      security: []
+  /api/password/reset:
+    post:
+      summary: ''
+      operationId: postApiPasswordReset
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                token:
+                  type: string
+                  description: ''
+                  example: id
+                email:
+                  type: string
+                  description: 'Must be a valid email address.'
+                  example: crooks.demarco@example.com
+                password:
+                  type: string
+                  description: ''
+                  example: sequi
+              required:
+                - token
+                - email
+                - password
+      security: []
 tags:
   -
     name: Endpoints
