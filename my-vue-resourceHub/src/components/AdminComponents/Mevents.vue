@@ -19,23 +19,24 @@
             <tr>
               <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Title & Description</th>
               <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">City</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Start Time</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">End Time</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Location</th>
+              <!-- <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Start Time</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">End Time</th> -->
               <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
               <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
             </tr>
           </thead>
           <tbody class="bg-white divide-y divide-gray-200">
             <tr v-for="event in events" :key="event.id">
-              <td class="px-6 py-4 whitespace-nowrap block">
-                {{ event.title }}
-                <span class="text-sm">  
-                  {{ event.description }}
-                </span>
+              <td class="px-6 py-4 whitespace-nowrap ">
+                <span class="font-bold">{{ event.title }}</span>  
+                <br>
+                <span class="text-sm">{{ event.description }}</span>
               </td>
               <td class="px-6 py-4 whitespace-nowrap">{{ event.city }}</td>
-              <td class="px-6 py-4 whitespace-nowrap">{{ event.start_time }}</td>
-              <td class="px-6 py-4 whitespace-nowrap">{{ event.end_time }}</td>
+              <td class="px-6 py-4 whitespace-nowrap">{{ event.location }}</td>
+              <!-- <td class="px-6 py-4 whitespace-nowrap">{{ event.start_time }}</td> -->
+              <!-- <td class="px-6 py-4 whitespace-nowrap">{{ event.end_time }}</td> -->
               <td class="px-6 py-4 whitespace-nowrap">{{ event.status }}</td>
               <td class="px-6 py-4 whitespace-nowrap">
                 <button @click="openEditModal(event.id)" class="text-blue-600 hover:text-blue-900 mr-3">Edit</button>
@@ -46,61 +47,150 @@
         </table>
       </div>
 
-      <!-- Add Event Modal -->
-      <AddEventModal :isOpen="isAddModalOpen" @close="closeAddModal" @event-added="fetchEvents" />
-
-      <!-- Edit Event Modal -->
-      <EditEventModal :isOpen="isEditModalOpen" :eventId="editingEventId" @close="closeEditModal" @event-updated="fetchEvents" />
+      <!-- Add/Edit Event Modal -->
+      <div v-if="isModalOpen" class="fixed inset-0 flex items-center justify-center z-50 bg-gray-600 bg-opacity-50">
+        <div class="bg-white rounded-lg shadow-lg p-6 w-96">
+          <h2 class="text-lg font-semibold mb-4">{{ isEditing ? 'Edit Event' : 'Add Event' }}</h2>
+          <form @submit.prevent="submitForm">
+            <div class="mb-4">
+              <label for="title" class="block text-sm font-medium text-gray-700">Title</label>
+              <input v-model="form.title" type="text" id="title" class="mt-1 block w-full border-gray-300 rounded-md" required />
+            </div>
+            <div class="mb-4">
+              <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
+              <textarea v-model="form.description" id="description" class="mt-1 block w-full border-gray-300 rounded-md" required></textarea>
+            </div>
+            <div class="mb-4">
+              <label for="city" class="block text-sm font-medium text-gray-700">City</label>
+              <input v-model="form.city" type="text" id="city" class="mt-1 block w-full border-gray-300 rounded-md" required />
+            </div>
+            <div class="mb-4">
+              <label for="location" class="block text-sm font-medium text-gray-700">Location</label>
+              <input v-model="form.location" type="text" id="location" class="mt-1 block w-full border-gray-300 rounded-md" required />
+            </div>
+            <div class="mb-4">
+              <label for="start_time" class="block text-sm font-medium text-gray-700">Start Time</label>
+              <input v-model="form.start_time" type="datetime-local" id="start_time" class="mt-1 block w-full border-gray-300 rounded-md" required />
+            </div>
+            <div class="mb-4">
+              <label for="end_time" class="block text-sm font-medium text-gray-700">End Time</label>
+              <input v-model="form.end_time" type="datetime-local" id="end_time" class="mt-1 block w-full border-gray-300 rounded-md" required />
+            </div>
+            <div class="mb-4">
+                <label for="status" class="block text-sm font-medium text-gray-700">Status</label>
+                <select v-model="form.status" id="status" class="mt-1 block w-full border-gray-300 rounded-md" required>
+                    <option value="planifié">Planifié</option>
+                    <option value="en cours">En Cours</option>
+                    <option value="terminé">Terminé</option>
+                </select>
+            </div>
+            <div class="flex justify-end">
+              <button type="button" @click="closeModal" class="mr-2 px-4 py-2 bg-gray-300 text-black rounded-lg">Cancel</button>
+              <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-lg">{{ isEditing ? 'Update Event' : 'Add Event' }}</button>
+            </div>
+          </form>
+        </div>
+      </div>
     </main>
   </div>
 </template>
 
 <script>
 import axios from 'axios';
-import AddEventModal from './AddEventModal.vue';
-import EditEventModal from './EditEventModal.vue';
 import Sidebar from './Sidebar.vue';
 import { API_BASE_URL } from '@/config';
 
 export default {
   components: {
-    AddEventModal,
-    EditEventModal,
     Sidebar,
   },
   data() {
     return {
-      isAddModalOpen: false,
-      isEditModalOpen: false,
+      isModalOpen: false,
+      isEditing: false,
       editingEventId: null,
-      events: [], // Array to hold events
+      events: [],
+      form: {
+        title: '',
+        description: '',
+        city: '',
+        location: '',
+        start_time: '',
+        end_time: '',
+      },
     };
   },
   created() {
-    this.fetchEvents(); // Fetch events when the component is created
+    this.fetchEvents();
   },
   methods: {
     async fetchEvents() {
       try {
-        const response = await axios.get(`${API_BASE_URL}events`); // Adjust the API endpoint accordingly
-        this.events = response.data; // Populate events array
+        const token = localStorage.getItem('user-token');
+        const response = await axios.get(`${API_BASE_URL}events`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        this.events = response.data;
       } catch (error) {
         console.error('Error fetching events:', error);
       }
     },
     openAddModal() {
-      this.isAddModalOpen = true;
-    },
-    closeAddModal() {
-      this.isAddModalOpen = false;
+      this.isEditing = false;
+      this.resetForm();
+      this.isModalOpen = true;
     },
     openEditModal(eventId) {
+      this.isEditing = true;
       this.editingEventId = eventId;
-      this.isEditModalOpen = true;
+      this.fetchEvent(eventId);
+      this.isModalOpen = true;
     },
-    closeEditModal() {
-      this.isEditModalOpen = false;
+    closeModal() {
+      this.isModalOpen = false;
+      this.resetForm();
     },
+    async fetchEvent(eventId) {
+      try {
+        const token = localStorage.getItem('user-token');
+        const response = await axios.get(`${API_BASE_URL}events/${eventId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        this.form = response.data;
+      } catch (error) {
+        console.error('Error fetching event:', error);
+      }
+    },
+    async submitForm() {
+        try {
+            const token = localStorage.getItem('user-token');
+            if (this.isEditing) {
+                await axios.put(`${API_BASE_URL}events/${this.editingEventId}`, this.form, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
+            } else {
+                await axios.post(`${API_BASE_URL}events`, this.form, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
+            }
+            this.fetchEvents();
+            this.closeModal();
+        } catch (error) {
+            if (error.response) {
+                console.error('Validation Errors:', error.response.data.errors);
+            }
+            console.error('Error submitting event:', error);
+        }
+    }
+    ,
     confirmDelete(eventId) {
       if (confirm("Are you sure you want to delete this event?")) {
         this.deleteEvent(eventId);
@@ -108,24 +198,37 @@ export default {
     },
     async deleteEvent(eventId) {
       try {
-        await axios.delete(`/api/events/${eventId}`); // Adjust the API endpoint accordingly
-        this.fetchEvents(); // Refresh events after deletion
+        const token = localStorage.getItem('user-token');
+        await axios.delete(`${API_BASE_URL}events/${eventId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        this.fetchEvents();
       } catch (error) {
         console.error('Error deleting event:', error);
       }
+    },
+    resetForm() {
+      this.form = {
+        title: '',
+        description: '',
+        city: '',
+        location: '',
+        start_time: '',
+        end_time: '',
+      };
     },
   },
 };
 </script>
 
 <style scoped>
-/* Sidebar styling */
 aside {
-  min-height: 100vh; /* Ensure sidebar spans full viewport height */
+  min-height: 100vh;
 }
 
-/* Main content styling */
 main {
-  margin-left: 16rem; /* Adjust based on sidebar width */
+  margin-left: 16rem;
 }
 </style>

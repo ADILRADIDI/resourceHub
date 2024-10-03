@@ -96,4 +96,23 @@ class SuggestedPodcastController extends Controller
 
         return response()->json($suggestedPodcast);
     }
+
+    //
+    public function destroy($id)
+    {
+        $user = Auth::user();
+
+        // Check if the user has the 'manage podcasts' permission
+        if (!$user->can('manage podcasts')) {
+            return response()->json(['error' => 'Unauthorized to delete Suggested Podcasts'], 403);
+        }
+
+        $suggestedPodcast = SuggestedPodcast::find($id);
+        if (!$suggestedPodcast) {
+            return response()->json(['error' => 'Suggested Podcast not found'], 404);
+        }
+        $suggestedPodcast->delete();
+
+        return response()->json(['message' => 'Suggested Podcast deleted successfully']);
+    }
 }

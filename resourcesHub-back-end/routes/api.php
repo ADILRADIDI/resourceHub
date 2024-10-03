@@ -86,6 +86,9 @@ Route::post('/posts/by-tag', [PostController::class, 'getPostsByTag'])->middlewa
 
 // managment podcast and search by title
 Route::apiResource('podcasts', PodcastController::class)->middleware('auth:sanctum');
+Route::get('getAllpd', [PodcastController::class, 'getAllpd'])->middleware('auth:sanctum');
+Route::post('publishPodcast', [PodcastController::class, 'publishPodcast'])->middleware('auth:sanctum');
+
 // search podcastgetp
 Route::post('/podcasts/search', [PodcastController::class, 'search'])->middleware('auth:sanctum');
 
@@ -118,6 +121,8 @@ Route::get('youtube-channels/search', [YouTubeChannelController::class, 'search'
 
 // managment events
 Route::apiResource('events', EventController::class)->middleware('auth:sanctum');
+Route::delete('events/{event}', [EventController::class, 'destroy'])->middleware('auth:sanctum');
+
 // search || not working 100%
 Route::post('events/search', [EventController::class, 'search'])->middleware('auth:sanctum');
 // register user in event
@@ -206,8 +211,19 @@ use App\Http\Controllers\ResourceController;
 Route::resource('resources', ResourceController::class);
 
 // managment Suggested Tag
+// use App\Http\Controllers\SuggestedTagController;
+// Route::apiResource('suggested-tags', SuggestedTagController::class)->middleware('auth:sanctum');
+// Route::get('getAllD', SuggestedTagController::class ,'getDraftTags')->middleware('auth:sanctum');
+
+
 use App\Http\Controllers\SuggestedTagController;
 Route::apiResource('suggested-tags', SuggestedTagController::class)->middleware('auth:sanctum');
+// Corrected route to retrieve all draft tags
+Route::get('getAllD', [SuggestedTagController::class, 'getDraftTags'])->middleware('auth:sanctum');
+// Corrected route to accept a suggested tag
+Route::post('suggested-tags/{id}/accept', [SuggestedTagController::class, 'acceptTag'])->middleware('auth:sanctum');
+Route::delete('suggested-tags/{id}/reject', [SuggestedTagController::class, 'destroy'])->middleware('auth:sanctum');
+Route::delete('suggested-tags/{id}', [SuggestedTagController::class, 'destroy'])->middleware('auth:sanctum');
 
 
 use App\Http\Controllers\AdController;
@@ -221,16 +237,17 @@ use App\Http\Controllers\SuggestedYtChannelController;
 Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('suggested-yt-channels', SuggestedYtChannelController::class);
     Route::post('accept-suggested-channel/{id}', [SuggestedYtChannelController::class, 'acceptSuggestedChannel']);
+    Route::get('getAll', [SuggestedYtChannelController::class, 'getDraftChannels']);
 });
 
 //managment suggested podcasts and i used function only $/exccept
 use App\Http\Controllers\SuggestedPodcastController;
 Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('suggested-podcasts', SuggestedPodcastController::class)->only([
-        'index', 'store'
+        'index', 'store', 'destroy'
     ]);
-    Route::post('suggested-podcasts/{id}/accept', [SuggestedPodcastController::class, 'accept']);
-    Route::post('suggested-podcasts/{id}/reject', [SuggestedPodcastController::class, 'reject']);
+    // Route::post('suggested-podcasts/{id}/accept', [SuggestedPodcastController::class, 'accept']);
+    // Route::post('suggested-podcasts/{id}/reject', [SuggestedPodcastController::class, 'reject']);
 });
 
 

@@ -78,7 +78,7 @@ prompt_suggestion
             </svg>
           </button>
           <ul v-if="dropdowns.suggested" class="space-y-2 mt-2">
-            <li><router-link to="/sugPost" class="flex items-center p-2 pl-11 text-gray-900 rounded-lg dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700">Posts</router-link></li>
+            <!-- <li><router-link to="/sugPost" class="flex items-center p-2 pl-11 text-gray-900 rounded-lg dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700">Posts</router-link></li> -->
             <li><router-link to="/sugPodcast" class="flex items-center p-2 pl-11 text-gray-900 rounded-lg dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700">Podcasts</router-link></li>
             <li><router-link to="/sugTags" class="flex items-center p-2 pl-11 text-gray-900 rounded-lg dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700">Tags</router-link></li>
             <li><router-link to="/sugYTchannels" class="flex items-center p-2 pl-11 text-gray-900 rounded-lg dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700">YT Channels</router-link></li>
@@ -89,12 +89,13 @@ prompt_suggestion
 settings
 </span>
        <span class="ml-4">Settings</span>   </router-link></li>
-        <li><router-link to="/logout" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700">
-          <span class="material-symbols-outlined">
-            logout
-          </span>
-          <span class="ml-4">Logout</span></router-link></li>
-      </ul>
+        <li>
+          <button @click="logout" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700">
+            <span class="material-symbols-outlined">logout</span>
+            <span class="ml-4">Logout</span>
+          </button>
+        </li>
+      </ul> 
     </div>
   </aside>
 
@@ -116,18 +117,25 @@ export default {
         content: false,
         users: false,
         suggested: false,
-      }
+      },
     };
   },
   methods: {
     toggleSidebar() {
       this.isSidebarOpen = !this.isSidebarOpen;
     },
-    toggleDropdown(key) {
-      this.dropdowns[key] = !this.dropdowns[key];
-    }
-  }
-}
+    toggleDropdown(dropdown) {
+      this.dropdowns[dropdown] = !this.dropdowns[dropdown];
+    },
+    logout() {
+      // Call the logout method or API here
+        localStorage.removeItem('user-token');
+        localStorage.removeItem('user-id');
+        localStorage.removeItem('user-role');
+      this.$router.push('/login');
+    },
+  },
+};
 </script>
 
 <style scoped>

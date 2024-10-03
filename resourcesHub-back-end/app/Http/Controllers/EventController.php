@@ -101,7 +101,7 @@ class EventController extends Controller
             'location' => 'required|string|max:255',
             'start_time' => 'required|date',
             'end_time' => 'required|date|after_or_equal:start_time',
-            'status' => 'required|in:planned,ongoing,completed',
+            'status' => 'required|in:planifié,en cours,terminé', // Ensure enum values match
         ]);
 
         // Create a new event
@@ -145,7 +145,7 @@ class EventController extends Controller
             'location' => 'required|string|max:255',
             'start_time' => 'required|date',
             'end_time' => 'required|date|after_or_equal:start_time',
-            'status' => 'required|in:planned,ongoing,completed',
+            'status' => 'required|in:planifié,en cours,terminé', // Ensure enum values match
         ]);
 
         // Update the event in DB
@@ -182,17 +182,18 @@ class EventController extends Controller
             return response()->json(['error' => 'Unauthorized'], 403);
         }
 
-        // Check if the event belongs to the authenticated user
-        if ($event->user_id !== Auth::id()) {
+        // Allow super-admins to delete any event, even if not the owner
+        if ($event->user_id !== Auth::id() && !$user->hasRole('super-admin')) {
             return response()->json(['error' => 'Unauthorized'], 403);
         }
 
-        // Delete the event in DB
+        // Delete the event from the database
         $event->delete();
 
-        // Return a status 200
         return response()->json(['message' => 'Event deleted successfully.']);
     }
+
+
 }
 /**--------------------------|
  * created by : Adil radidi  |

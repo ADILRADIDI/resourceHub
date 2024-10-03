@@ -149,16 +149,14 @@ export default {
     const lastPlayed = JSON.parse(localStorage.getItem('lastPlayedPodcast'));
     if (lastPlayed) {
       this.currentPodcast = lastPlayed;
-      this.playPodcast(lastPlayed); // Auto-play option
+      // Removed auto-play
     }
 
     window.addEventListener('beforeunload', this.stopPodcastOnRouteChange);
   },
   beforeDestroy() {
     window.removeEventListener('beforeunload', this.stopPodcastOnRouteChange);
-    if (this.audio) {
-      this.audio.pause();
-    }
+    this.stopPodcast();
   },
   methods: {
     async fetchPodcasts(token) {
@@ -200,7 +198,7 @@ export default {
     },
     playPodcast(podcast) {
       if (this.audio) {
-        this.audio.pause();
+        this.stopPodcast();
       }
 
       if (this.currentPodcast === podcast) {
@@ -221,9 +219,7 @@ export default {
       };
 
       this.audio.onended = () => {
-        this.isPlaying = false;
-        this.progress = 0;
-        localStorage.removeItem('lastPlayedPodcast');
+        this.stopPodcast();
       };
     },
     togglePlayPause() {
@@ -255,14 +251,20 @@ export default {
       const newTime = (clickPosition / seekBar.offsetWidth) * this.audio.duration;
       this.audio.currentTime = newTime;
     },
-    stopPodcastOnRouteChange() {
+    stopPodcast() {
       if (this.audio) {
         this.audio.pause();
+        this.audio.currentTime = 0;
       }
+      this.isPlaying = false;
+      this.progress = 0;
+      localStorage.removeItem('lastPlayedPodcast');
+    },
+    stopPodcastOnRouteChange() {
+      this.stopPodcast();
     },
   },
 };
-
 </script>
 
 <style scoped>

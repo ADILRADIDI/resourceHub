@@ -34,6 +34,7 @@
               <td class="px-6 py-4">{{ post.user_id }}</td>
               <td class="px-6 py-4">{{ post.status }}</td>
               <td class="px-6 py-4">
+                <a @click="editPost(post)" class="font-medium mr-3 text-blue-600 dark:text-blue-500 hover:underline">Publish</a>
                 <a @click="editPost(post)" class="font-medium mr-3 text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
                 <a @click="deletePost(post.id)" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Delete</a>
               </td>

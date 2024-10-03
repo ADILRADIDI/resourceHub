@@ -215,7 +215,7 @@ export default {
     },
     async deleteChannel() {
       try {
-        await axios.delete(`${API_BASE_URL}youtubeChannels/${this.channelToDelete.id}`); // Adjust the API endpoint as needed
+        await axios.delete(`${API_BASE_URL}youtubeChannels/${this.channelToDelete.id}`); 
         this.fetchChannels(); // Refresh the channel list
         this.closeDeleteConfirmation();
       } catch (error) {

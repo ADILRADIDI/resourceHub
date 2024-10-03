@@ -1,12 +1,7 @@
 <template>
   <!-- Main Container -->
   <div id="header" class="bg-white shadow-md py-4 px-6 flex items-center justify-between">
-    <!-- Menu Button (Visible on mobile and tablets) -->
-    <button @click="toggleAside" class="md:hidden p-2 rounded-full hover:bg-gray-100 mx-2">
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M4 6h16M4 12h16m-7 6h7" />
-      </svg>
-    </button>
+    
 
     <!-- Header Section with Logo and Search -->
     <div class="flex items-center space-x-4 w-full">
@@ -20,8 +15,8 @@
 
     <!-- Create Post Button -->
     <router-link to="/new" class="text-blue-700 border-solid border-indigo-500 border-2 
-      hover:text-white hover:bg-indigo-500 py-2 px-4 rounded-lg w-36">
-      <span class="flex items-center justify-center">Create Post</span>
+      hover:text-white hover:bg-indigo-500 py-2 px-15 rounded-lg w-36">
+      <span class="flex items-center text-md  justify-center">+ Post</span>
     </router-link>
 
     <!-- Notifications Icon -->
@@ -92,6 +87,7 @@ export default {
         // Clear the token from localStorage
         localStorage.removeItem('user-token');
         localStorage.removeItem('user-id');
+        localStorage.removeItem('user-role');
         // Redirect to login or home page
         router.push('/login');
       } catch (error) {

@@ -1,7 +1,6 @@
 <script setup>
 // Import the components
 import Header from '../components/Header.vue';
-// header in user is authentecated okay => token is here
 import HeaderA from '../components/HeaderA.vue';
 import Post from '../components/Post.vue';
 import Aside from '../../src/components/Aside.vue';
@@ -12,14 +11,14 @@ const tokenExists = localStorage.getItem('user-token');
 </script>
 
 <template>
-  <!-- const tokenExists = localStorage.getItem('user-token'); -->
   <Header v-if="!tokenExists" />
   <HeaderA v-else="tokenExists" />
   <main class="main-container">
     <div class="flex gap-5">
       <Aside class="mt-8" />
-      <Post class="w-3/4 items-start"/>
-      <AdsRight v-if="tokenExists" class="w-1/2"/>
+      <Post class="w-106 items-center" />
+      <!-- Show AdsRight only if token exists and it's not on mobile/tablet -->
+      <AdsRight v-if="tokenExists && !isMobileOrTablet" class="w-1/2" />
     </div>
   </main> 
 </template>
@@ -33,7 +32,7 @@ const tokenExists = localStorage.getItem('user-token');
 
 @media (max-width: 768px) {
   .main-container {
-    /* Adjust styles for mobile front */
+    /* for mobile front */
     padding: 0.5rem;
   }
   .flex {
@@ -41,4 +40,20 @@ const tokenExists = localStorage.getItem('user-token');
     gap: 1rem;
   }
 }
+
+/* Hideen AdsRight on mobile and tablet */
+@media (max-width: 768px) {
+  .ads-right {
+    display: none; 
+  }
+}
 </style>
+
+<script>
+// Add a computed property to check for mobile/tablet
+import { computed } from 'vue';
+
+const isMobileOrTablet = computed(() => {
+  return window.innerWidth <= 980; // Adjust the max-width as needed
+});
+</script>
