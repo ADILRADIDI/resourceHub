@@ -10,14 +10,6 @@
             <label class="block text-sm font-medium text-gray-700 mb-2">Tag Name</label>
             <input v-model="tag.name" type="text" class="p-3 border border-gray-300 rounded-lg w-full" required />
           </div>
-          <!-- Status -->
-          <div class="mb-4">
-            <label class="block text-sm font-medium text-gray-700 mb-2">Status</label>
-            <select v-model="tag.status" class="p-3 border border-gray-300 rounded-lg w-full" required>
-              <option value="published">Published</option>
-              <option value="draft">Draft</option>
-            </select>
-          </div>
           <!-- Submit -->
           <div class="flex justify-end">
             <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-lg">Update Tag</button>
@@ -36,7 +28,7 @@
       },
       tag: {
         type: Object,
-        default: () => ({ name: "", status: "" }),
+        default: () => ({ name: ""}),
       },
     },
     methods: {

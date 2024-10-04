@@ -13,6 +13,37 @@ class TagController extends Controller
     /**
      * Display a listing of the resource.
      */
+
+
+     public function getAllTags(){
+        $tags = Tag::all();
+        return response()->json($tags);
+     }
+
+
+     public function publish($id)
+     {
+         $user = Auth::user();
+
+         // Check if the user has the 'manage tags' permission
+         if (!$user->can('manage tags')) {
+             return response()->json(['error' => 'Unauthorized to publish tags'], 403);
+         }
+
+         // Find the tag by ID
+         $tag = Tag::find($id);
+
+         if (!$tag) {
+             return response()->json(['error' => 'Tag not found'], 404);
+         }
+
+         // Update the status to 'published'
+         $tag->status = 'published';
+         $tag->save();
+
+         return response()->json(['message' => 'Tag published successfully', 'tag' => $tag], 200);
+     }
+
     // get  all tags from data base
     public function index()
     {

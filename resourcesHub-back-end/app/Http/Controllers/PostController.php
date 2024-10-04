@@ -235,6 +235,30 @@ class PostController extends Controller
         return response()->json($post->load('tags'));
     }
 
+
+    //
+    // public function getDraftPosts()
+    public function getDraftPosts(Request $request)
+    {
+        $postsdraft = Post::where('status','draft')->get();
+        return response()->json($postsdraft);
+    }
+
+    public function acceptPost($id)
+    {
+        $user = Auth::user();
+        // Find the post by ID
+        $post = Post::find($id);
+        if (!$post) {
+            return response()->json(['message' => 'Post not found'], 404);
+        }
+
+        // Update the status of the post to 'published'
+        $post->status = 'published';
+        $post->save();
+        return response()->json($post->load('tags'));
+    }
+
     // Delete a post
     public function destroy($id)
             {

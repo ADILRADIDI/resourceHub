@@ -78,10 +78,18 @@ Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanc
 
 
 // managment posts
+// Route::apiResource('posts', PostController::class)->middleware('auth:sanctum');
+// Route::post('acceptPost', [PostController::class, 'acceptPost'])->middleware('auth:sanctum');
+// Route::post('getDraftPosts', [PostController::class, 'getDraftPosts'])->middleware('auth:sanctum');
+
 Route::apiResource('posts', PostController::class)->middleware('auth:sanctum');
+Route::post('acceptPost/{id}', [PostController::class , 'acceptPost'])->middleware('auth:sanctum');
+Route::get('getDraftPosts', [PostController::class, 'getDraftPosts'])->middleware('auth:sanctum');
+Route::delete('/posts/{id}', [PostController::class, 'destroy'])->middleware('auth:sanctum');
+
+
 Route::post('/posts/search', [PostController::class, 'search'])->middleware('auth:sanctum');
 Route::post('/posts/by-tag', [PostController::class, 'getPostsByTag'])->middleware('auth:sanctum');
-
 
 
 // managment podcast and search by title
@@ -100,6 +108,11 @@ Route::post('/podcasts/search', [PodcastController::class, 'search'])->middlewar
 
 // managment tags
 Route::apiResource('tags', TagController::class)->middleware('auth:sanctum');
+Route::put('tags', [TagController::class, 'update'])->middleware('auth:sanctum');
+Route::get('getAllTags', [TagController::class, 'getAllTags'])->middleware('auth:sanctum');
+Route::patch('tags/{id}/publish', [TagController::class, 'publish'])->middleware('auth:sanctum'); // Add route for publishing
+
+
 Route::get('/tags/by-name/{name}', [TagController::class, 'getByName'])->middleware('auth:sanctum');
 Route::get('/tag/popular', [TagController::class, 'getPopularTags'])->middleware('auth:sanctum');
 
@@ -139,11 +152,18 @@ Route::get('/stackexchange/questions', [StackExchangeController::class, 'getQues
 Route::get('/stackexchange/questions/{id}/answers', [StackExchangeController::class, 'getAnswers']);
 
 
+
+ 
 // reactions
 Route::apiResource('reactions', ReactionController::class)->middleware('auth:sanctum');
 
 // crash course a youtube you can search pro
 Route::get('/youtube', [YouTubeController::class, 'search'])->middleware('auth:sanctum');
+
+use App\Http\Controllers\StatistiqueAdmin;
+Route::get('/getTotalPosts', [StatistiqueAdmin::class, 'getTotalPosts'])->middleware('auth:sanctum');
+Route::get('/getDraftItems', [StatistiqueAdmin::class, 'getDraftItems'])->middleware('auth:sanctum');
+
 
 use App\Http\Controllers\ProgrammingDataController;
 Route::get('/programming-data', [ProgrammingDataController::class, 'index']);

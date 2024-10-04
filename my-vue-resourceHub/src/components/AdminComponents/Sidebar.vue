@@ -43,7 +43,7 @@ folder_copy
           </button>
           <ul v-if="dropdowns.content" class="space-y-2 mt-2">
             <li><router-link to="/Mpost" class="flex items-center p-2 pl-11 text-gray-900 rounded-lg dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700">Manage Post</router-link></li>
-            <li><router-link to="/Mresource" class="flex items-center p-2 pl-11 text-gray-900 rounded-lg dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700">Manage Resources</router-link></li>
+            <!-- <li><router-link to="/Mresource" class="flex items-center p-2 pl-11 text-gray-900 rounded-lg dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700">Manage Resources</router-link></li> -->
             <li><router-link to="/Mtags" class="flex items-center p-2 pl-11 text-gray-900 rounded-lg dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700">Manage Tags</router-link></li>
             <li><router-link to="/Mpodcasts" class="flex items-center p-2 pl-11 text-gray-900 rounded-lg dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700">Manage Podcasts</router-link></li>
             <li><router-link to="/Mevents" class="flex items-center p-2 pl-11 text-gray-900 rounded-lg dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700">Manage Events</router-link></li>
@@ -54,8 +54,8 @@ folder_copy
         <li>
           <button @click="toggleDropdown('users')" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700">
             <span class="material-symbols-outlined">
-group
-</span>
+              group
+            </span>
             <span class="ms-3 mr-14"> Users</span>
             <svg :class="{ 'rotate-180': dropdowns.users }" class="w-5 h-5 ml-auto transition-transform duration-200" fill="none" viewBox="0 0 10 6" xmlns="http://www.w3.org/2000/svg">
               <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M1 1l4 4 4-4"></path>
@@ -70,8 +70,8 @@ group
         <li>
           <button @click="toggleDropdown('suggested')" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700">
             <span class="material-symbols-outlined">
-prompt_suggestion
-</span>
+              prompt_suggestion
+            </span>
             <span class="ms-3 mr-5 "> Suggested</span>
             <svg :class="{ 'rotate-180': dropdowns.suggested }" class="w-5 h-5 ml-auto transition-transform duration-200" fill="none" viewBox="0 0 10 6" xmlns="http://www.w3.org/2000/svg">
               <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M1 1l4 4 4-4"></path>
@@ -84,11 +84,12 @@ prompt_suggestion
             <li><router-link to="/sugYTchannels" class="flex items-center p-2 pl-11 text-gray-900 rounded-lg dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700">YT Channels</router-link></li>
           </ul>
         </li>
-        <li><router-link to="/settings" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700">
+        <!-- <li> -->
+          <!-- <router-link to="/settings" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700">
           <span class="material-symbols-outlined">
-settings
-</span>
-       <span class="ml-4">Settings</span>   </router-link></li>
+          settings
+        </span> -->
+       <!-- <span class="ml-4">Settings</span>   </router-link></li> -->
         <li>
           <button @click="logout" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700">
             <span class="material-symbols-outlined">logout</span>

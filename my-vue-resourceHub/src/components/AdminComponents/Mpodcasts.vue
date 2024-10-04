@@ -39,9 +39,9 @@
               <td class="px-6 py-4">{{ podcast.description }}</td>
               <td class="px-6 py-4">{{ podcast.status }}</td>
               <td class="px-6 py-4">
-                <button @click="openEditModal(podcast)" class="mr-3 font-medium text-blue-600 dark:text-blue-500 hover:underline">
+                <!-- <button @click="openEditModal(podcast)" class="mr-3 font-medium text-blue-600 dark:text-blue-500 hover:underline">
                   Edit
-                </button>
+                </button> -->
                 <button @click="deletePodcast(podcast.id)" class="mr-3 font-medium text-red-600 dark:text-red-500 hover:underline">
                   Delete
                 </button>
@@ -285,6 +285,7 @@ export default {
         description: '',
         logo: null,
         audio_url: '',
+        status: 'draft',  
       };
     };
 

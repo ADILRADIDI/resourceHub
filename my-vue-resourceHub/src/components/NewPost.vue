@@ -174,19 +174,19 @@ const handleSubmit = () => {
   posts.value.push(newPost);
   resetForm();
 };
-
+  
 const resetForm = () => {
   postTitle.value = '';
   postContent.value = '';
   coverFile.value = null;
   selectedTags.value = [];
 };
-
+ 
 const toggleLike = (postId) => {
   const post = posts.value.find(p => p.id === postId);
   if (post) post.liked = !post.liked;
 };
-
+ 
 const toggleSave = (postId) => {
   const post = posts.value.find(p => p.id === postId);
   if (post) post.saved = !post.saved;
