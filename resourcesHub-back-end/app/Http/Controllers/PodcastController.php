@@ -35,29 +35,29 @@ class PodcastController extends Controller
     }
 
     // publish function change status just
-    public function publishPodcast($id)
-{
-    $user = Auth::user();
+        public function publishPodcast($id)
+    {
+        $user = Auth::user();
 
-    // Check if the user has the 'super-admin' role
-    if (!$user->hasRole('super-admin')) {
-        return response()->json(['error' => 'Unauthorized'], 403);
+        // Check if the user has the 'super-admin' role
+        if (!$user->hasRole('super-admin')) {
+            return response()->json(['error' => 'Unauthorized'], 403);
+        }
+
+        // Find the YouTube channel by its ID
+        $Podcasts = Podcast::find($id);
+
+        // Check if the channel exists
+        if (!$Podcasts) {
+            return response()->json(['error' => 'Podcast not found'], 404);
+        }
+
+        // Update the status to 'published'
+        $Podcasts->status = 'published';
+        $Podcasts->save();
+
+        return response()->json(['message' => 'Podcasts published successfully', 'Podcasts' => $Podcasts], 200);
     }
-
-    // Find the YouTube channel by its ID
-    $Podcasts = Podcast::find($id);
-
-    // Check if the channel exists
-    if (!$Podcasts) {
-        return response()->json(['error' => 'Podcast not found'], 404);
-    }
-
-    // Update the status to 'published'
-    $Podcasts->status = 'published';
-    $Podcasts->save();
-
-    return response()->json(['message' => 'Podcasts published successfully', 'Podcasts' => $Podcasts], 200);
-}
 
     public function store(Request $request)
     {

@@ -85,9 +85,15 @@ Route::post('/posts/by-tag', [PostController::class, 'getPostsByTag'])->middlewa
 
 
 // managment podcast and search by title
-Route::apiResource('podcasts', PodcastController::class)->middleware('auth:sanctum');
+// Route::apiResource('podcasts', PodcastController::class)->middleware('auth:sanctum');
+Route::post('publishPodcast/{id}', [PodcastController::class, 'publishPodcast'])->middleware('auth:sanctum');
 Route::get('getAllpd', [PodcastController::class, 'getAllpd'])->middleware('auth:sanctum');
-Route::post('publishPodcast', [PodcastController::class, 'publishPodcast'])->middleware('auth:sanctum');
+Route::put('podcasts/{id}', [PodcastController::class, 'update'])->middleware('auth:sanctum');
+Route::middleware('auth:sanctum')->group(function () {
+    Route::apiResource('podcasts', PodcastController::class);
+    Route::get('podcasts/search', [PodcastController::class, 'search']);
+    Route::post('podcasts/{podcast}/publish', [PodcastController::class, 'publishPodcast']);
+});
 
 // search podcastgetp
 Route::post('/podcasts/search', [PodcastController::class, 'search'])->middleware('auth:sanctum');
